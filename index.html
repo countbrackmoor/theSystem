@@ -13,14 +13,16 @@
     --bg-2: #050b18;
     --cyan: #5fd4ff;
     --cyan-dim: #2a8bb8;
-    --cyan-glow: rgba(95, 212, 255, 0.55);
-    --cyan-soft: rgba(95, 212, 255, 0.12);
+    --cyan-glow: rgba(95,212,255,0.55);
+    --cyan-soft: rgba(95,212,255,0.12);
     --white: #e8f4ff;
     --dim: #6a8aa8;
     --danger: #ff4d6d;
     --gold: #ffd166;
     --magenta: #d885ff;
-    --magenta-glow: rgba(216, 133, 255, 0.6);
+    --magenta-glow: rgba(216,133,255,0.6);
+    --green: #7fff6a;
+    --green-glow: rgba(127,255,106,0.5);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body {
@@ -32,7 +34,7 @@
   }
   body {
     background-image:
-      radial-gradient(ellipse at top, rgba(42, 139, 184, 0.18), transparent 60%),
+      radial-gradient(ellipse at top, rgba(42,139,184,0.18), transparent 60%),
       linear-gradient(180deg, var(--bg) 0%, #000 100%);
     padding: env(safe-area-inset-top) 16px env(safe-area-inset-bottom);
     max-width: 720px;
@@ -40,6 +42,7 @@
     padding-bottom: 40px;
   }
 
+  /* ── Header ── */
   header {
     padding: 24px 0 16px;
     text-align: center;
@@ -47,304 +50,155 @@
     margin-bottom: 20px;
     position: relative;
   }
-  header .brand {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.4em;
-    color: var(--cyan-dim);
-  }
-  header .title {
-    font-size: 28px;
-    font-weight: 700;
-    letter-spacing: 0.2em;
-    color: var(--cyan);
-    text-shadow: 0 0 16px var(--cyan-glow);
-    margin-top: 4px;
-  }
+  header .brand { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.4em; color: var(--cyan-dim); }
+  header .title { font-size: 28px; font-weight: 700; letter-spacing: 0.2em; color: var(--cyan); text-shadow: 0 0 16px var(--cyan-glow); margin-top: 4px; }
   .settings-toggle {
-    position: absolute;
-    right: 0;
-    top: 28px;
-    background: transparent;
-    border: 1px solid var(--cyan-dim);
-    color: var(--cyan);
-    padding: 6px 10px;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    cursor: pointer;
+    position: absolute; right: 0; top: 28px;
+    background: transparent; border: 1px solid var(--cyan-dim); color: var(--cyan);
+    padding: 6px 10px; font-family: 'Share Tech Mono', monospace; font-size: 10px;
+    letter-spacing: 0.2em; cursor: pointer;
     clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
   }
   .settings-toggle:hover { background: var(--cyan-soft); }
 
+  /* ── Panels ── */
   .panel {
     position: relative;
-    background: linear-gradient(180deg, rgba(10, 22, 40, 0.85), rgba(2, 8, 18, 0.85));
+    background: linear-gradient(180deg, rgba(10,22,40,0.85), rgba(2,8,18,0.85));
     border: 1px solid var(--cyan-dim);
-    box-shadow:
-      0 0 0 1px rgba(95, 212, 255, 0.08) inset,
-      0 0 24px rgba(42, 139, 184, 0.25),
-      0 0 60px rgba(42, 139, 184, 0.1);
-    clip-path: polygon(
-      14px 0, 100% 0, 100% calc(100% - 14px),
-      calc(100% - 14px) 100%, 0 100%, 0 14px
-    );
+    box-shadow: 0 0 0 1px rgba(95,212,255,0.08) inset, 0 0 24px rgba(42,139,184,0.25), 0 0 60px rgba(42,139,184,0.1);
+    clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
     padding: 18px 18px 20px;
     margin-bottom: 16px;
   }
   .panel-label {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.3em;
-    color: var(--cyan-dim);
-    margin-bottom: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 0.3em;
+    color: var(--cyan-dim); margin-bottom: 12px;
+    display: flex; justify-content: space-between; align-items: center;
   }
   .panel-label .dot {
-    width: 6px; height: 6px;
-    background: var(--cyan);
-    box-shadow: 0 0 8px var(--cyan);
-    display: inline-block;
-    margin-right: 6px;
-    animation: pulse 2s infinite;
+    width: 6px; height: 6px; background: var(--cyan); box-shadow: 0 0 8px var(--cyan);
+    display: inline-block; margin-right: 6px; animation: blink 2s infinite;
   }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
+  /* ── Status window ── */
   .status-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 16px;
-    padding-bottom: 14px;
-    border-bottom: 1px dashed var(--cyan-soft);
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px dashed var(--cyan-soft);
   }
-  .name-block .name {
-    font-size: 22px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    color: var(--white);
-  }
-  .name-block .class {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 11px;
-    color: var(--cyan);
-    letter-spacing: 0.2em;
-    margin-top: 2px;
-  }
+  .name-block .name { font-size: 22px; font-weight: 600; letter-spacing: 0.08em; color: var(--white); }
+  .name-block .class { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--cyan); letter-spacing: 0.2em; margin-top: 2px; }
   .level-block { text-align: right; }
-  .level-block .lvl-label {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 10px;
-    color: var(--cyan-dim);
-    letter-spacing: 0.2em;
-  }
-  .level-block .lvl-num {
-    font-size: 36px;
-    font-weight: 700;
-    color: var(--cyan);
-    text-shadow: 0 0 12px var(--cyan-glow);
-    line-height: 1;
-  }
+  .level-block .lvl-label { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--cyan-dim); letter-spacing: 0.2em; }
+  .level-block .lvl-num { font-size: 36px; font-weight: 700; color: var(--cyan); text-shadow: 0 0 12px var(--cyan-glow); line-height: 1; }
 
   .bar-row { margin-bottom: 10px; }
-  .bar-label {
-    display: flex;
-    justify-content: space-between;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    margin-bottom: 4px;
-  }
+  .bar-label { display: flex; justify-content: space-between; font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.15em; margin-bottom: 4px; }
   .bar-label .key { color: var(--dim); }
   .bar-label .val { color: var(--white); }
-  .bar-track {
-    height: 6px;
-    background: rgba(95, 212, 255, 0.08);
-    border: 1px solid var(--cyan-dim);
-    position: relative;
-    overflow: hidden;
-  }
-  .bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--cyan-dim), var(--cyan));
-    box-shadow: 0 0 8px var(--cyan-glow);
-    transition: width 0.6s ease;
-  }
-  .bar-fill.hp { background: linear-gradient(90deg, #c2185b, #ff4d6d); box-shadow: 0 0 8px rgba(255,77,109,0.6); }
-  .bar-fill.mp { background: linear-gradient(90deg, #1e88e5, #5fd4ff); }
-  .bar-fill.xp { background: linear-gradient(90deg, #b8860b, var(--gold)); box-shadow: 0 0 8px rgba(255,209,102,0.5); }
+  .bar-track { height: 6px; background: rgba(95,212,255,0.08); border: 1px solid var(--cyan-dim); overflow: hidden; }
+  .bar-fill { height: 100%; background: linear-gradient(90deg,var(--cyan-dim),var(--cyan)); box-shadow: 0 0 8px var(--cyan-glow); transition: width 0.6s ease; }
+  .bar-fill.hp { background: linear-gradient(90deg,#c2185b,#ff4d6d); box-shadow: 0 0 8px rgba(255,77,109,0.6); }
+  .bar-fill.mp { background: linear-gradient(90deg,#1e88e5,#5fd4ff); }
+  .bar-fill.xp { background: linear-gradient(90deg,#b8860b,var(--gold)); box-shadow: 0 0 8px rgba(255,209,102,0.5); }
 
-  .stats {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 8px;
-    margin-top: 16px;
-  }
+  .stats { display: grid; grid-template-columns: repeat(5,1fr); gap: 8px; margin-top: 16px; }
   .stat {
-    background: rgba(95, 212, 255, 0.04);
-    border: 1px solid var(--cyan-soft);
-    padding: 10px 6px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.2s;
+    background: rgba(95,212,255,0.04); border: 1px solid var(--cyan-soft);
+    padding: 10px 6px; text-align: center; cursor: pointer; transition: all 0.2s;
   }
-  .stat:hover {
-    background: rgba(95, 212, 255, 0.1);
-    border-color: var(--cyan);
-    transform: translateY(-1px);
-  }
-  .stat.allocatable {
-    border-color: var(--gold);
-    box-shadow: 0 0 8px rgba(255,209,102,0.3);
-  }
-  .stat .stat-key {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 10px;
-    color: var(--cyan-dim);
-    letter-spacing: 0.15em;
-  }
-  .stat .stat-val {
-    font-size: 20px;
-    font-weight: 600;
-    color: var(--white);
-    margin-top: 2px;
-  }
+  .stat:hover { background: rgba(95,212,255,0.1); border-color: var(--cyan); transform: translateY(-1px); }
+  .stat.allocatable { border-color: var(--gold); box-shadow: 0 0 8px rgba(255,209,102,0.3); }
+  .stat .stat-key { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--cyan-dim); letter-spacing: 0.15em; }
+  .stat .stat-val { font-size: 20px; font-weight: 600; color: var(--white); margin-top: 2px; }
+  .stat .stat-buff { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--green); margin-top: 1px; }
+
   .points-banner {
-    margin-top: 12px;
-    padding: 8px;
-    background: rgba(255, 209, 102, 0.08);
-    border: 1px dashed var(--gold);
-    text-align: center;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 11px;
-    color: var(--gold);
-    letter-spacing: 0.15em;
-    display: none;
+    margin-top: 12px; padding: 8px;
+    background: rgba(255,209,102,0.08); border: 1px dashed var(--gold);
+    text-align: center; font-family: 'Share Tech Mono', monospace; font-size: 11px;
+    color: var(--gold); letter-spacing: 0.15em; display: none;
   }
   .points-banner.show { display: block; }
 
-  .streak-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-top: 14px;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.15em;
+  .buff-row {
+    margin-top: 12px; padding: 8px 10px;
+    background: rgba(127,255,106,0.05); border: 1px solid rgba(127,255,106,0.3);
+    font-family: 'Share Tech Mono', monospace; font-size: 10px;
+    color: var(--green); letter-spacing: 0.12em; line-height: 1.8; display: none;
   }
-  .streak-row .cell {
-    padding: 8px;
-    border: 1px solid var(--cyan-soft);
-    text-align: center;
-  }
+  .buff-row.show { display: block; }
+
+  .streak-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.15em; }
+  .streak-row .cell { padding: 8px; border: 1px solid var(--cyan-soft); text-align: center; }
   .streak-row .cell .k { color: var(--cyan-dim); }
   .streak-row .cell .v { color: var(--cyan); font-size: 16px; margin-top: 4px; }
 
-  .quest-meta {
-    display: flex;
-    justify-content: space-between;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 11px;
-    color: var(--cyan-dim);
-    margin-bottom: 14px;
-    letter-spacing: 0.1em;
-  }
+  /* ── Daily Quest ── */
+  .quest-meta { display: flex; justify-content: space-between; font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--cyan-dim); margin-bottom: 14px; letter-spacing: 0.1em; }
   .quest-meta .countdown { color: var(--cyan); }
   .quest-meta .countdown.warn { color: var(--danger); }
-
   .quest {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 10px;
-    border: 1px solid var(--cyan-soft);
-    margin-bottom: 8px;
-    background: rgba(95, 212, 255, 0.03);
-    cursor: pointer;
-    transition: all 0.2s;
+    display: flex; align-items: center; gap: 12px; padding: 12px 10px;
+    border: 1px solid var(--cyan-soft); margin-bottom: 8px;
+    background: rgba(95,212,255,0.03); cursor: pointer; transition: all 0.2s;
   }
-  .quest:hover { border-color: var(--cyan-dim); background: rgba(95, 212, 255, 0.06); }
-  .quest.done {
-    opacity: 0.5;
-    text-decoration: line-through;
-    text-decoration-color: var(--cyan);
-  }
-  .quest .check {
-    width: 18px; height: 18px;
-    border: 1.5px solid var(--cyan);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-  .quest.done .check::after {
-    content: '✓';
-    color: var(--cyan);
-    font-weight: bold;
-    text-shadow: 0 0 6px var(--cyan-glow);
-  }
-  .quest .q-text {
-    flex: 1;
-    font-size: 16px;
-    letter-spacing: 0.05em;
-  }
-  .quest .q-xp {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 11px;
-    color: var(--gold);
-    letter-spacing: 0.1em;
-  }
-  .warning {
-    margin-top: 12px;
-    padding: 10px;
-    border: 1px solid var(--danger);
-    background: rgba(255, 77, 109, 0.08);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 11px;
-    color: var(--danger);
-    letter-spacing: 0.15em;
-    text-align: center;
-  }
+  .quest:hover { border-color: var(--cyan-dim); background: rgba(95,212,255,0.06); }
+  .quest.done { opacity: 0.5; text-decoration: line-through; text-decoration-color: var(--cyan); }
+  .quest .check { width: 18px; height: 18px; border: 1.5px solid var(--cyan); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .quest.done .check::after { content: '✓'; color: var(--cyan); font-weight: bold; text-shadow: 0 0 6px var(--cyan-glow); }
+  .quest .q-text { flex: 1; font-size: 16px; letter-spacing: 0.05em; }
+  .quest .q-xp { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--gold); letter-spacing: 0.1em; white-space: nowrap; }
+  .warning { margin-top: 12px; padding: 10px; border: 1px solid var(--danger); background: rgba(255,77,109,0.08); font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--danger); letter-spacing: 0.15em; text-align: center; }
 
-  #toast {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%) translateY(-200%);
-    background: rgba(2, 8, 18, 0.96);
-    border: 1px solid var(--cyan);
-    box-shadow: 0 0 24px var(--cyan-glow);
-    padding: 14px 22px;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 13px;
-    color: var(--cyan);
-    letter-spacing: 0.2em;
-    z-index: 100;
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
-    max-width: 90vw;
-    text-align: center;
+  /* ── Inventory ── */
+  .inv-grid { display: flex; flex-direction: column; gap: 8px; }
+  .inv-item {
+    display: flex; align-items: center; gap: 12px; padding: 10px 12px;
+    border: 1px solid var(--green-soft, rgba(127,255,106,0.2));
+    background: rgba(127,255,106,0.04);
   }
-  #toast.show { transform: translateX(-50%) translateY(0); }
-  #toast.danger { border-color: var(--danger); box-shadow: 0 0 24px rgba(255,77,109,0.6); color: var(--danger); }
-  #toast.gold { border-color: var(--gold); box-shadow: 0 0 24px rgba(255,209,102,0.6); color: var(--gold); }
-  #toast.title { border-color: var(--magenta); box-shadow: 0 0 28px var(--magenta-glow); color: var(--magenta); }
+  .inv-item .inv-icon { font-size: 18px; flex-shrink: 0; width: 28px; text-align: center; }
+  .inv-item .inv-info { flex: 1; }
+  .inv-item .inv-name { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.18em; color: var(--green); }
+  .inv-item .inv-desc { font-size: 13px; color: var(--dim); margin-top: 2px; letter-spacing: 0.02em; }
+  .inv-item .inv-badge { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--cyan-dim); letter-spacing: 0.15em; margin-top: 2px; }
+  .inv-use-btn {
+    background: transparent; border: 1px solid var(--green); color: var(--green);
+    padding: 6px 12px; font-family: 'Share Tech Mono', monospace; font-size: 10px;
+    letter-spacing: 0.15em; cursor: pointer; flex-shrink: 0;
+    clip-path: polygon(5px 0,100% 0,100% calc(100% - 5px),calc(100% - 5px) 100%,0 100%,0 5px);
+  }
+  .inv-use-btn:hover { background: rgba(127,255,106,0.1); box-shadow: 0 0 8px var(--green-glow); }
+  .inv-active {
+    font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--green);
+    padding: 8px 12px; border: 1px solid rgba(127,255,106,0.3);
+    background: rgba(127,255,106,0.05); display: flex; justify-content: space-between;
+    align-items: center; letter-spacing: 0.12em;
+  }
+  .inv-active .inv-expires { color: var(--dim); font-size: 9px; }
 
-  .system-log {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 10px;
-    color: var(--cyan-dim);
-    letter-spacing: 0.15em;
-    line-height: 1.8;
-    margin-top: 8px;
-    max-height: 180px;
-    overflow-y: auto;
+  /* ── Titles ── */
+  .titles-meta { display: flex; justify-content: space-between; font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--cyan-dim); margin-bottom: 12px; letter-spacing: 0.15em; }
+  .titles-meta .count { color: var(--cyan); }
+  .titles-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+  .title-pill {
+    font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 0.15em;
+    padding: 6px 10px; border: 1px solid var(--cyan-dim);
+    background: rgba(95,212,255,0.05); color: var(--cyan); cursor: default;
+    clip-path: polygon(5px 0,100% 0,100% calc(100% - 5px),calc(100% - 5px) 100%,0 100%,0 5px);
   }
+  .title-pill.common    { border-color: var(--cyan-dim); color: var(--cyan-dim); background: rgba(95,212,255,0.03); }
+  .title-pill.rare      { border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 6px rgba(95,212,255,0.25); }
+  .title-pill.epic      { border-color: var(--gold); color: var(--gold); background: rgba(255,209,102,0.04); box-shadow: 0 0 8px rgba(255,209,102,0.3); }
+  .title-pill.legendary { border-color: var(--magenta); color: var(--magenta); background: rgba(216,133,255,0.05); box-shadow: 0 0 10px var(--magenta-glow); animation: legend-pulse 2.4s ease-in-out infinite; }
+  @keyframes legend-pulse { 0%,100%{box-shadow:0 0 10px var(--magenta-glow)} 50%{box-shadow:0 0 18px var(--magenta-glow),0 0 28px rgba(216,133,255,0.35)} }
+  .title-pill.equipped { outline: 1px solid var(--white); outline-offset: 1px; }
+
+  /* ── System log ── */
+  .system-log { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--cyan-dim); letter-spacing: 0.15em; line-height: 1.8; margin-top: 8px; max-height: 180px; overflow-y: auto; }
+  .system-log.full { max-height: 420px; }
   .system-log .line::before { content: '> '; color: var(--cyan); }
   .system-log .line.penalty { color: var(--danger); }
   .system-log .line.penalty::before { color: var(--danger); }
@@ -352,96 +206,68 @@
   .system-log .line.gold::before { color: var(--gold); }
   .system-log .line.title { color: var(--magenta); }
   .system-log .line.title::before { color: var(--magenta); }
+  .system-log .line.item { color: var(--green); }
+  .system-log .line.item::before { color: var(--green); }
 
-  /* ── Title (achievement) pills ── */
-  .titles-meta {
-    display: flex;
-    justify-content: space-between;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 11px;
-    color: var(--cyan-dim);
-    margin-bottom: 12px;
-    letter-spacing: 0.15em;
+  /* ── Toast ── */
+  #toast {
+    position: fixed; top: 20px; left: 50%;
+    transform: translateX(-50%) translateY(-200%);
+    background: rgba(2,8,18,0.96); border: 1px solid var(--cyan); box-shadow: 0 0 24px var(--cyan-glow);
+    padding: 14px 22px; font-family: 'Share Tech Mono', monospace; font-size: 13px;
+    color: var(--cyan); letter-spacing: 0.2em; z-index: 100;
+    transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+    clip-path: polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);
+    max-width: 90vw; text-align: center;
   }
-  .titles-meta .count { color: var(--cyan); }
-  .titles-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-  .title-pill {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    padding: 6px 10px;
-    border: 1px solid var(--cyan-dim);
-    background: rgba(95,212,255,0.05);
-    color: var(--cyan);
-    cursor: default;
-    clip-path: polygon(5px 0, 100% 0, 100% calc(100% - 5px), calc(100% - 5px) 100%, 0 100%, 0 5px);
-  }
-  .title-pill.common    { border-color: var(--cyan-dim); color: var(--cyan-dim); background: rgba(95,212,255,0.03); }
-  .title-pill.rare      { border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 6px rgba(95,212,255,0.25); }
-  .title-pill.epic      { border-color: var(--gold); color: var(--gold); background: rgba(255,209,102,0.04); box-shadow: 0 0 8px rgba(255,209,102,0.3); }
-  .title-pill.legendary { border-color: var(--magenta); color: var(--magenta); background: rgba(216,133,255,0.05); box-shadow: 0 0 10px var(--magenta-glow); animation: legend-pulse 2.4s ease-in-out infinite; }
-  @keyframes legend-pulse {
-    0%, 100% { box-shadow: 0 0 10px var(--magenta-glow); }
-    50%      { box-shadow: 0 0 18px var(--magenta-glow), 0 0 28px rgba(216,133,255,0.35); }
-  }
-  .title-pill.locked {
-    border-color: var(--cyan-soft);
-    color: var(--dim);
-    background: transparent;
-    box-shadow: none;
-    animation: none;
-    opacity: 0.55;
-  }
-  .title-pill.equipped {
-    outline: 1px solid var(--white);
-    outline-offset: 1px;
-  }
-  .titles-empty {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 11px;
-    color: var(--dim);
-    letter-spacing: 0.15em;
-    padding: 8px 4px;
-  }
+  #toast.show { transform: translateX(-50%) translateY(0); }
+  #toast.danger { border-color: var(--danger); box-shadow: 0 0 24px rgba(255,77,109,0.6); color: var(--danger); }
+  #toast.gold   { border-color: var(--gold);   box-shadow: 0 0 24px rgba(255,209,102,0.6); color: var(--gold); }
+  #toast.title  { border-color: var(--magenta); box-shadow: 0 0 28px var(--magenta-glow);  color: var(--magenta); }
+  #toast.item   { border-color: var(--green);  box-shadow: 0 0 24px var(--green-glow);    color: var(--green); }
 
-  /* ── Settings: full title browser ── */
-  .title-row {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 10px;
-    align-items: start;
-    padding: 10px 12px;
-    border: 1px solid var(--cyan-soft);
-    margin-bottom: 6px;
-    background: rgba(95,212,255,0.02);
+  /* ── Buttons ── */
+  .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
+  .btn {
+    background: transparent; border: 1px solid var(--cyan-dim); color: var(--cyan);
+    padding: 12px; font-family: 'Share Tech Mono', monospace; font-size: 11px;
+    letter-spacing: 0.2em; cursor: pointer; transition: all 0.2s;
+    clip-path: polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);
+    text-align: center;
   }
+  .btn:hover { background: var(--cyan-soft); border-color: var(--cyan); box-shadow: 0 0 12px var(--cyan-glow); }
+  .btn.danger { border-color: var(--danger); color: var(--danger); }
+  .btn.danger:hover { background: rgba(255,77,109,0.08); box-shadow: 0 0 12px rgba(255,77,109,0.4); }
+  .btn.gold { border-color: var(--gold); color: var(--gold); }
+  .btn.gold:hover { background: rgba(255,209,102,0.08); box-shadow: 0 0 12px rgba(255,209,102,0.4); }
+  .btn.wide { grid-column: 1 / -1; }
+
+  /* ── Settings ── */
+  .settings-section { margin-bottom: 18px; }
+  .settings-section h3 { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--cyan); letter-spacing: 0.25em; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px dashed var(--cyan-soft); }
+  .field-row { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
+  .field-row label { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--cyan-dim); letter-spacing: 0.15em; min-width: 70px; }
+  input[type=text], input[type=number], textarea, select {
+    flex: 1; background: rgba(95,212,255,0.05); border: 1px solid var(--cyan-dim);
+    color: var(--white); padding: 8px 10px; font-family: 'Rajdhani', sans-serif;
+    font-size: 14px; letter-spacing: 0.05em;
+  }
+  textarea { font-family: 'Share Tech Mono', monospace; font-size: 11px; width: 100%; min-height: 120px; resize: vertical; }
+  input:focus, textarea:focus, select:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 8px var(--cyan-glow); }
+  input[type=number] { max-width: 80px; flex: 0 0 auto; }
+
+  /* Quest editor */
+  .qe-header { display: grid; grid-template-columns: 1fr 64px 64px 36px; gap: 6px; margin-bottom: 6px; font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 0.15em; color: var(--cyan-dim); padding: 0 4px; }
+  .qe-row    { display: grid; grid-template-columns: 1fr 64px 64px 36px; gap: 6px; margin-bottom: 6px; }
+  .qe-row .remove-btn { background: transparent; border: 1px solid var(--danger); color: var(--danger); cursor: pointer; font-family: 'Share Tech Mono', monospace; }
+  .qe-row .remove-btn:hover { background: rgba(255,77,109,0.1); }
+
+  /* Title archive */
+  .title-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: start; padding: 10px 12px; border: 1px solid var(--cyan-soft); margin-bottom: 6px; background: rgba(95,212,255,0.02); }
   .title-row.unlocked { background: rgba(95,212,255,0.05); }
-  .title-row .tr-name {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 12px;
-    letter-spacing: 0.18em;
-    color: var(--cyan);
-  }
-  .title-row .tr-desc {
-    font-size: 13px;
-    color: var(--steel, var(--dim));
-    margin-top: 3px;
-    letter-spacing: 0.02em;
-  }
-  .title-row .tr-badge {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.2em;
-    padding: 3px 7px;
-    border: 1px solid var(--cyan-dim);
-    color: var(--cyan-dim);
-    align-self: center;
-    white-space: nowrap;
-  }
+  .title-row .tr-name { font-family: 'Share Tech Mono', monospace; font-size: 12px; letter-spacing: 0.18em; color: var(--cyan); }
+  .title-row .tr-desc { font-size: 13px; color: var(--dim); margin-top: 3px; letter-spacing: 0.02em; }
+  .title-row .tr-badge { font-family: 'Share Tech Mono', monospace; font-size: 9px; letter-spacing: 0.2em; padding: 3px 7px; border: 1px solid var(--cyan-dim); color: var(--cyan-dim); align-self: center; white-space: nowrap; }
   .title-row.locked .tr-name { color: var(--dim); }
   .title-row.locked .tr-desc { color: var(--dim); opacity: 0.7; }
   .title-row.locked .tr-badge { border-color: var(--cyan-soft); color: var(--dim); }
@@ -449,118 +275,9 @@
   .title-row .tr-name.tier-epic      { color: var(--gold); }
   .title-row .tr-name.tier-legendary { color: var(--magenta); }
 
-  .actions {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-top: 8px;
-  }
-  .btn {
-    background: transparent;
-    border: 1px solid var(--cyan-dim);
-    color: var(--cyan);
-    padding: 12px;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    cursor: pointer;
-    transition: all 0.2s;
-    clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
-    text-align: center;
-  }
-  .btn:hover {
-    background: var(--cyan-soft);
-    border-color: var(--cyan);
-    box-shadow: 0 0 12px var(--cyan-glow);
-  }
-  .btn.danger { border-color: var(--danger); color: var(--danger); }
-  .btn.danger:hover { background: rgba(255,77,109,0.08); box-shadow: 0 0 12px rgba(255,77,109,0.4); }
-  .btn.gold { border-color: var(--gold); color: var(--gold); }
-  .btn.gold:hover { background: rgba(255,209,102,0.08); box-shadow: 0 0 12px rgba(255,209,102,0.4); }
-  .btn.wide { grid-column: 1 / -1; }
-
-  .settings-section { margin-bottom: 18px; }
-  .settings-section h3 {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 11px;
-    color: var(--cyan);
-    letter-spacing: 0.25em;
-    margin-bottom: 10px;
-    padding-bottom: 6px;
-    border-bottom: 1px dashed var(--cyan-soft);
-  }
-  .field-row {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 8px;
-    align-items: center;
-  }
-  .field-row label {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 11px;
-    color: var(--cyan-dim);
-    letter-spacing: 0.15em;
-    min-width: 70px;
-  }
-  input[type=text], input[type=number], textarea {
-    flex: 1;
-    background: rgba(95,212,255,0.05);
-    border: 1px solid var(--cyan-dim);
-    color: var(--white);
-    padding: 8px 10px;
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 14px;
-    letter-spacing: 0.05em;
-  }
-  textarea {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 11px;
-    width: 100%;
-    min-height: 120px;
-    resize: vertical;
-  }
-  input:focus, textarea:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 8px var(--cyan-glow); }
-  input[type=number] { max-width: 80px; flex: 0 0 auto; }
-
-  .quest-edit-header {
-    display: grid;
-    grid-template-columns: 1fr 70px 32px;
-    gap: 6px;
-    margin-bottom: 6px;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    color: var(--cyan-dim);
-    padding: 0 4px;
-  }
-  .quest-edit-row {
-    display: grid;
-    grid-template-columns: 1fr 70px 32px;
-    gap: 6px;
-    margin-bottom: 6px;
-  }
-  .system-log.full {
-    max-height: 420px;
-  }
-  .quest-edit-row .remove-btn {
-    background: transparent;
-    border: 1px solid var(--danger);
-    color: var(--danger);
-    cursor: pointer;
-    font-family: 'Share Tech Mono', monospace;
-  }
-  .quest-edit-row .remove-btn:hover { background: rgba(255,77,109,0.1); }
-
-  .footer-note {
-    text-align: center;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 9px;
-    color: var(--dim);
-    letter-spacing: 0.3em;
-    margin-top: 24px;
-    opacity: 0.6;
-  }
+  .footer-note { text-align: center; font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--dim); letter-spacing: 0.3em; margin-top: 24px; opacity: 0.6; }
   .hidden { display: none !important; }
+  .hint { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--cyan-dim); letter-spacing: 0.12em; margin-top: 4px; padding-left: 78px; }
 </style>
 </head>
 <body>
@@ -571,11 +288,12 @@
   <button class="settings-toggle" onclick="toggleView()">⚙ <span id="toggle-label">SETTINGS</span></button>
 </header>
 
+<!-- ══════════════ MAIN VIEW ══════════════ -->
 <div id="main-view">
 
+  <!-- STATUS WINDOW -->
   <div class="panel">
     <div class="panel-label"><span><span class="dot"></span>STATUS WINDOW</span><span id="sys-time">00:00:00</span></div>
-
     <div class="status-head">
       <div class="name-block">
         <div class="name" id="player-name">PLAYER</div>
@@ -586,7 +304,6 @@
         <div class="lvl-num" id="lvl">1</div>
       </div>
     </div>
-
     <div class="bar-row">
       <div class="bar-label"><span class="key">HP</span><span class="val"><span id="hp-v">100</span> / 100</span></div>
       <div class="bar-track"><div class="bar-fill hp" id="hp-bar" style="width:100%"></div></div>
@@ -599,30 +316,34 @@
       <div class="bar-label"><span class="key">XP</span><span class="val"><span id="xp-v">0</span> / <span id="xp-next-v">100</span></span></div>
       <div class="bar-track"><div class="bar-fill xp" id="xp-bar" style="width:0%"></div></div>
     </div>
-
     <div class="stats" id="stats-grid"></div>
     <div class="points-banner" id="points-banner">// <span id="points">0</span> STAT POINTS AVAILABLE — TAP A STAT TO ALLOCATE</div>
-
+    <div class="buff-row" id="buff-row"></div>
     <div class="streak-row">
       <div class="cell"><div class="k">CURRENT STREAK</div><div class="v" id="streak">0</div></div>
       <div class="cell"><div class="k">BEST STREAK</div><div class="v" id="streak-best">0</div></div>
     </div>
   </div>
 
+  <!-- DAILY QUEST -->
   <div class="panel">
     <div class="panel-label"><span><span class="dot"></span>DAILY QUEST</span><span>MANDATORY</span></div>
-
     <div class="quest-meta">
       <span>ISSUED 00:00</span>
       <span>EXPIRES IN <span class="countdown" id="countdown">00:00:00</span></span>
     </div>
-
     <div id="quest-list"></div>
-
     <div class="warning">⚠ PENALTY ON FAILURE — RANDOM STAT −1</div>
   </div>
 
-  <div class="panel">
+  <!-- INVENTORY (hidden when empty) -->
+  <div class="panel hidden" id="inventory-panel">
+    <div class="panel-label"><span><span class="dot"></span>INVENTORY</span><span id="inv-count">0 ITEMS</span></div>
+    <div class="inv-grid" id="inv-grid"></div>
+  </div>
+
+  <!-- TITLES (hidden until first title earned) -->
+  <div class="panel hidden" id="titles-panel">
     <div class="panel-label"><span><span class="dot"></span>TITLES</span><span id="titles-equipped-label">NONE EQUIPPED</span></div>
     <div class="titles-meta">
       <span>ACQUIRED</span>
@@ -631,6 +352,7 @@
     <div class="titles-grid" id="titles-grid"></div>
   </div>
 
+  <!-- SYSTEM LOG -->
   <div class="panel">
     <div class="panel-label"><span><span class="dot"></span>SYSTEM LOG</span><span>RECENT</span></div>
     <div class="system-log" id="log"></div>
@@ -638,50 +360,49 @@
 
 </div>
 
+<!-- ══════════════ SETTINGS VIEW ══════════════ -->
 <div id="settings-view" class="hidden">
 
+  <!-- PLAYER -->
   <div class="panel">
     <div class="panel-label"><span><span class="dot"></span>PLAYER</span></div>
     <div class="settings-section">
-      <div class="field-row">
-        <label>NAME</label>
-        <input type="text" id="set-name" maxlength="24">
-      </div>
-      <div class="field-row">
-        <label>CLASS</label>
-        <input type="text" id="set-class" maxlength="32">
-      </div>
+      <div class="field-row"><label>NAME</label><input type="text" id="set-name" maxlength="24"></div>
+      <div class="field-row"><label>CLASS</label><input type="text" id="set-class" maxlength="32"></div>
       <div class="field-row">
         <label>TITLE</label>
-        <select id="set-title" style="flex:1;background:rgba(95,212,255,0.05);border:1px solid var(--cyan-dim);color:var(--white);padding:8px 10px;font-family:'Rajdhani',sans-serif;font-size:14px;letter-spacing:0.05em;"></select>
+        <select id="set-title"></select>
       </div>
-      <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan-dim);letter-spacing:0.15em;margin-top:4px;padding-left:78px;">// equipped title replaces class on status window</div>
+      <div class="hint">// equipped title replaces class on status window</div>
     </div>
   </div>
 
+  <!-- TITLE ARCHIVE -->
   <div class="panel">
     <div class="panel-label"><span><span class="dot"></span>TITLE ARCHIVE</span><span id="settings-titles-count">0 / 0</span></div>
     <div class="settings-section" id="titles-browser"></div>
   </div>
 
+  <!-- QUEST EDITOR -->
   <div class="panel">
     <div class="panel-label"><span><span class="dot"></span>DAILY QUEST EDITOR</span></div>
     <div class="settings-section">
-      <div class="quest-edit-header">
-        <span>QUEST NAME</span>
-        <span>XP</span>
-        <span></span>
+      <div class="qe-header">
+        <span>QUEST NAME</span><span>XP</span><span>SCALE</span><span></span>
       </div>
       <div id="quest-editor"></div>
       <button class="btn wide" onclick="addQuestRow()" style="margin-top:8px;">+ ADD QUEST</button>
+      <div class="hint" style="padding-left:0;margin-top:10px;">// SCALE: daily multiplier on the target rep/min count (e.g. 1.08 = +8% per clear). Leave blank or 1 to disable.</div>
     </div>
   </div>
 
+  <!-- FULL LOG -->
   <div class="panel">
     <div class="panel-label"><span><span class="dot"></span>FULL SYSTEM LOG</span><span id="full-log-count">0 ENTRIES</span></div>
     <div class="system-log full" id="full-log"></div>
   </div>
 
+  <!-- DATA -->
   <div class="panel">
     <div class="panel-label"><span><span class="dot"></span>DATA</span></div>
     <div class="settings-section">
@@ -702,602 +423,433 @@
     </div>
   </div>
 
+  <!-- DEBUG -->
   <div class="panel">
     <div class="panel-label"><span><span class="dot"></span>DEBUG</span></div>
     <div class="actions">
       <button class="btn gold" onclick="triggerLevelUp()">FORCE LEVEL UP</button>
       <button class="btn danger" onclick="triggerPenalty()">FORCE PENALTY</button>
     </div>
+    <div style="margin-top:10px;">
+      <button class="btn wide" style="border-color:var(--green);color:var(--green);" onclick="debugDrop()">FORCE ITEM DROP</button>
+    </div>
   </div>
 
 </div>
 
-<div class="footer-note">// THE SYSTEM v1 — gorgon.live</div>
-
+<div class="footer-note">// THE SYSTEM v2 — gorgon.live</div>
 <div id="toast"></div>
 
 <script>
 'use strict';
 
-const VERSION = 1;
-const STORAGE_KEY = 'gorgon.system.v1';
-const STAT_KEYS = ['STR', 'AGI', 'VIT', 'INT', 'SEN'];
+const VERSION = 2;
+const STORAGE_KEY = 'gorgon.system.v2';
+const STAT_KEYS = ['STR','AGI','VIT','INT','SEN'];
 
+// ── Item/perk catalogue ────────────────────────────────────────────
+const ITEM_CATALOGUE = [
+  { id:'recovery_draft',   name:'RECOVERY DRAFT',    icon:'🧪', desc:'Absorb the next daily penalty. Failure costs nothing.',    rarity:'common',    type:'consumable', effect:'penalty_shield_1', weight:25 },
+  { id:'iron_supplement',  name:'IRON SUPPLEMENT',   icon:'💊', desc:'+50% XP on your next completed quest.',                    rarity:'common',    type:'consumable', effect:'xp_boost_next',    weight:25 },
+  { id:'warriors_resolve', name:"WARRIOR'S RESOLVE", icon:'⚔️', desc:'+3 STR for 3 days. Train while the buff holds.',           rarity:'uncommon',  type:'buff',       effect:'stat_str_3',       weight:18, days:3 },
+  { id:'scholars_focus',   name:"SCHOLAR'S FOCUS",   icon:'📖', desc:'+3 INT for 3 days. Study while the window is open.',        rarity:'uncommon',  type:'buff',       effect:'stat_int_3',       weight:18, days:3 },
+  { id:'awakening_crystal',name:'AWAKENING CRYSTAL',  icon:'💎', desc:'Immediately grants +2 to all stats.',                      rarity:'rare',      type:'consumable', effect:'stat_all_2',        weight:7  },
+  { id:'iron_constitution',name:'IRON CONSTITUTION',  icon:'🛡️', desc:'Absorb the next 2 daily penalties.',                  rarity:'rare',      type:'consumable', effect:'penalty_shield_2',  weight:5  },
+  { id:'battle_manual',    name:'BATTLE MANUAL',      icon:'📜', desc:'+25% XP on all quests for 5 days.',                        rarity:'rare',      type:'buff',       effect:'xp_boost_days',    weight:4, days:5 },
+  { id:'challengers_mark', name:"CHALLENGER'S MARK",  icon:'⚡', desc:'×2 XP on all quests for 1 day. Use it wisely.',             rarity:'legendary', type:'buff',       effect:'xp_double_day',    weight:2, days:1 },
+];
+
+const RARITY_COLORS = { common:'var(--cyan-dim)', uncommon:'var(--cyan)', rare:'var(--gold)', legendary:'var(--magenta)' };
+
+// ── Default quest templates ──────────────────────────────────────────
+const DEFAULT_QUESTS = [
+  { nameTemplate:'{n} Push-Ups',            baseTarget:25, currentTarget:25, scaleFactor:1.08, xp:20 },
+  { nameTemplate:'{n} Sit-Ups',             baseTarget:25, currentTarget:25, scaleFactor:1.08, xp:15 },
+  { nameTemplate:'{n}-min Walk or Run',     baseTarget:20, currentTarget:20, scaleFactor:1.06, xp:25 },
+  { nameTemplate:'{n}-min Focused Reading', baseTarget:20, currentTarget:20, scaleFactor:1.05, xp:20 },
+  { name:'Drink 8 glasses of water',                                                            xp:10 },
+  { name:"Tackle one thing you've been putting off",                                             xp:30 },
+];
+
+// ── Titles registry ────────────────────────────────────────────
+const TITLES = [
+  { id:'awakened',     name:'AWAKENED',          desc:'Reach Level 5.',                       tier:'rare',      xp:50,   check:s=>s.lvl>=5 },
+  { id:'erank',        name:'E-RANK HUNTER',     desc:'Reach Level 10.',                      tier:'rare',      xp:100,  check:s=>s.lvl>=10 },
+  { id:'drank',        name:'D-RANK HUNTER',     desc:'Reach Level 25.',                      tier:'rare',      xp:250,  check:s=>s.lvl>=25 },
+  { id:'crank',        name:'C-RANK HUNTER',     desc:'Reach Level 50.',                      tier:'epic',      xp:500,  check:s=>s.lvl>=50 },
+  { id:'brank',        name:'B-RANK HUNTER',     desc:'Reach Level 75.',                      tier:'epic',      xp:750,  check:s=>s.lvl>=75 },
+  { id:'arank',        name:'A-RANK HUNTER',     desc:'Reach Level 90.',                      tier:'legendary', xp:1000, check:s=>s.lvl>=90 },
+  { id:'srank',        name:'S-RANK HUNTER',     desc:'Reach Level 100.',                     tier:'legendary', xp:2000, check:s=>s.lvl>=100 },
+  { id:'monarch',      name:'SHADOW MONARCH',    desc:'Reach Level 150.',                     tier:'legendary', xp:5000, hidden:true, check:s=>s.lvl>=150 },
+  { id:'streak7',      name:'IRON WILL',         desc:'Hold a 7-day streak.',                 tier:'common',    xp:50,   check:s=>s.streak>=7||s.streakBest>=7 },
+  { id:'streak30',     name:'DISCIPLINED',       desc:'Hold a 30-day streak.',                tier:'rare',      xp:200,  check:s=>s.streak>=30||s.streakBest>=30 },
+  { id:'streak100',    name:'UNBREAKABLE',       desc:'Hold a 100-day streak.',               tier:'epic',      xp:500,  check:s=>s.streak>=100||s.streakBest>=100 },
+  { id:'streak365',    name:'ARCHITECT OF SELF', desc:'Hold a 365-day streak.',               tier:'legendary', xp:2000, check:s=>s.streak>=365||s.streakBest>=365 },
+  { id:'spec_str',     name:'STRONGMAN',         desc:'STR reaches 25.',                      tier:'rare',      xp:100,  check:s=>s.stats.STR>=25 },
+  { id:'spec_agi',     name:'SWIFT',             desc:'AGI reaches 25.',                      tier:'rare',      xp:100,  check:s=>s.stats.AGI>=25 },
+  { id:'spec_vit',     name:'ENDURING',          desc:'VIT reaches 25.',                      tier:'rare',      xp:100,  check:s=>s.stats.VIT>=25 },
+  { id:'spec_int',     name:'SCHOLAR',           desc:'INT reaches 25.',                      tier:'rare',      xp:100,  check:s=>s.stats.INT>=25 },
+  { id:'spec_sen',     name:'AWARE',             desc:'SEN reaches 25.',                      tier:'rare',      xp:100,  check:s=>s.stats.SEN>=25 },
+  { id:'master_any',   name:'MASTER',            desc:'Any single stat reaches 50.',          tier:'epic',      xp:300,  check:s=>STAT_KEYS.some(k=>s.stats[k]>=50) },
+  { id:'sovereign',    name:'SOVEREIGN',         desc:'Any single stat reaches 100.',         tier:'legendary', xp:1500, check:s=>STAT_KEYS.some(k=>s.stats[k]>=100) },
+  { id:'balanced',     name:'WELL-ROUNDED',      desc:'All stats reach 20.',                  tier:'rare',      xp:200,  check:s=>STAT_KEYS.every(k=>s.stats[k]>=20) },
+  { id:'polymath',     name:'POLYMATH',          desc:'All stats reach 50.',                  tier:'legendary', xp:1000, check:s=>STAT_KEYS.every(k=>s.stats[k]>=50) },
+  { id:'initiate',     name:'INITIATE',          desc:'Clear 10 Daily Quests in total.',      tier:'common',    xp:50,   check:s=>s.questsCleared>=10 },
+  { id:'veteran',      name:'VETERAN HUNTER',    desc:'Clear 100 Daily Quests in total.',     tier:'epic',      xp:500,  check:s=>s.questsCleared>=100 },
+  { id:'legend',       name:'LEGENDARY HUNTER',  desc:'Clear 365 Daily Quests in total.',     tier:'legendary', xp:2000, check:s=>s.questsCleared>=365 },
+  { id:'phoenix',      name:'PHOENIX',           desc:'Clear a quest the day after a penalty.',tier:'rare',     xp:150,  hidden:true, check:s=>s._phoenixUnlock===true },
+  { id:'reincarnated', name:'REINCARNATED',      desc:'Import a save file.',                  tier:'common',    xp:25,   hidden:true, check:s=>s.importedOnce===true },
+  { id:'hoarder',      name:'HOARDER',           desc:'Hold 3 items in inventory at once.',   tier:'common',    xp:30,   check:s=>(s.inventory||[]).length>=3 },
+  { id:'well_equipped',name:'WELL EQUIPPED',     desc:'Receive 10 item drops total.',         tier:'rare',      xp:150,  check:s=>(s.totalDrops||0)>=10 },
+];
+
+// ── Default state ─────────────────────────────────────────────────
 const DEFAULT_STATE = {
   version: VERSION,
-  player: { name: 'PLAYER', class: 'CLASS — UNAWAKENED' },
-  lvl: 1, xp: 0, points: 0,
-  hp: 100, mp: 100,
-  stats: { STR: 10, AGI: 10, VIT: 10, INT: 10, SEN: 10 },
-  streak: 0, streakBest: 0,
-  lastQuestDate: null,
-  questsToday: [],
-  questTemplate: [
-    { name: '100 Push-Ups', xp: 25 },
-    { name: '100 Sit-Ups', xp: 25 },
-    { name: '100 Squats', xp: 25 },
-    { name: '10 km Run', xp: 50 },
-  ],
-  log: [],
-  // Title (achievement) system
-  titles: [],              // [{id, t}] earned with timestamp
-  equippedTitle: null,     // id of currently displayed title, or null
-  questsCleared: 0,        // total fully-cleared daily quests
-  lastClearedDate: null,   // YYYY-MM-DD of last full clear (prevents double counting)
-  penaltyYesterday: false, // flag for Phoenix detection
-  importedOnce: false,     // flag for Reincarnated detection
+  player: { name:'PLAYER', class:'CLASS — UNAWAKENED' },
+  lvl:1, xp:0, points:0,
+  hp:100, mp:100,
+  stats: { STR:10, AGI:10, VIT:10, INT:10, SEN:10 },
+  streak:0, streakBest:0,
+  lastQuestDate:null, questsToday:[], questTemplate:DEFAULT_QUESTS.map(q=>({...q})), log:[],
+  titles:[], equippedTitle:null,
+  questsCleared:0, lastClearedDate:null, penaltyYesterday:false, importedOnce:false,
+  inventory:[], activeBuffs:[], penaltyShields:0, xpBoostNext:false, nextDropDate:null, totalDrops:0,
 };
 
 let state = loadState();
 
-function xpForNext(lvl) { return lvl * lvl * 100; }
-function todayStr() {
-  const d = new Date();
-  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
-}
-function nowTimeStr() {
-  const d = new Date();
-  return String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
-}
+function xpForNext(lvl){return lvl*lvl*100;}
+function todayStr(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function nowTimeStr(){const d=new Date();return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}
+function addDays(ds,n){const d=new Date(ds+'T00:00:00');d.setDate(d.getDate()+n);return d.toISOString().slice(0,10);}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function resolveQuestName(q){if(q.nameTemplate&&q.currentTarget!=null)return q.nameTemplate.replace('{n}',Math.round(q.currentTarget));return q.name||'Quest';}
 
-function saveState() {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
-  catch (e) { console.warn('Save failed', e); }
-}
-function loadState() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return structuredClone(DEFAULT_STATE);
+function saveState(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}catch(e){console.warn('Save failed',e);}}
+function loadState(){
+  try{
+    const raw=localStorage.getItem(STORAGE_KEY);
+    if(!raw)return structuredClone(DEFAULT_STATE);
     return migrate(JSON.parse(raw));
-  } catch (e) {
-    console.warn('Load failed, using defaults', e);
-    return structuredClone(DEFAULT_STATE);
-  }
+  }catch(e){console.warn('Load failed',e);return structuredClone(DEFAULT_STATE);}
 }
-function migrate(s) {
-  const merged = structuredClone(DEFAULT_STATE);
-  for (const k of Object.keys(merged)) {
-    if (s[k] !== undefined) merged[k] = s[k];
-  }
-  for (const k of STAT_KEYS) if (merged.stats[k] === undefined) merged.stats[k] = 10;
-  return merged;
+function migrate(s){
+  const m=structuredClone(DEFAULT_STATE);
+  for(const k of Object.keys(m)){if(s[k]!==undefined)m[k]=s[k];}
+  if(!m.questTemplate||!m.questTemplate.length)m.questTemplate=DEFAULT_QUESTS.map(q=>({...q}));
+  for(const qt of m.questTemplate){if(qt.nameTemplate&&qt.currentTarget==null)qt.currentTarget=qt.baseTarget||10;}
+  for(const k of STAT_KEYS)if(m.stats[k]===undefined)m.stats[k]=10;
+  return m;
 }
+function daysBetween(a,b){const da=new Date(a+'T00:00:00'),db=new Date(b+'T00:00:00');return Math.max(1,Math.round((db-da)/86400000));}
 
-function daysBetween(a, b) {
-  const da = new Date(a + 'T00:00:00');
-  const db = new Date(b + 'T00:00:00');
-  return Math.max(1, Math.round((db - da) / 86400000));
-}
-
-function ensureTodayQuest() {
-  const today = todayStr();
-  if (state.lastQuestDate === today) return;
-
-  if (state.lastQuestDate && state.questsToday.length > 0) {
-    const allDone = state.questsToday.every(q => q.done);
-    if (allDone) {
-      state.streak += 1;
-      if (state.streak > state.streakBest) state.streakBest = state.streak;
-      logLine(`${state.lastQuestDate} — Daily Quest cleared. Streak: ${state.streak}.`, 'gold');
-      state.penaltyYesterday = false;
-    } else {
-      const completed = state.questsToday.filter(q => q.done).length;
-      const missed = daysBetween(state.lastQuestDate, today);
-      for (let i = 0; i < missed; i++) applyPenalty(true);
-      state.streak = 0;
-      state.penaltyYesterday = true;
-      logLine(`${state.lastQuestDate} — Daily Quest failed (${completed}/${state.questsToday.length}). Streak broken.`, 'penalty');
+function ensureTodayQuest(){
+  const today=todayStr();
+  if(state.lastQuestDate===today)return;
+  if(state.lastQuestDate&&state.questsToday.length>0){
+    const allDone=state.questsToday.every(q=>q.done);
+    if(allDone){
+      state.streak++;if(state.streak>state.streakBest)state.streakBest=state.streak;
+      logLine(`${state.lastQuestDate} — Daily Quest cleared. Streak: ${state.streak}.`,'gold');
+      state.penaltyYesterday=false;scaleQuestTargets();checkItemDrop(today);
+    }else{
+      const completed=state.questsToday.filter(q=>q.done).length;
+      const missed=daysBetween(state.lastQuestDate,today);
+      for(let i=0;i<missed;i++)applyPenalty(true);
+      state.streak=0;state.penaltyYesterday=true;
+      logLine(`${state.lastQuestDate} — Daily Quest failed (${completed}/${state.questsToday.length}). Streak broken.`,'penalty');
     }
   }
-
-  state.questsToday = state.questTemplate.map((q, i) => ({
-    id: 'q' + i, name: q.name, xp: q.xp, done: false,
-  }));
-  state.lastQuestDate = today;
+  tickBuffExpiry(today);
+  state.questsToday=state.questTemplate.map((q,i)=>({id:'q'+i,name:resolveQuestName(q),xp:q.xp,done:false}));
+  state.lastQuestDate=today;
   logLine(`${nowTimeStr()} — Daily Quest issued.`);
-  saveState();
-  checkTitles();
+  saveState();checkTitles();
 }
 
-function completeQuest(id) {
-  const q = state.questsToday.find(x => x.id === id);
-  if (!q || q.done) return;
-  q.done = true;
-  gainXP(q.xp);
-  toast(`[QUEST CLEARED. +${q.xp} XP]`, 'cyan');
-  logLine(`${nowTimeStr()} — ${q.name} cleared. +${q.xp} XP.`);
-  if (state.questsToday.every(x => x.done)) {
-    setTimeout(() => toast('[DAILY QUEST COMPLETE]', 'gold'), 600);
-    // Count this clear (once per day) and detect Phoenix
-    const today = todayStr();
-    if (state.lastClearedDate !== today) {
-      state.lastClearedDate = today;
-      state.questsCleared = (state.questsCleared || 0) + 1;
-      if (state.penaltyYesterday) {
-        state._phoenixUnlock = true;
-        state.penaltyYesterday = false;
-      }
+function scaleQuestTargets(){
+  for(const qt of state.questTemplate){
+    if(qt.nameTemplate&&qt.scaleFactor&&qt.scaleFactor>1&&qt.currentTarget){
+      const max=qt.maxTarget||(qt.baseTarget*5);
+      qt.currentTarget=Math.min(qt.currentTarget*qt.scaleFactor,max);
+    }
+  }
+}
+
+function completeQuest(id){
+  const q=state.questsToday.find(x=>x.id===id);if(!q||q.done)return;
+  q.done=true;
+  let xpAmt=q.xp;
+  if(state.xpBoostNext){xpAmt=Math.round(xpAmt*1.5);state.xpBoostNext=false;logLine(`${nowTimeStr()} — IRON SUPPLEMENT consumed. XP boosted.`,'item');}
+  const xpBuff=getActiveBuff('xp_boost_days');if(xpBuff)xpAmt=Math.round(xpAmt*1.25);
+  const x2Buff=getActiveBuff('xp_double_day');if(x2Buff)xpAmt=Math.round(xpAmt*2);
+  gainXP(xpAmt);
+  toast(`[QUEST CLEARED. +${xpAmt} XP]`,'cyan');
+  logLine(`${nowTimeStr()} — ${q.name} cleared. +${xpAmt} XP.`);
+  if(state.questsToday.every(x=>x.done)){
+    setTimeout(()=>toast('[DAILY QUEST COMPLETE]','gold'),600);
+    const today=todayStr();
+    if(state.lastClearedDate!==today){
+      state.lastClearedDate=today;state.questsCleared=(state.questsCleared||0)+1;
+      if(state.penaltyYesterday){state._phoenixUnlock=true;state.penaltyYesterday=false;}
     }
     checkTitles();
   }
-  saveState();
-  render();
+  saveState();render();
 }
 
-function gainXP(amt) {
-  state.xp += amt;
-  while (state.xp >= xpForNext(state.lvl)) {
-    state.xp -= xpForNext(state.lvl);
-    state.lvl++;
-    state.points += 5;
-    setTimeout(() => toast(`[LEVEL UP — LV ${state.lvl}]`, 'gold'), 400);
-    logLine(`${nowTimeStr()} — LEVEL UP. Reached Lv ${state.lvl}. +5 stat points.`, 'gold');
-  }
+function gainXP(amt){
+  state.xp+=amt;
+  while(state.xp>=xpForNext(state.lvl)){state.xp-=xpForNext(state.lvl);state.lvl++;state.points+=5;setTimeout(()=>toast(`[LEVEL UP — LV ${state.lvl}]`,'gold'),400);logLine(`${nowTimeStr()} — LEVEL UP. Reached Lv ${state.lvl}. +5 stat points.`,'gold');}
   checkTitles();
 }
+function allocateStat(k){
+  if(state.points<=0)return;state.stats[k]++;state.points--;
+  toast(`[${k} +1]`,'cyan');logLine(`${nowTimeStr()} — Stat allocated. ${k} +1.`);
+  saveState();render();checkTitles();
+}
+function applyPenalty(silent){
+  if(state.penaltyShields>0){
+    state.penaltyShields--;const msg=`${silent?state.lastQuestDate:nowTimeStr()} — Penalty blocked by shield. Shields left: ${state.penaltyShields}.`;
+    logLine(msg,'item');if(!silent){toast('[PENALTY BLOCKED BY SHIELD]','item');saveState();render();}return;
+  }
+  const keys=STAT_KEYS.filter(k=>state.stats[k]>0);if(!keys.length)return;
+  const k=keys[Math.floor(Math.random()*keys.length)];state.stats[k]--;
+  if(!silent){toast(`[PENALTY APPLIED. ${k} −1]`,'danger');logLine(`${nowTimeStr()} — PENALTY APPLIED. ${k} −1.`,'penalty');saveState();render();}
+  else logLine(`${state.lastQuestDate} — PENALTY. ${k} −1.`,'penalty');
+}
 
-function allocateStat(k) {
-  if (state.points <= 0) return;
-  state.stats[k]++;
-  state.points--;
-  toast(`[${k} +1]`, 'cyan');
-  logLine(`${nowTimeStr()} — Stat allocated. ${k} +1.`);
-  saveState();
-  render();
+function getItemDef(id){return ITEM_CATALOGUE.find(x=>x.id===id);}
+function getActiveBuff(effect){return state.activeBuffs.find(b=>b.effect===effect);}
+function rollDrop(){
+  const total=ITEM_CATALOGUE.reduce((s,x)=>s+x.weight,0);let r=Math.random()*total;
+  for(const item of ITEM_CATALOGUE){r-=item.weight;if(r<=0)return item;}return ITEM_CATALOGUE[0];
+}
+function checkItemDrop(today){
+  if(!state.nextDropDate)state.nextDropDate=today;
+  if(today<state.nextDropDate)return;
+  const dropped=rollDrop();state.totalDrops=(state.totalDrops||0)+1;
+  state.nextDropDate=addDays(today,3+Math.floor(Math.random()*3));
+  if(dropped.type==='buff')applyBuffDrop(dropped,today);
+  else{const inst={id:dropped.id,instanceId:Date.now()+'',addedDate:today};state.inventory.push(inst);logLine(`${nowTimeStr()} — ITEM RECEIVED: ${dropped.name}.`,'item');setTimeout(()=>toast(`[ITEM DROP — ${dropped.name}]`,'item'),1000);}
   checkTitles();
 }
-
-function applyPenalty(silent) {
-  const keys = STAT_KEYS.filter(k => state.stats[k] > 0);
-  if (keys.length === 0) return;
-  const k = keys[Math.floor(Math.random() * keys.length)];
-  state.stats[k]--;
-  if (!silent) {
-    toast(`[PENALTY APPLIED. ${k} −1]`, 'danger');
-    logLine(`${nowTimeStr()} — PENALTY APPLIED. ${k} −1.`, 'penalty');
-    saveState();
-    render();
-  } else {
-    logLine(`${state.lastQuestDate} — PENALTY. ${k} −1.`, 'penalty');
-  }
+function applyBuffDrop(item,today){
+  const expiresDate=addDays(today,item.days);
+  state.activeBuffs=state.activeBuffs.filter(b=>b.effect!==item.effect);
+  state.activeBuffs.push({id:item.id,instanceId:Date.now()+'',effect:item.effect,expiresDate,daysLeft:item.days});
+  if(item.effect==='stat_str_3'){state.stats.STR+=3;logLine(`${nowTimeStr()} — BUFF ACTIVE: ${item.name}. STR +3 for ${item.days} days.`,'item');}
+  if(item.effect==='stat_int_3'){state.stats.INT+=3;logLine(`${nowTimeStr()} — BUFF ACTIVE: ${item.name}. INT +3 for ${item.days} days.`,'item');}
+  if(item.effect==='xp_boost_days')logLine(`${nowTimeStr()} — BUFF ACTIVE: ${item.name}. +25% XP for ${item.days} days.`,'item');
+  if(item.effect==='xp_double_day')logLine(`${nowTimeStr()} — BUFF ACTIVE: ${item.name}. ×2 XP for ${item.days} day.`,'item');
+  setTimeout(()=>toast(`[BUFF ACTIVE — ${item.name}]`,'item'),1000);
+}
+function useInventoryItem(instanceId){
+  const idx=state.inventory.findIndex(x=>x.instanceId===instanceId);if(idx===-1)return;
+  const inst=state.inventory[idx];const item=getItemDef(inst.id);if(!item)return;
+  state.inventory.splice(idx,1);
+  if(item.effect==='penalty_shield_1'){state.penaltyShields+=1;toast('[SHIELD ACTIVE — 1 PENALTY BLOCKED]','item');logLine(`${nowTimeStr()} — ${item.name} used. +1 penalty shield.`,'item');}
+  if(item.effect==='penalty_shield_2'){state.penaltyShields+=2;toast('[SHIELD ACTIVE — 2 PENALTIES BLOCKED]','item');logLine(`${nowTimeStr()} — ${item.name} used. +2 penalty shields.`,'item');}
+  if(item.effect==='xp_boost_next'){state.xpBoostNext=true;toast('[IRON SUPPLEMENT READY — +50% NEXT QUEST]','item');logLine(`${nowTimeStr()} — ${item.name} used. Next quest XP +50%.`,'item');}
+  if(item.effect==='stat_all_2'){for(const k of STAT_KEYS)state.stats[k]+=2;toast('[AWAKENING CRYSTAL — ALL STATS +2]','item');logLine(`${nowTimeStr()} — ${item.name} used. All stats +2.`,'item');}
+  saveState();render();checkTitles();
+}
+function tickBuffExpiry(today){
+  const expired=[];state.activeBuffs=state.activeBuffs.filter(b=>{if(today>=b.expiresDate){expired.push(b);return false;}return true;});
+  for(const b of expired){const item=getItemDef(b.id);if(b.effect==='stat_str_3')state.stats.STR=Math.max(10,state.stats.STR-3);if(b.effect==='stat_int_3')state.stats.INT=Math.max(10,state.stats.INT-3);if(item)logLine(`${today} — BUFF EXPIRED: ${item.name}.`,'item');}
+}
+function debugDrop(){checkItemDrop(todayStr());state.nextDropDate=todayStr();saveState();render();}
+function buffSummaryLines(){
+  const lines=[],today=todayStr();
+  for(const b of state.activeBuffs){const item=getItemDef(b.id);if(!item)continue;const dl=Math.max(0,Math.round((new Date(b.expiresDate+' 00:00:00')-new Date(today+' 00:00:00'))/86400000));lines.push(`${item.icon} ${item.name}  [${dl}d remaining]`);}
+  if(state.penaltyShields>0)lines.push(`🛡️ PENALTY SHIELD  [${state.penaltyShields} charge${state.penaltyShields>1?'s':''}]`);
+  if(state.xpBoostNext)lines.push('💊 IRON SUPPLEMENT  [next quest +50% XP]');
+  return lines;
 }
 
-function triggerLevelUp() {
-  gainXP(xpForNext(state.lvl) - state.xp);
-  saveState();
-  render();
-}
-function triggerPenalty() { applyPenalty(false); }
-
-function logLine(text, cls) {
-  state.log.unshift({ t: Date.now(), text, cls: cls || '' });
-  if (state.log.length > 1000) state.log.length = 1000;
-}
-
-// ============ TITLES (achievement registry) ============
-// Tiers: common, rare, epic, legendary
-// hidden: true means description is concealed until earned
-const TITLES = [
-  // ── Hunter rank progression (level-based) ──
-  { id: 'awakened',   name: 'AWAKENED',          desc: 'Reach Level 5.',                       tier: 'rare',      xp: 50,   check: s => s.lvl >= 5 },
-  { id: 'erank',      name: 'E-RANK HUNTER',     desc: 'Reach Level 10.',                      tier: 'rare',      xp: 100,  check: s => s.lvl >= 10 },
-  { id: 'drank',      name: 'D-RANK HUNTER',     desc: 'Reach Level 25.',                      tier: 'rare',      xp: 250,  check: s => s.lvl >= 25 },
-  { id: 'crank',      name: 'C-RANK HUNTER',     desc: 'Reach Level 50.',                      tier: 'epic',      xp: 500,  check: s => s.lvl >= 50 },
-  { id: 'brank',      name: 'B-RANK HUNTER',     desc: 'Reach Level 75.',                      tier: 'epic',      xp: 750,  check: s => s.lvl >= 75 },
-  { id: 'arank',      name: 'A-RANK HUNTER',     desc: 'Reach Level 90.',                      tier: 'legendary', xp: 1000, check: s => s.lvl >= 90 },
-  { id: 'srank',      name: 'S-RANK HUNTER',     desc: 'Reach Level 100.',                     tier: 'legendary', xp: 2000, check: s => s.lvl >= 100 },
-  { id: 'monarch',    name: 'SHADOW MONARCH',    desc: 'Reach Level 150.',                     tier: 'legendary', xp: 5000, hidden: true, check: s => s.lvl >= 150 },
-
-  // ── Streak titles ──
-  { id: 'streak7',    name: 'IRON WILL',         desc: 'Hold a 7-day streak.',                 tier: 'common',    xp: 50,   check: s => s.streak >= 7 || s.streakBest >= 7 },
-  { id: 'streak30',   name: 'DISCIPLINED',       desc: 'Hold a 30-day streak.',                tier: 'rare',      xp: 200,  check: s => s.streak >= 30 || s.streakBest >= 30 },
-  { id: 'streak100',  name: 'UNBREAKABLE',       desc: 'Hold a 100-day streak.',               tier: 'epic',      xp: 500,  check: s => s.streak >= 100 || s.streakBest >= 100 },
-  { id: 'streak365',  name: 'ARCHITECT OF SELF', desc: 'Hold a 365-day streak.',               tier: 'legendary', xp: 2000, check: s => s.streak >= 365 || s.streakBest >= 365 },
-
-  // ── Single-stat specialists ──
-  { id: 'spec_str',   name: 'STRONGMAN',         desc: 'STR reaches 25.',                      tier: 'rare',      xp: 100,  check: s => s.stats.STR >= 25 },
-  { id: 'spec_agi',   name: 'SWIFT',             desc: 'AGI reaches 25.',                      tier: 'rare',      xp: 100,  check: s => s.stats.AGI >= 25 },
-  { id: 'spec_vit',   name: 'ENDURING',          desc: 'VIT reaches 25.',                      tier: 'rare',      xp: 100,  check: s => s.stats.VIT >= 25 },
-  { id: 'spec_int',   name: 'SCHOLAR',           desc: 'INT reaches 25.',                      tier: 'rare',      xp: 100,  check: s => s.stats.INT >= 25 },
-  { id: 'spec_sen',   name: 'AWARE',             desc: 'SEN reaches 25.',                      tier: 'rare',      xp: 100,  check: s => s.stats.SEN >= 25 },
-
-  // ── Mastery (high single stat) ──
-  { id: 'master_any', name: 'MASTER',            desc: 'Any single stat reaches 50.',          tier: 'epic',      xp: 300,  check: s => STAT_KEYS.some(k => s.stats[k] >= 50) },
-  { id: 'sovereign',  name: 'SOVEREIGN',         desc: 'Any single stat reaches 100.',         tier: 'legendary', xp: 1500, check: s => STAT_KEYS.some(k => s.stats[k] >= 100) },
-
-  // ── Balanced titles ──
-  { id: 'balanced',   name: 'WELL-ROUNDED',      desc: 'All stats reach 20.',                  tier: 'rare',      xp: 200,  check: s => STAT_KEYS.every(k => s.stats[k] >= 20) },
-  { id: 'polymath',   name: 'POLYMATH',          desc: 'All stats reach 50.',                  tier: 'legendary', xp: 1000, check: s => STAT_KEYS.every(k => s.stats[k] >= 50) },
-
-  // ── Quest count titles ──
-  { id: 'initiate',   name: 'INITIATE',          desc: 'Clear 10 Daily Quests in total.',      tier: 'common',    xp: 50,   check: s => s.questsCleared >= 10 },
-  { id: 'veteran',    name: 'VETERAN HUNTER',    desc: 'Clear 100 Daily Quests in total.',     tier: 'epic',      xp: 500,  check: s => s.questsCleared >= 100 },
-  { id: 'legend',     name: 'LEGENDARY HUNTER',  desc: 'Clear 365 Daily Quests in total.',     tier: 'legendary', xp: 2000, check: s => s.questsCleared >= 365 },
-
-  // ── Hidden / narrative titles ──
-  { id: 'phoenix',      name: 'PHOENIX',         desc: 'Clear a Daily Quest the day after a penalty.', tier: 'rare',  xp: 150, hidden: true, check: s => s._phoenixUnlock === true },
-  { id: 'reincarnated', name: 'REINCARNATED',    desc: 'Import a save file.',                  tier: 'common',    xp: 25,  hidden: true, check: s => s.importedOnce === true },
-];
-
-function getTitle(id) { return TITLES.find(t => t.id === id); }
-function hasTitle(id) { return state.titles.some(x => x.id === id); }
-
-let achievementCheckTimer = null;
-function checkTitles() {
-  // Debounce so rapid multi-conditions (e.g. level up + stat threshold) batch their toasts
-  if (achievementCheckTimer) return;
-  achievementCheckTimer = setTimeout(() => {
-    achievementCheckTimer = null;
-    const newlyEarned = [];
-    for (const t of TITLES) {
-      if (hasTitle(t.id)) continue;
-      if (t.check(state)) newlyEarned.push(t);
+function getTitle(id){return TITLES.find(t=>t.id===id);}
+function hasTitle(id){return state.titles.some(x=>x.id===id);}
+let titleCheckTimer=null;
+function checkTitles(){
+  if(titleCheckTimer)return;
+  titleCheckTimer=setTimeout(()=>{
+    titleCheckTimer=null;
+    const newlyEarned=[];
+    for(const t of TITLES){if(hasTitle(t.id))continue;if(t.check(state))newlyEarned.push(t);}
+    if(!newlyEarned.length)return;
+    let delay=800;
+    for(const t of newlyEarned){
+      state.titles.push({id:t.id,t:Date.now()});
+      logLine(`${nowTimeStr()} — TITLE ACQUIRED: ${t.name}. +${t.xp} XP.`,'title');
+      setTimeout(()=>toast(`[TITLE ACQUIRED — ${t.name}]`,'title'),delay);delay+=1400;
+      state.xp+=t.xp;
+      while(state.xp>=xpForNext(state.lvl)){state.xp-=xpForNext(state.lvl);state.lvl++;state.points+=5;logLine(`${nowTimeStr()} — LEVEL UP. Reached Lv ${state.lvl}. +5 stat points.`,'gold');}
     }
-    if (!newlyEarned.length) return;
-    let delay = 800;
-    for (const t of newlyEarned) {
-      state.titles.push({ id: t.id, t: Date.now() });
-      logLine(`${nowTimeStr()} — TITLE ACQUIRED: ${t.name}. +${t.xp} XP.`, 'title');
-      // Stagger announcements so they feel ceremonial, not spammed
-      setTimeout(() => {
-        toast(`[TITLE ACQUIRED — ${t.name}]`, 'title');
-      }, delay);
-      delay += 1400;
-      // Award the XP without re-triggering checkTitles infinitely
-      state.xp += t.xp;
-      while (state.xp >= xpForNext(state.lvl)) {
-        state.xp -= xpForNext(state.lvl);
-        state.lvl++;
-        state.points += 5;
-        logLine(`${nowTimeStr()} — LEVEL UP. Reached Lv ${state.lvl}. +5 stat points.`, 'gold');
-      }
-    }
-    // Clean up phoenix one-shot flag
-    if (state._phoenixUnlock) delete state._phoenixUnlock;
-    saveState();
-    render();
-  }, 50);
+    if(state._phoenixUnlock)delete state._phoenixUnlock;
+    saveState();render();
+  },50);
 }
 
-function render() {
-  document.getElementById('player-name').textContent = state.player.name;
-  // Equipped title overrides class string on the status window
-  const equipped = state.equippedTitle ? getTitle(state.equippedTitle) : null;
-  const classDisplay = equipped ? `[ ${equipped.name} ]` : state.player.class;
-  document.getElementById('player-class').textContent = classDisplay;
-  document.getElementById('lvl').textContent = state.lvl;
-  document.getElementById('xp-v').textContent = state.xp;
-  document.getElementById('xp-next-v').textContent = xpForNext(state.lvl);
-  document.getElementById('xp-bar').style.width = (state.xp / xpForNext(state.lvl) * 100) + '%';
-  document.getElementById('hp-v').textContent = state.hp;
-  document.getElementById('hp-bar').style.width = state.hp + '%';
-  document.getElementById('mp-v').textContent = state.mp;
-  document.getElementById('mp-bar').style.width = state.mp + '%';
-  document.getElementById('streak').textContent = state.streak;
-  document.getElementById('streak-best').textContent = state.streakBest;
+function render(){
+  document.getElementById('player-name').textContent=state.player.name;
+  const equipped=state.equippedTitle?getTitle(state.equippedTitle):null;
+  document.getElementById('player-class').textContent=equipped?`[ ${equipped.name} ]`:state.player.class;
+  document.getElementById('lvl').textContent=state.lvl;
+  document.getElementById('xp-v').textContent=state.xp;
+  document.getElementById('xp-next-v').textContent=xpForNext(state.lvl);
+  document.getElementById('xp-bar').style.width=(state.xp/xpForNext(state.lvl)*100)+'%';
+  document.getElementById('hp-v').textContent=state.hp;document.getElementById('hp-bar').style.width=state.hp+'%';
+  document.getElementById('mp-v').textContent=state.mp;document.getElementById('mp-bar').style.width=state.mp+'%';
+  document.getElementById('streak').textContent=state.streak;document.getElementById('streak-best').textContent=state.streakBest;
 
-  const grid = document.getElementById('stats-grid');
-  grid.innerHTML = '';
-  for (const k of STAT_KEYS) {
-    const el = document.createElement('div');
-    el.className = 'stat' + (state.points > 0 ? ' allocatable' : '');
-    el.innerHTML = `<div class="stat-key">${k}</div><div class="stat-val">${state.stats[k]}</div>`;
-    el.addEventListener('click', () => allocateStat(k));
-    grid.appendChild(el);
+  const statBuffs={};
+  for(const b of state.activeBuffs){if(b.effect==='stat_str_3')statBuffs['STR']=(statBuffs['STR']||0)+3;if(b.effect==='stat_int_3')statBuffs['INT']=(statBuffs['INT']||0)+3;}
+  const grid=document.getElementById('stats-grid');grid.innerHTML='';
+  for(const k of STAT_KEYS){
+    const el=document.createElement('div');el.className='stat'+(state.points>0?' allocatable':'');
+    const ba=statBuffs[k]||0;
+    el.innerHTML=`<div class="stat-key">${k}</div><div class="stat-val">${state.stats[k]}</div>${ba?`<div class="stat-buff">+${ba}</div>`:''}` ;
+    el.addEventListener('click',()=>allocateStat(k));grid.appendChild(el);
   }
-  document.getElementById('points').textContent = state.points;
-  document.getElementById('points-banner').classList.toggle('show', state.points > 0);
+  document.getElementById('points').textContent=state.points;
+  document.getElementById('points-banner').classList.toggle('show',state.points>0);
 
-  const ql = document.getElementById('quest-list');
-  ql.innerHTML = '';
-  for (const q of state.questsToday) {
-    const el = document.createElement('div');
-    el.className = 'quest' + (q.done ? ' done' : '');
-    el.innerHTML = `<div class="check"></div><div class="q-text">${escapeHtml(q.name)}</div><div class="q-xp">+${q.xp} XP</div>`;
-    el.addEventListener('click', () => completeQuest(q.id));
-    ql.appendChild(el);
+  const buffLines=buffSummaryLines();const buffRow=document.getElementById('buff-row');
+  if(buffLines.length){buffRow.innerHTML=buffLines.map(l=>`<div>${l}</div>`).join('');buffRow.classList.add('show');}else buffRow.classList.remove('show');
+
+  const ql=document.getElementById('quest-list');ql.innerHTML='';
+  for(const q of state.questsToday){
+    const el=document.createElement('div');el.className='quest'+(q.done?' done':'');
+    el.innerHTML=`<div class="check"></div><div class="q-text">${escapeHtml(q.name)}</div><div class="q-xp">+${q.xp} XP</div>`;
+    el.addEventListener('click',()=>completeQuest(q.id));ql.appendChild(el);
   }
 
-  const logEl = document.getElementById('log');
-  logEl.innerHTML = '';
-  for (const entry of state.log.slice(0, 20)) {
-    const d = document.createElement('div');
-    d.className = 'line ' + (entry.cls || '');
-    d.textContent = entry.text;
-    logEl.appendChild(d);
-  }
-
-  const fullLogEl = document.getElementById('full-log');
-  if (fullLogEl) {
-    fullLogEl.innerHTML = '';
-    for (const entry of state.log) {
-      const d = document.createElement('div');
-      d.className = 'line ' + (entry.cls || '');
-      d.textContent = entry.text;
-      fullLogEl.appendChild(d);
+  const invPanel=document.getElementById('inventory-panel');const invGrid=document.getElementById('inv-grid');
+  const invItems=state.inventory||[];
+  const hasInv=invItems.length>0;const hasBuff=state.activeBuffs.length>0;
+  if(hasInv||hasBuff){
+    invPanel.classList.remove('hidden');invGrid.innerHTML='';
+    document.getElementById('inv-count').textContent=invItems.length+' ITEM'+(invItems.length!==1?'S':'');
+    for(const inst of invItems){
+      const item=getItemDef(inst.id);if(!item)continue;
+      const el=document.createElement('div');el.className='inv-item';
+      el.innerHTML=`<div class="inv-icon">${item.icon}</div><div class="inv-info"><div class="inv-name" style="color:${RARITY_COLORS[item.rarity]}">${escapeHtml(item.name)}</div><div class="inv-desc">${escapeHtml(item.desc)}</div><div class="inv-badge">${item.rarity.toUpperCase()}</div></div><button class="inv-use-btn" data-iid="${escapeHtml(inst.instanceId)}">USE</button>`;
+      el.querySelector('.inv-use-btn').addEventListener('click',e=>{useInventoryItem(e.target.dataset.iid);e.stopPropagation();});
+      invGrid.appendChild(el);
     }
-    const countEl = document.getElementById('full-log-count');
-    if (countEl) countEl.textContent = state.log.length + ' ENTR' + (state.log.length === 1 ? 'Y' : 'IES');
-  }
-
-  // ── Titles: main-view pills ──
-  const titlesGrid = document.getElementById('titles-grid');
-  if (titlesGrid) {
-    titlesGrid.innerHTML = '';
-    const earnedIds = state.titles.map(x => x.id);
-    if (!earnedIds.length) {
-      const empty = document.createElement('div');
-      empty.className = 'titles-empty';
-      empty.textContent = '// NO TITLES ACQUIRED';
-      titlesGrid.appendChild(empty);
-    } else {
-      // Show earned titles in acquisition order (most recent first reads better)
-      const earnedTitles = state.titles
-        .slice()
-        .reverse()
-        .map(x => getTitle(x.id))
-        .filter(Boolean);
-      for (const t of earnedTitles) {
-        const pill = document.createElement('div');
-        pill.className = 'title-pill ' + t.tier + (state.equippedTitle === t.id ? ' equipped' : '');
-        pill.title = t.desc;
-        pill.textContent = t.name;
-        titlesGrid.appendChild(pill);
-      }
+    const today=todayStr();
+    for(const b of state.activeBuffs){
+      const item=getItemDef(b.id);if(!item)continue;
+      const dl=Math.max(0,Math.round((new Date(b.expiresDate+' 00:00:00')-new Date(today+' 00:00:00'))/86400000));
+      const el=document.createElement('div');el.className='inv-active';
+      el.innerHTML=`<span>${item.icon} ${escapeHtml(item.name)}</span><span class="inv-expires">EXPIRES IN ${dl}d</span>`;
+      invGrid.appendChild(el);
     }
-    document.getElementById('titles-count').textContent = state.titles.length;
-    document.getElementById('titles-total').textContent = TITLES.length;
-    document.getElementById('titles-equipped-label').textContent =
-      state.equippedTitle ? `EQUIPPED: ${getTitle(state.equippedTitle)?.name || ''}` : 'NONE EQUIPPED';
-  }
+  }else invPanel.classList.add('hidden');
 
-  // ── Titles: settings browser ──
-  const browser = document.getElementById('titles-browser');
-  if (browser) {
-    browser.innerHTML = '';
-    for (const t of TITLES) {
-      const earned = hasTitle(t.id);
-      if (t.hidden && !earned) continue; // hidden titles stay hidden until earned
-      const row = document.createElement('div');
-      row.className = 'title-row ' + (earned ? 'unlocked' : 'locked');
-      const tier = t.tier;
-      row.innerHTML = `
-        <div>
-          <div class="tr-name tier-${tier}">${earned ? '✓ ' : '🔒 '}${escapeHtml(t.name)}</div>
-          <div class="tr-desc">${escapeHtml(t.desc)}</div>
-        </div>
-        <div class="tr-badge">${tier.toUpperCase()} · +${t.xp} XP</div>
-      `;
+  const titlesPanel=document.getElementById('titles-panel');
+  if(state.titles.length){
+    titlesPanel.classList.remove('hidden');
+    const tgrid=document.getElementById('titles-grid');tgrid.innerHTML='';
+    for(const t of state.titles.slice().reverse().map(x=>getTitle(x.id)).filter(Boolean)){
+      const pill=document.createElement('div');
+      pill.className='title-pill '+t.tier+(state.equippedTitle===t.id?' equipped':'');
+      pill.title=t.desc;pill.textContent=t.name;tgrid.appendChild(pill);
+    }
+    document.getElementById('titles-count').textContent=state.titles.length;
+    document.getElementById('titles-total').textContent=TITLES.length;
+    document.getElementById('titles-equipped-label').textContent=state.equippedTitle?`EQUIPPED: ${getTitle(state.equippedTitle)?.name||''}`:'NONE EQUIPPED';
+  }else titlesPanel.classList.add('hidden');
+
+  const logEl=document.getElementById('log');logEl.innerHTML='';
+  for(const entry of state.log.slice(0,20)){const d=document.createElement('div');d.className='line '+(entry.cls||'');d.textContent=entry.text;logEl.appendChild(d);}
+
+  const fullLogEl=document.getElementById('full-log');
+  if(fullLogEl){fullLogEl.innerHTML='';for(const entry of state.log){const d=document.createElement('div');d.className='line '+(entry.cls||'');d.textContent=entry.text;fullLogEl.appendChild(d);}const cEl=document.getElementById('full-log-count');if(cEl)cEl.textContent=state.log.length+' ENTR'+(state.log.length===1?'Y':'IES');}
+
+  const browser=document.getElementById('titles-browser');
+  if(browser){
+    browser.innerHTML='';
+    for(const t of TITLES){
+      const earned=hasTitle(t.id);if(t.hidden&&!earned)continue;
+      const row=document.createElement('div');row.className='title-row '+(earned?'unlocked':'locked');
+      row.innerHTML=`<div><div class="tr-name tier-${t.tier}">${earned?'✓ ':'🔒 '}${escapeHtml(t.name)}</div><div class="tr-desc">${escapeHtml(t.desc)}</div></div><div class="tr-badge">${t.tier.toUpperCase()} · +${t.xp} XP</div>`;
       browser.appendChild(row);
     }
-    const settingsCount = document.getElementById('settings-titles-count');
-    if (settingsCount) settingsCount.textContent = `${state.titles.length} / ${TITLES.length}`;
+    const sc=document.getElementById('settings-titles-count');if(sc)sc.textContent=`${state.titles.length} / ${TITLES.length}`;
   }
 }
 
-function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
+function logLine(text,cls){state.log.unshift({t:Date.now(),text,cls:cls||''});if(state.log.length>1000)state.log.length=1000;}
 
-function tickClock() {
-  const d = new Date();
-  document.getElementById('sys-time').textContent =
-    String(d.getHours()).padStart(2,'0') + ':' +
-    String(d.getMinutes()).padStart(2,'0') + ':' +
-    String(d.getSeconds()).padStart(2,'0');
-}
-function tickCountdown() {
-  const now = new Date();
-  const end = new Date(now); end.setHours(24,0,0,0);
-  const diff = end - now;
-  const h = Math.floor(diff/3600000);
-  const m = Math.floor((diff%3600000)/60000);
-  const s = Math.floor((diff%60000)/1000);
-  const el = document.getElementById('countdown');
-  el.textContent = String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
-  el.classList.toggle('warn', h < 2);
-
-  if (state.lastQuestDate !== todayStr()) {
-    ensureTodayQuest();
-    render();
-  }
+function tickClock(){const d=new Date();document.getElementById('sys-time').textContent=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+':'+String(d.getSeconds()).padStart(2,'0');}
+function tickCountdown(){
+  const now=new Date(),end=new Date(now);end.setHours(24,0,0,0);const diff=end-now;
+  const h=Math.floor(diff/3600000),m=Math.floor((diff%3600000)/60000),s=Math.floor((diff%60000)/1000);
+  const el=document.getElementById('countdown');el.textContent=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');el.classList.toggle('warn',h<2);
+  if(state.lastQuestDate!==todayStr()){ensureTodayQuest();render();}
 }
 
 let toastTimer;
-function toast(msg, type='cyan') {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = '';
-  if (type !== 'cyan') t.classList.add(type);
-  requestAnimationFrame(() => t.classList.add('show'));
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
+function toast(msg,type='cyan'){const t=document.getElementById('toast');t.textContent=msg;t.className='';if(type!=='cyan')t.classList.add(type);requestAnimationFrame(()=>t.classList.add('show'));clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2600);}
+
+function toggleView(){
+  const main=document.getElementById('main-view'),settings=document.getElementById('settings-view'),label=document.getElementById('toggle-label');
+  if(!settings.classList.contains('hidden')){saveSettings();settings.classList.add('hidden');main.classList.remove('hidden');label.textContent='SETTINGS';render();}
+  else{populateSettings();main.classList.add('hidden');settings.classList.remove('hidden');label.textContent='BACK';}
 }
 
-function toggleView() {
-  const main = document.getElementById('main-view');
-  const settings = document.getElementById('settings-view');
-  const label = document.getElementById('toggle-label');
-  const showingSettings = !settings.classList.contains('hidden');
-  if (showingSettings) {
-    saveSettings();
-    settings.classList.add('hidden');
-    main.classList.remove('hidden');
-    label.textContent = 'SETTINGS';
-    render();
-  } else {
-    populateSettings();
-    main.classList.add('hidden');
-    settings.classList.remove('hidden');
-    label.textContent = 'BACK';
-  }
+function populateSettings(){
+  document.getElementById('set-name').value=state.player.name;
+  document.getElementById('set-class').value=state.player.class;
+  const sel=document.getElementById('set-title');sel.innerHTML='<option value="">— NONE —</option>';
+  for(const x of state.titles){const t=getTitle(x.id);if(!t)continue;const opt=document.createElement('option');opt.value=t.id;opt.textContent=t.name+' ['+t.tier.toUpperCase()+']';if(state.equippedTitle===t.id)opt.selected=true;sel.appendChild(opt);}
+  renderQuestEditor();render();
+}
+function saveSettings(){
+  state.player.name=(document.getElementById('set-name').value.trim()||'PLAYER').toUpperCase();
+  state.player.class=document.getElementById('set-class').value.trim()||'CLASS — UNAWAKENED';
+  const sel=document.getElementById('set-title');if(sel){const chosen=sel.value||null;state.equippedTitle=chosen&&hasTitle(chosen)?chosen:null;}
+  syncTodaysQuestsWithTemplate();saveState();
 }
 
-function populateSettings() {
-  document.getElementById('set-name').value = state.player.name;
-  document.getElementById('set-class').value = state.player.class;
-  // Populate title equip dropdown with earned titles
-  const sel = document.getElementById('set-title');
-  if (sel) {
-    sel.innerHTML = '<option value="">— NONE —</option>';
-    for (const x of state.titles) {
-      const t = getTitle(x.id);
-      if (!t) continue;
-      const opt = document.createElement('option');
-      opt.value = t.id;
-      opt.textContent = t.name + ' [' + t.tier.toUpperCase() + ']';
-      if (state.equippedTitle === t.id) opt.selected = true;
-      sel.appendChild(opt);
-    }
-  }
-  renderQuestEditor();
-}
-
-function renderQuestEditor() {
-  const wrap = document.getElementById('quest-editor');
-  wrap.innerHTML = '';
-  state.questTemplate.forEach((q, idx) => {
-    const row = document.createElement('div');
-    row.className = 'quest-edit-row';
-    row.innerHTML = `
-      <input type="text" value="${escapeHtml(q.name)}" data-i="${idx}" data-f="name" maxlength="60">
-      <input type="number" value="${q.xp}" data-i="${idx}" data-f="xp" min="1" max="999">
-      <button class="remove-btn" data-i="${idx}">×</button>
-    `;
+function renderQuestEditor(){
+  const wrap=document.getElementById('quest-editor');wrap.innerHTML='';
+  state.questTemplate.forEach((q,idx)=>{
+    const row=document.createElement('div');row.className='qe-row';
+    const dn=q.nameTemplate?q.nameTemplate:q.name||'';
+    const sv=q.scaleFactor&&q.scaleFactor>1?q.scaleFactor.toFixed(2):'';
+    row.innerHTML=`<input type="text" value="${escapeHtml(dn)}" data-i="${idx}" data-f="name" maxlength="60" placeholder="Name or {n} template"><input type="number" value="${q.xp}" data-i="${idx}" data-f="xp" min="1" max="999"><input type="number" value="${sv}" data-i="${idx}" data-f="scale" min="1" max="2" step="0.01" placeholder="1.08"><button class="remove-btn" data-i="${idx}">×</button>`;
     wrap.appendChild(row);
   });
-  wrap.querySelectorAll('input').forEach(inp => {
-    inp.addEventListener('change', e => {
-      const i = +e.target.dataset.i;
-      const f = e.target.dataset.f;
-      if (f === 'name') state.questTemplate[i].name = e.target.value.trim() || 'Unnamed';
-      else state.questTemplate[i].xp = Math.max(1, +e.target.value || 1);
-    });
-  });
-  wrap.querySelectorAll('.remove-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const i = +btn.dataset.i;
-      state.questTemplate.splice(i, 1);
-      renderQuestEditor();
-    });
-  });
+  wrap.querySelectorAll('input').forEach(inp=>inp.addEventListener('change',e=>{
+    const i=+e.target.dataset.i,f=e.target.dataset.f;
+    if(f==='name'){const val=e.target.value.trim()||'Quest';if(val.includes('{n}')){state.questTemplate[i].nameTemplate=val;delete state.questTemplate[i].name;if(!state.questTemplate[i].baseTarget){state.questTemplate[i].baseTarget=10;state.questTemplate[i].currentTarget=10;}}else{state.questTemplate[i].name=val;delete state.questTemplate[i].nameTemplate;delete state.questTemplate[i].baseTarget;delete state.questTemplate[i].currentTarget;delete state.questTemplate[i].scaleFactor;}}
+    if(f==='xp')state.questTemplate[i].xp=Math.max(1,+e.target.value||1);
+    if(f==='scale'){const sf=+e.target.value;if(sf>1&&sf<=2){state.questTemplate[i].scaleFactor=sf;if(!state.questTemplate[i].baseTarget)state.questTemplate[i].baseTarget=state.questTemplate[i].currentTarget||10;}else delete state.questTemplate[i].scaleFactor;}
+  }));
+  wrap.querySelectorAll('.remove-btn').forEach(btn=>btn.addEventListener('click',()=>{state.questTemplate.splice(+btn.dataset.i,1);renderQuestEditor();}));
 }
+function addQuestRow(){state.questTemplate.push({name:'New Quest',xp:10});renderQuestEditor();}
+function syncTodaysQuestsWithTemplate(){state.questsToday=state.questTemplate.map((qt,i)=>{const name=resolveQuestName(qt);const existing=state.questsToday.find(q=>q.name===name);return{id:'q'+i,name,xp:qt.xp,done:existing?existing.done:false};});}
 
-function addQuestRow() {
-  state.questTemplate.push({ name: 'New Quest', xp: 10 });
-  renderQuestEditor();
+function exportData(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`the-system-${todayStr().replace(/-/g,'')}.json`;document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);toast('[EXPORT COMPLETE]','cyan');}
+function importFile(e){const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=ev=>applyImport(ev.target.result);reader.readAsText(file);e.target.value='';}
+function importPaste(){const text=document.getElementById('import-text').value;if(!text.trim()){toast('[NO DATA TO IMPORT]','danger');return;}applyImport(text);}
+function applyImport(text){
+  try{const parsed=JSON.parse(text);if(typeof parsed!=='object'||!parsed.stats)throw new Error('Invalid');if(!confirm('Replace all current progress with imported data?'))return;state=migrate(parsed);state.importedOnce=true;saveState();populateSettings();render();toast('[IMPORT COMPLETE]','gold');logLine(`${nowTimeStr()} — Data imported.`);checkTitles();}
+  catch(e){toast('[IMPORT FAILED — INVALID JSON]','danger');console.error(e);}
 }
+function resetAll(){if(!confirm('Reset ALL progress?'))return;if(!confirm('Are you absolutely sure?'))return;state=structuredClone(DEFAULT_STATE);saveState();ensureTodayQuest();populateSettings();render();toast('[SYSTEM RESET]','danger');}
 
-function saveSettings() {
-  state.player.name = (document.getElementById('set-name').value.trim() || 'PLAYER').toUpperCase();
-  state.player.class = document.getElementById('set-class').value.trim() || 'CLASS — UNAWAKENED';
-  const sel = document.getElementById('set-title');
-  if (sel) {
-    const chosen = sel.value || null;
-    // Only allow equipping titles the player has actually earned
-    state.equippedTitle = chosen && hasTitle(chosen) ? chosen : null;
-  }
-  syncTodaysQuestsWithTemplate();
-  saveState();
-}
+function triggerLevelUp(){gainXP(xpForNext(state.lvl)-state.xp);saveState();render();}
+function triggerPenalty(){applyPenalty(false);}
 
-function syncTodaysQuestsWithTemplate() {
-  const next = state.questTemplate.map((qt, i) => {
-    const existing = state.questsToday.find(q => q.name === qt.name);
-    return {
-      id: 'q' + i, name: qt.name, xp: qt.xp,
-      done: existing ? existing.done : false,
-    };
-  });
-  state.questsToday = next;
-}
-
-function exportData() {
-  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  const stamp = todayStr().replace(/-/g,'');
-  a.href = url;
-  a.download = `the-system-${stamp}.json`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-  toast('[EXPORT COMPLETE]', 'cyan');
-}
-
-function importFile(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => applyImport(ev.target.result);
-  reader.readAsText(file);
-  e.target.value = '';
-}
-
-function importPaste() {
-  const text = document.getElementById('import-text').value;
-  if (!text.trim()) { toast('[NO DATA TO IMPORT]', 'danger'); return; }
-  applyImport(text);
-}
-
-function applyImport(text) {
-  try {
-    const parsed = JSON.parse(text);
-    if (typeof parsed !== 'object' || !parsed.stats) throw new Error('Invalid save file');
-    if (!confirm('Replace all current progress with imported data? This cannot be undone.')) return;
-    state = migrate(parsed);
-    state.importedOnce = true;
-    saveState();
-    populateSettings();
-    render();
-    toast('[IMPORT COMPLETE]', 'gold');
-    logLine(`${nowTimeStr()} — Data imported.`);
-    checkTitles();
-  } catch (e) {
-    toast('[IMPORT FAILED — INVALID JSON]', 'danger');
-    console.error(e);
-  }
-}
-
-function resetAll() {
-  if (!confirm('Reset ALL progress? This cannot be undone.')) return;
-  if (!confirm('Are you absolutely sure?')) return;
-  state = structuredClone(DEFAULT_STATE);
-  saveState();
-  ensureTodayQuest();
-  populateSettings();
-  render();
-  toast('[SYSTEM RESET]', 'danger');
-}
-
-ensureTodayQuest();
-render();
-checkTitles(); // Retroactively award titles for state that already meets thresholds
-setInterval(tickClock, 1000); tickClock();
-setInterval(tickCountdown, 1000); tickCountdown();
-setTimeout(() => toast('[STATUS WINDOW ONLINE]', 'cyan'), 400);
+ensureTodayQuest();render();checkTitles();
+setInterval(tickClock,1000);tickClock();
+setInterval(tickCountdown,1000);tickCountdown();
+setTimeout(()=>toast('[STATUS WINDOW ONLINE]','cyan'),400);
 </script>
-
 </body>
 </html>
