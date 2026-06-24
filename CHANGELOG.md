@@ -6,6 +6,44 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 
 ---
 
+## 2026-06-23 — Title (achievement) system
+
+### Added
+- **TITLES** mechanic — Solo Leveling–style achievement system. 27 titles spanning four tiers (common, rare, epic, legendary). Hunter-rank progression mirrors the show's E → D → C → B → A → S → Shadow Monarch arc tied to level.
+- **Title categories:**
+  - Hunter ranks at Lv 5/10/25/50/75/90/100/150
+  - Streak titles at 7/30/100/365 days
+  - Stat specialists at 25 in each individual stat (STRONGMAN, SWIFT, ENDURING, SCHOLAR, AWARE)
+  - Mastery (any stat to 50), Sovereign (any to 100)
+  - Balance titles (all stats to 20, all to 50)
+  - Quest count titles at 10/100/365 cleared
+  - Hidden narrative titles: **PHOENIX** (clear a Daily Quest the day after a penalty), **REINCARNATED** (import a save), **SHADOW MONARCH** (Lv 150)
+- **Equipped title slot** — earned titles can be selected from a dropdown in Player settings; the equipped title replaces the class string on the status window in the form `[ TITLE_NAME ]`
+- **Title browser** in settings (TITLE ARCHIVE panel) showing the full registry with descriptions, tier badges, and XP rewards. Locked titles are visible to motivate progression; hidden ones stay concealed until earned.
+- **Main-view TITLES panel** between Daily Quest and System Log: count badge, equipped-title label, and color-coded pills for every acquired title
+- **Tier visual treatment:**
+  - common → cyan-dim outline
+  - rare → cyan glow
+  - epic → gold glow
+  - legendary → magenta with continuous pulse animation
+- **XP rewards on unlock** (50 → 5000 scaled by tier) — matches the show's `[Quest Reward]` style without breaking the level curve
+- **Ceremonial unlock sequence** — staggered magenta `[TITLE ACQUIRED — name]` toasts, 1.4s between each so multiple simultaneous unlocks feel like a sequence of System pronouncements rather than spam
+- Magenta toast variant and `.line.title` log color
+
+### Changed
+- `DEFAULT_STATE` extended with `titles`, `equippedTitle`, `questsCleared`, `lastClearedDate`, `penaltyYesterday`, `importedOnce`. `migrate()` handles old saves transparently — existing players get all back-earned titles at next load.
+- `completeQuest()` now tracks per-day full-clear counts (`questsCleared`) and detects the Phoenix condition
+- `ensureTodayQuest()` sets `penaltyYesterday` on miss, clears it on next-day clear
+- `applyImport()` sets `importedOnce` flag for Reincarnated unlock
+
+### Notes
+- Title checks are debounced (50ms) so a single action triggering multiple title conditions batches into one announcement sequence
+- The equipped title only persists if the player still owns it — defensive check on save prevents stale references
+- The PLAYER settings copy "// equipped title replaces class on status window" explains the system inline
+- Phoenix is a true one-shot: detected via a transient `_phoenixUnlock` flag that's cleared immediately after the check
+
+---
+
 ## 2026-06-23 — Full system log + quest editor labels
 
 ### Added
@@ -56,7 +94,7 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 
 ### Added
 - Non-functional static mockup (`system-mockup.html`) used to validate the visual language before building v1
-- Status video, daily quest panel, system log panel, simulate-level-up and simulate-penalty buttons
+- Status window, daily quest panel, system log panel, simulate-level-up and simulate-penalty buttons
 - No persistence, no daily reset, no settings — purely visual
 
 The mockup was developed in the same session as v1 and superseded by it. Retained in the repo as a reference for the locked-in aesthetic.

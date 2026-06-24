@@ -19,6 +19,8 @@
     --dim: #6a8aa8;
     --danger: #ff4d6d;
     --gold: #ffd166;
+    --magenta: #d885ff;
+    --magenta-glow: rgba(216, 133, 255, 0.6);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body {
@@ -331,6 +333,7 @@
   #toast.show { transform: translateX(-50%) translateY(0); }
   #toast.danger { border-color: var(--danger); box-shadow: 0 0 24px rgba(255,77,109,0.6); color: var(--danger); }
   #toast.gold { border-color: var(--gold); box-shadow: 0 0 24px rgba(255,209,102,0.6); color: var(--gold); }
+  #toast.title { border-color: var(--magenta); box-shadow: 0 0 28px var(--magenta-glow); color: var(--magenta); }
 
   .system-log {
     font-family: 'Share Tech Mono', monospace;
@@ -347,6 +350,104 @@
   .system-log .line.penalty::before { color: var(--danger); }
   .system-log .line.gold { color: var(--gold); }
   .system-log .line.gold::before { color: var(--gold); }
+  .system-log .line.title { color: var(--magenta); }
+  .system-log .line.title::before { color: var(--magenta); }
+
+  /* ── Title (achievement) pills ── */
+  .titles-meta {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--cyan-dim);
+    margin-bottom: 12px;
+    letter-spacing: 0.15em;
+  }
+  .titles-meta .count { color: var(--cyan); }
+  .titles-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .title-pill {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    padding: 6px 10px;
+    border: 1px solid var(--cyan-dim);
+    background: rgba(95,212,255,0.05);
+    color: var(--cyan);
+    cursor: default;
+    clip-path: polygon(5px 0, 100% 0, 100% calc(100% - 5px), calc(100% - 5px) 100%, 0 100%, 0 5px);
+  }
+  .title-pill.common    { border-color: var(--cyan-dim); color: var(--cyan-dim); background: rgba(95,212,255,0.03); }
+  .title-pill.rare      { border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 6px rgba(95,212,255,0.25); }
+  .title-pill.epic      { border-color: var(--gold); color: var(--gold); background: rgba(255,209,102,0.04); box-shadow: 0 0 8px rgba(255,209,102,0.3); }
+  .title-pill.legendary { border-color: var(--magenta); color: var(--magenta); background: rgba(216,133,255,0.05); box-shadow: 0 0 10px var(--magenta-glow); animation: legend-pulse 2.4s ease-in-out infinite; }
+  @keyframes legend-pulse {
+    0%, 100% { box-shadow: 0 0 10px var(--magenta-glow); }
+    50%      { box-shadow: 0 0 18px var(--magenta-glow), 0 0 28px rgba(216,133,255,0.35); }
+  }
+  .title-pill.locked {
+    border-color: var(--cyan-soft);
+    color: var(--dim);
+    background: transparent;
+    box-shadow: none;
+    animation: none;
+    opacity: 0.55;
+  }
+  .title-pill.equipped {
+    outline: 1px solid var(--white);
+    outline-offset: 1px;
+  }
+  .titles-empty {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--dim);
+    letter-spacing: 0.15em;
+    padding: 8px 4px;
+  }
+
+  /* ── Settings: full title browser ── */
+  .title-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    align-items: start;
+    padding: 10px 12px;
+    border: 1px solid var(--cyan-soft);
+    margin-bottom: 6px;
+    background: rgba(95,212,255,0.02);
+  }
+  .title-row.unlocked { background: rgba(95,212,255,0.05); }
+  .title-row .tr-name {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    color: var(--cyan);
+  }
+  .title-row .tr-desc {
+    font-size: 13px;
+    color: var(--steel, var(--dim));
+    margin-top: 3px;
+    letter-spacing: 0.02em;
+  }
+  .title-row .tr-badge {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    padding: 3px 7px;
+    border: 1px solid var(--cyan-dim);
+    color: var(--cyan-dim);
+    align-self: center;
+    white-space: nowrap;
+  }
+  .title-row.locked .tr-name { color: var(--dim); }
+  .title-row.locked .tr-desc { color: var(--dim); opacity: 0.7; }
+  .title-row.locked .tr-badge { border-color: var(--cyan-soft); color: var(--dim); }
+  .title-row .tr-name.tier-rare      { color: var(--cyan); }
+  .title-row .tr-name.tier-epic      { color: var(--gold); }
+  .title-row .tr-name.tier-legendary { color: var(--magenta); }
 
   .actions {
     display: grid;
@@ -522,6 +623,15 @@
   </div>
 
   <div class="panel">
+    <div class="panel-label"><span><span class="dot"></span>TITLES</span><span id="titles-equipped-label">NONE EQUIPPED</span></div>
+    <div class="titles-meta">
+      <span>ACQUIRED</span>
+      <span><span class="count" id="titles-count">0</span> / <span id="titles-total">0</span></span>
+    </div>
+    <div class="titles-grid" id="titles-grid"></div>
+  </div>
+
+  <div class="panel">
     <div class="panel-label"><span><span class="dot"></span>SYSTEM LOG</span><span>RECENT</span></div>
     <div class="system-log" id="log"></div>
   </div>
@@ -541,7 +651,17 @@
         <label>CLASS</label>
         <input type="text" id="set-class" maxlength="32">
       </div>
+      <div class="field-row">
+        <label>TITLE</label>
+        <select id="set-title" style="flex:1;background:rgba(95,212,255,0.05);border:1px solid var(--cyan-dim);color:var(--white);padding:8px 10px;font-family:'Rajdhani',sans-serif;font-size:14px;letter-spacing:0.05em;"></select>
+      </div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan-dim);letter-spacing:0.15em;margin-top:4px;padding-left:78px;">// equipped title replaces class on status window</div>
     </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-label"><span><span class="dot"></span>TITLE ARCHIVE</span><span id="settings-titles-count">0 / 0</span></div>
+    <div class="settings-section" id="titles-browser"></div>
   </div>
 
   <div class="panel">
@@ -619,6 +739,13 @@ const DEFAULT_STATE = {
     { name: '10 km Run', xp: 50 },
   ],
   log: [],
+  // Title (achievement) system
+  titles: [],              // [{id, t}] earned with timestamp
+  equippedTitle: null,     // id of currently displayed title, or null
+  questsCleared: 0,        // total fully-cleared daily quests
+  lastClearedDate: null,   // YYYY-MM-DD of last full clear (prevents double counting)
+  penaltyYesterday: false, // flag for Phoenix detection
+  importedOnce: false,     // flag for Reincarnated detection
 };
 
 let state = loadState();
@@ -672,11 +799,13 @@ function ensureTodayQuest() {
       state.streak += 1;
       if (state.streak > state.streakBest) state.streakBest = state.streak;
       logLine(`${state.lastQuestDate} — Daily Quest cleared. Streak: ${state.streak}.`, 'gold');
+      state.penaltyYesterday = false;
     } else {
       const completed = state.questsToday.filter(q => q.done).length;
       const missed = daysBetween(state.lastQuestDate, today);
       for (let i = 0; i < missed; i++) applyPenalty(true);
       state.streak = 0;
+      state.penaltyYesterday = true;
       logLine(`${state.lastQuestDate} — Daily Quest failed (${completed}/${state.questsToday.length}). Streak broken.`, 'penalty');
     }
   }
@@ -687,6 +816,7 @@ function ensureTodayQuest() {
   state.lastQuestDate = today;
   logLine(`${nowTimeStr()} — Daily Quest issued.`);
   saveState();
+  checkTitles();
 }
 
 function completeQuest(id) {
@@ -698,6 +828,17 @@ function completeQuest(id) {
   logLine(`${nowTimeStr()} — ${q.name} cleared. +${q.xp} XP.`);
   if (state.questsToday.every(x => x.done)) {
     setTimeout(() => toast('[DAILY QUEST COMPLETE]', 'gold'), 600);
+    // Count this clear (once per day) and detect Phoenix
+    const today = todayStr();
+    if (state.lastClearedDate !== today) {
+      state.lastClearedDate = today;
+      state.questsCleared = (state.questsCleared || 0) + 1;
+      if (state.penaltyYesterday) {
+        state._phoenixUnlock = true;
+        state.penaltyYesterday = false;
+      }
+    }
+    checkTitles();
   }
   saveState();
   render();
@@ -712,6 +853,7 @@ function gainXP(amt) {
     setTimeout(() => toast(`[LEVEL UP — LV ${state.lvl}]`, 'gold'), 400);
     logLine(`${nowTimeStr()} — LEVEL UP. Reached Lv ${state.lvl}. +5 stat points.`, 'gold');
   }
+  checkTitles();
 }
 
 function allocateStat(k) {
@@ -722,6 +864,7 @@ function allocateStat(k) {
   logLine(`${nowTimeStr()} — Stat allocated. ${k} +1.`);
   saveState();
   render();
+  checkTitles();
 }
 
 function applyPenalty(silent) {
@@ -751,9 +894,97 @@ function logLine(text, cls) {
   if (state.log.length > 1000) state.log.length = 1000;
 }
 
+// ============ TITLES (achievement registry) ============
+// Tiers: common, rare, epic, legendary
+// hidden: true means description is concealed until earned
+const TITLES = [
+  // ── Hunter rank progression (level-based) ──
+  { id: 'awakened',   name: 'AWAKENED',          desc: 'Reach Level 5.',                       tier: 'rare',      xp: 50,   check: s => s.lvl >= 5 },
+  { id: 'erank',      name: 'E-RANK HUNTER',     desc: 'Reach Level 10.',                      tier: 'rare',      xp: 100,  check: s => s.lvl >= 10 },
+  { id: 'drank',      name: 'D-RANK HUNTER',     desc: 'Reach Level 25.',                      tier: 'rare',      xp: 250,  check: s => s.lvl >= 25 },
+  { id: 'crank',      name: 'C-RANK HUNTER',     desc: 'Reach Level 50.',                      tier: 'epic',      xp: 500,  check: s => s.lvl >= 50 },
+  { id: 'brank',      name: 'B-RANK HUNTER',     desc: 'Reach Level 75.',                      tier: 'epic',      xp: 750,  check: s => s.lvl >= 75 },
+  { id: 'arank',      name: 'A-RANK HUNTER',     desc: 'Reach Level 90.',                      tier: 'legendary', xp: 1000, check: s => s.lvl >= 90 },
+  { id: 'srank',      name: 'S-RANK HUNTER',     desc: 'Reach Level 100.',                     tier: 'legendary', xp: 2000, check: s => s.lvl >= 100 },
+  { id: 'monarch',    name: 'SHADOW MONARCH',    desc: 'Reach Level 150.',                     tier: 'legendary', xp: 5000, hidden: true, check: s => s.lvl >= 150 },
+
+  // ── Streak titles ──
+  { id: 'streak7',    name: 'IRON WILL',         desc: 'Hold a 7-day streak.',                 tier: 'common',    xp: 50,   check: s => s.streak >= 7 || s.streakBest >= 7 },
+  { id: 'streak30',   name: 'DISCIPLINED',       desc: 'Hold a 30-day streak.',                tier: 'rare',      xp: 200,  check: s => s.streak >= 30 || s.streakBest >= 30 },
+  { id: 'streak100',  name: 'UNBREAKABLE',       desc: 'Hold a 100-day streak.',               tier: 'epic',      xp: 500,  check: s => s.streak >= 100 || s.streakBest >= 100 },
+  { id: 'streak365',  name: 'ARCHITECT OF SELF', desc: 'Hold a 365-day streak.',               tier: 'legendary', xp: 2000, check: s => s.streak >= 365 || s.streakBest >= 365 },
+
+  // ── Single-stat specialists ──
+  { id: 'spec_str',   name: 'STRONGMAN',         desc: 'STR reaches 25.',                      tier: 'rare',      xp: 100,  check: s => s.stats.STR >= 25 },
+  { id: 'spec_agi',   name: 'SWIFT',             desc: 'AGI reaches 25.',                      tier: 'rare',      xp: 100,  check: s => s.stats.AGI >= 25 },
+  { id: 'spec_vit',   name: 'ENDURING',          desc: 'VIT reaches 25.',                      tier: 'rare',      xp: 100,  check: s => s.stats.VIT >= 25 },
+  { id: 'spec_int',   name: 'SCHOLAR',           desc: 'INT reaches 25.',                      tier: 'rare',      xp: 100,  check: s => s.stats.INT >= 25 },
+  { id: 'spec_sen',   name: 'AWARE',             desc: 'SEN reaches 25.',                      tier: 'rare',      xp: 100,  check: s => s.stats.SEN >= 25 },
+
+  // ── Mastery (high single stat) ──
+  { id: 'master_any', name: 'MASTER',            desc: 'Any single stat reaches 50.',          tier: 'epic',      xp: 300,  check: s => STAT_KEYS.some(k => s.stats[k] >= 50) },
+  { id: 'sovereign',  name: 'SOVEREIGN',         desc: 'Any single stat reaches 100.',         tier: 'legendary', xp: 1500, check: s => STAT_KEYS.some(k => s.stats[k] >= 100) },
+
+  // ── Balanced titles ──
+  { id: 'balanced',   name: 'WELL-ROUNDED',      desc: 'All stats reach 20.',                  tier: 'rare',      xp: 200,  check: s => STAT_KEYS.every(k => s.stats[k] >= 20) },
+  { id: 'polymath',   name: 'POLYMATH',          desc: 'All stats reach 50.',                  tier: 'legendary', xp: 1000, check: s => STAT_KEYS.every(k => s.stats[k] >= 50) },
+
+  // ── Quest count titles ──
+  { id: 'initiate',   name: 'INITIATE',          desc: 'Clear 10 Daily Quests in total.',      tier: 'common',    xp: 50,   check: s => s.questsCleared >= 10 },
+  { id: 'veteran',    name: 'VETERAN HUNTER',    desc: 'Clear 100 Daily Quests in total.',     tier: 'epic',      xp: 500,  check: s => s.questsCleared >= 100 },
+  { id: 'legend',     name: 'LEGENDARY HUNTER',  desc: 'Clear 365 Daily Quests in total.',     tier: 'legendary', xp: 2000, check: s => s.questsCleared >= 365 },
+
+  // ── Hidden / narrative titles ──
+  { id: 'phoenix',      name: 'PHOENIX',         desc: 'Clear a Daily Quest the day after a penalty.', tier: 'rare',  xp: 150, hidden: true, check: s => s._phoenixUnlock === true },
+  { id: 'reincarnated', name: 'REINCARNATED',    desc: 'Import a save file.',                  tier: 'common',    xp: 25,  hidden: true, check: s => s.importedOnce === true },
+];
+
+function getTitle(id) { return TITLES.find(t => t.id === id); }
+function hasTitle(id) { return state.titles.some(x => x.id === id); }
+
+let achievementCheckTimer = null;
+function checkTitles() {
+  // Debounce so rapid multi-conditions (e.g. level up + stat threshold) batch their toasts
+  if (achievementCheckTimer) return;
+  achievementCheckTimer = setTimeout(() => {
+    achievementCheckTimer = null;
+    const newlyEarned = [];
+    for (const t of TITLES) {
+      if (hasTitle(t.id)) continue;
+      if (t.check(state)) newlyEarned.push(t);
+    }
+    if (!newlyEarned.length) return;
+    let delay = 800;
+    for (const t of newlyEarned) {
+      state.titles.push({ id: t.id, t: Date.now() });
+      logLine(`${nowTimeStr()} — TITLE ACQUIRED: ${t.name}. +${t.xp} XP.`, 'title');
+      // Stagger announcements so they feel ceremonial, not spammed
+      setTimeout(() => {
+        toast(`[TITLE ACQUIRED — ${t.name}]`, 'title');
+      }, delay);
+      delay += 1400;
+      // Award the XP without re-triggering checkTitles infinitely
+      state.xp += t.xp;
+      while (state.xp >= xpForNext(state.lvl)) {
+        state.xp -= xpForNext(state.lvl);
+        state.lvl++;
+        state.points += 5;
+        logLine(`${nowTimeStr()} — LEVEL UP. Reached Lv ${state.lvl}. +5 stat points.`, 'gold');
+      }
+    }
+    // Clean up phoenix one-shot flag
+    if (state._phoenixUnlock) delete state._phoenixUnlock;
+    saveState();
+    render();
+  }, 50);
+}
+
 function render() {
   document.getElementById('player-name').textContent = state.player.name;
-  document.getElementById('player-class').textContent = state.player.class;
+  // Equipped title overrides class string on the status window
+  const equipped = state.equippedTitle ? getTitle(state.equippedTitle) : null;
+  const classDisplay = equipped ? `[ ${equipped.name} ]` : state.player.class;
+  document.getElementById('player-class').textContent = classDisplay;
   document.getElementById('lvl').textContent = state.lvl;
   document.getElementById('xp-v').textContent = state.xp;
   document.getElementById('xp-next-v').textContent = xpForNext(state.lvl);
@@ -807,6 +1038,60 @@ function render() {
     }
     const countEl = document.getElementById('full-log-count');
     if (countEl) countEl.textContent = state.log.length + ' ENTR' + (state.log.length === 1 ? 'Y' : 'IES');
+  }
+
+  // ── Titles: main-view pills ──
+  const titlesGrid = document.getElementById('titles-grid');
+  if (titlesGrid) {
+    titlesGrid.innerHTML = '';
+    const earnedIds = state.titles.map(x => x.id);
+    if (!earnedIds.length) {
+      const empty = document.createElement('div');
+      empty.className = 'titles-empty';
+      empty.textContent = '// NO TITLES ACQUIRED';
+      titlesGrid.appendChild(empty);
+    } else {
+      // Show earned titles in acquisition order (most recent first reads better)
+      const earnedTitles = state.titles
+        .slice()
+        .reverse()
+        .map(x => getTitle(x.id))
+        .filter(Boolean);
+      for (const t of earnedTitles) {
+        const pill = document.createElement('div');
+        pill.className = 'title-pill ' + t.tier + (state.equippedTitle === t.id ? ' equipped' : '');
+        pill.title = t.desc;
+        pill.textContent = t.name;
+        titlesGrid.appendChild(pill);
+      }
+    }
+    document.getElementById('titles-count').textContent = state.titles.length;
+    document.getElementById('titles-total').textContent = TITLES.length;
+    document.getElementById('titles-equipped-label').textContent =
+      state.equippedTitle ? `EQUIPPED: ${getTitle(state.equippedTitle)?.name || ''}` : 'NONE EQUIPPED';
+  }
+
+  // ── Titles: settings browser ──
+  const browser = document.getElementById('titles-browser');
+  if (browser) {
+    browser.innerHTML = '';
+    for (const t of TITLES) {
+      const earned = hasTitle(t.id);
+      if (t.hidden && !earned) continue; // hidden titles stay hidden until earned
+      const row = document.createElement('div');
+      row.className = 'title-row ' + (earned ? 'unlocked' : 'locked');
+      const tier = t.tier;
+      row.innerHTML = `
+        <div>
+          <div class="tr-name tier-${tier}">${earned ? '✓ ' : '🔒 '}${escapeHtml(t.name)}</div>
+          <div class="tr-desc">${escapeHtml(t.desc)}</div>
+        </div>
+        <div class="tr-badge">${tier.toUpperCase()} · +${t.xp} XP</div>
+      `;
+      browser.appendChild(row);
+    }
+    const settingsCount = document.getElementById('settings-titles-count');
+    if (settingsCount) settingsCount.textContent = `${state.titles.length} / ${TITLES.length}`;
   }
 }
 
@@ -871,6 +1156,20 @@ function toggleView() {
 function populateSettings() {
   document.getElementById('set-name').value = state.player.name;
   document.getElementById('set-class').value = state.player.class;
+  // Populate title equip dropdown with earned titles
+  const sel = document.getElementById('set-title');
+  if (sel) {
+    sel.innerHTML = '<option value="">— NONE —</option>';
+    for (const x of state.titles) {
+      const t = getTitle(x.id);
+      if (!t) continue;
+      const opt = document.createElement('option');
+      opt.value = t.id;
+      opt.textContent = t.name + ' [' + t.tier.toUpperCase() + ']';
+      if (state.equippedTitle === t.id) opt.selected = true;
+      sel.appendChild(opt);
+    }
+  }
   renderQuestEditor();
 }
 
@@ -912,6 +1211,12 @@ function addQuestRow() {
 function saveSettings() {
   state.player.name = (document.getElementById('set-name').value.trim() || 'PLAYER').toUpperCase();
   state.player.class = document.getElementById('set-class').value.trim() || 'CLASS — UNAWAKENED';
+  const sel = document.getElementById('set-title');
+  if (sel) {
+    const chosen = sel.value || null;
+    // Only allow equipping titles the player has actually earned
+    state.equippedTitle = chosen && hasTitle(chosen) ? chosen : null;
+  }
   syncTodaysQuestsWithTemplate();
   saveState();
 }
@@ -962,11 +1267,13 @@ function applyImport(text) {
     if (typeof parsed !== 'object' || !parsed.stats) throw new Error('Invalid save file');
     if (!confirm('Replace all current progress with imported data? This cannot be undone.')) return;
     state = migrate(parsed);
+    state.importedOnce = true;
     saveState();
     populateSettings();
     render();
     toast('[IMPORT COMPLETE]', 'gold');
     logLine(`${nowTimeStr()} — Data imported.`);
+    checkTitles();
   } catch (e) {
     toast('[IMPORT FAILED — INVALID JSON]', 'danger');
     console.error(e);
@@ -986,6 +1293,7 @@ function resetAll() {
 
 ensureTodayQuest();
 render();
+checkTitles(); // Retroactively award titles for state that already meets thresholds
 setInterval(tickClock, 1000); tickClock();
 setInterval(tickCountdown, 1000); tickCountdown();
 setTimeout(() => toast('[STATUS WINDOW ONLINE]', 'cyan'), 400);
