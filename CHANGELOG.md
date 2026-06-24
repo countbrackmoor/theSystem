@@ -6,6 +6,21 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 
 ---
 
+## 2026-06-23 — Full system log + quest editor labels
+
+### Added
+- Full system log panel in settings view — shows all log entries with `420px` max-height scroll area; entry count displayed in the panel header
+- Column header row above the Daily Quest editor inputs labelling QUEST NAME, XP
+
+### Changed
+- Log entry cap raised from 50 → 1000 so the "full" log is actually meaningful for long-term history (~6 months of daily quest activity)
+
+### Notes
+- The main-view log on the home screen is unchanged (still shows last 20 entries in a 180px scroll area)
+- Both logs render from the same `state.log` array; render() now populates both when settings panel is in DOM
+
+---
+
 ## 2026-06-23 — v1 release
 
 ### Added
@@ -41,7 +56,7 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 
 ### Added
 - Non-functional static mockup (`system-mockup.html`) used to validate the visual language before building v1
-- Status window, daily quest panel, system log panel, simulate-level-up and simulate-penalty buttons
+- Status video, daily quest panel, system log panel, simulate-level-up and simulate-penalty buttons
 - No persistence, no daily reset, no settings — purely visual
 
 The mockup was developed in the same session as v1 and superseded by it. Retained in the repo as a reference for the locked-in aesthetic.

@@ -421,11 +421,25 @@
   input:focus, textarea:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 8px var(--cyan-glow); }
   input[type=number] { max-width: 80px; flex: 0 0 auto; }
 
+  .quest-edit-header {
+    display: grid;
+    grid-template-columns: 1fr 70px 32px;
+    gap: 6px;
+    margin-bottom: 6px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--cyan-dim);
+    padding: 0 4px;
+  }
   .quest-edit-row {
     display: grid;
     grid-template-columns: 1fr 70px 32px;
     gap: 6px;
     margin-bottom: 6px;
+  }
+  .system-log.full {
+    max-height: 420px;
   }
   .quest-edit-row .remove-btn {
     background: transparent;
@@ -533,9 +547,19 @@
   <div class="panel">
     <div class="panel-label"><span><span class="dot"></span>DAILY QUEST EDITOR</span></div>
     <div class="settings-section">
+      <div class="quest-edit-header">
+        <span>QUEST NAME</span>
+        <span>XP</span>
+        <span></span>
+      </div>
       <div id="quest-editor"></div>
       <button class="btn wide" onclick="addQuestRow()" style="margin-top:8px;">+ ADD QUEST</button>
     </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-label"><span><span class="dot"></span>FULL SYSTEM LOG</span><span id="full-log-count">0 ENTRIES</span></div>
+    <div class="system-log full" id="full-log"></div>
   </div>
 
   <div class="panel">
@@ -724,7 +748,7 @@ function triggerPenalty() { applyPenalty(false); }
 
 function logLine(text, cls) {
   state.log.unshift({ t: Date.now(), text, cls: cls || '' });
-  if (state.log.length > 50) state.log.length = 50;
+  if (state.log.length > 1000) state.log.length = 1000;
 }
 
 function render() {
@@ -770,6 +794,19 @@ function render() {
     d.className = 'line ' + (entry.cls || '');
     d.textContent = entry.text;
     logEl.appendChild(d);
+  }
+
+  const fullLogEl = document.getElementById('full-log');
+  if (fullLogEl) {
+    fullLogEl.innerHTML = '';
+    for (const entry of state.log) {
+      const d = document.createElement('div');
+      d.className = 'line ' + (entry.cls || '');
+      d.textContent = entry.text;
+      fullLogEl.appendChild(d);
+    }
+    const countEl = document.getElementById('full-log-count');
+    if (countEl) countEl.textContent = state.log.length + ' ENTR' + (state.log.length === 1 ? 'Y' : 'IES');
   }
 }
 
