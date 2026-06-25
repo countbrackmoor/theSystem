@@ -255,13 +255,11 @@
   input:focus, textarea:focus, select:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 8px var(--cyan-glow); }
   input[type=number] { max-width: 80px; flex: 0 0 auto; }
 
-  /* Quest editor */
   .qe-header { display: grid; grid-template-columns: 1fr 64px 64px 36px; gap: 6px; margin-bottom: 6px; font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 0.15em; color: var(--cyan-dim); padding: 0 4px; }
   .qe-row    { display: grid; grid-template-columns: 1fr 64px 64px 36px; gap: 6px; margin-bottom: 6px; }
   .qe-row .remove-btn { background: transparent; border: 1px solid var(--danger); color: var(--danger); cursor: pointer; font-family: 'Share Tech Mono', monospace; }
   .qe-row .remove-btn:hover { background: rgba(255,77,109,0.1); }
 
-  /* Title archive */
   .title-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: start; padding: 10px 12px; border: 1px solid var(--cyan-soft); margin-bottom: 6px; background: rgba(95,212,255,0.02); }
   .title-row.unlocked { background: rgba(95,212,255,0.05); }
   .title-row .tr-name { font-family: 'Share Tech Mono', monospace; font-size: 12px; letter-spacing: 0.18em; color: var(--cyan); }
@@ -276,19 +274,17 @@
 
   /* ── Solo Leveling ambient effects ── */
 
-  /* Scanlines — visible CRT texture */
   #scanlines {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
     background: repeating-linear-gradient(
       180deg,
-      transparent 0px, transparent 2px,
-      rgba(0,8,28,0.28) 2px, rgba(0,8,28,0.28) 4px
+      transparent 0px, transparent 3px,
+      rgba(0,15,35,0.055) 3px, rgba(0,15,35,0.055) 4px
     );
     pointer-events: none; z-index: 999;
   }
 
-  /* Ambient radial glow — must be z-index > 0 on Safari or it disappears behind body bg */
   #ambient-bg {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -299,7 +295,6 @@
     pointer-events: none; z-index: 1;
     animation: ambient-breathe 4s ease-in-out infinite;
   }
-  /* Content stack above the ambient layer */
   header, #main-view, #settings-view, .footer-note {
     position: relative; z-index: 2;
   }
@@ -310,8 +305,6 @@
     50%       { opacity: 1.0; }
   }
 
-  /* Panel glow — filter:drop-shadow works THROUGH clip-path on iOS Safari.
-     box-shadow is clipped by clip-path and invisible on Safari. */
   @keyframes panel-breathe {
     0%, 100% {
       border-color: rgba(42,139,184,0.7);
@@ -328,7 +321,6 @@
     }
   }
 
-  /* Title — stronger glow breathe */
   @keyframes title-breathe {
     0%, 100% {
       text-shadow:
@@ -361,10 +353,8 @@
   <button class="settings-toggle" onclick="toggleView()">⚙ <span id="toggle-label">SETTINGS</span></button>
 </header>
 
-<!-- ══════════════ MAIN VIEW ══════════════ -->
 <div id="main-view">
 
-  <!-- STATUS WINDOW -->
   <div class="panel">
     <div class="panel-label"><span><span class="dot"></span>STATUS WINDOW</span><span id="sys-time">00:00:00</span></div>
     <div class="status-head">
@@ -377,18 +367,9 @@
         <div class="lvl-num" id="lvl">1</div>
       </div>
     </div>
-    <div class="bar-row">
-      <div class="bar-label"><span class="key">HP</span><span class="val"><span id="hp-v">100</span> / 100</span></div>
-      <div class="bar-track"><div class="bar-fill hp" id="hp-bar" style="width:100%"></div></div>
-    </div>
-    <div class="bar-row">
-      <div class="bar-label"><span class="key">MP</span><span class="val"><span id="mp-v">100</span> / 100</span></div>
-      <div class="bar-track"><div class="bar-fill mp" id="mp-bar" style="width:100%"></div></div>
-    </div>
-    <div class="bar-row">
-      <div class="bar-label"><span class="key">XP</span><span class="val"><span id="xp-v">0</span> / <span id="xp-next-v">100</span></span></div>
-      <div class="bar-track"><div class="bar-fill xp" id="xp-bar" style="width:0%"></div></div>
-    </div>
+    <div class="bar-row"><div class="bar-label"><span class="key">HP</span><span class="val"><span id="hp-v">100</span> / 100</span></div><div class="bar-track"><div class="bar-fill hp" id="hp-bar" style="width:100%"></div></div></div>
+    <div class="bar-row"><div class="bar-label"><span class="key">MP</span><span class="val"><span id="mp-v">100</span> / 100</span></div><div class="bar-track"><div class="bar-fill mp" id="mp-bar" style="width:100%"></div></div></div>
+    <div class="bar-row"><div class="bar-label"><span class="key">XP</span><span class="val"><span id="xp-v">0</span> / <span id="xp-next-v">100</span></span></div><div class="bar-track"><div class="bar-fill xp" id="xp-bar" style="width:0%"></div></div></div>
     <div class="stats" id="stats-grid"></div>
     <div class="points-banner" id="points-banner">// <span id="points">0</span> STAT POINTS AVAILABLE — TAP A STAT TO ALLOCATE</div>
     <div class="buff-row" id="buff-row"></div>
@@ -398,34 +379,24 @@
     </div>
   </div>
 
-  <!-- DAILY QUEST -->
   <div class="panel">
     <div class="panel-label"><span><span class="dot"></span>DAILY QUEST</span><span>MANDATORY</span></div>
-    <div class="quest-meta">
-      <span>ISSUED 00:00</span>
-      <span>EXPIRES IN <span class="countdown" id="countdown">00:00:00</span></span>
-    </div>
+    <div class="quest-meta"><span>ISSUED 00:00</span><span>EXPIRES IN <span class="countdown" id="countdown">00:00:00</span></span></div>
     <div id="quest-list"></div>
     <div class="warning">⚠ PENALTY ON FAILURE — RANDOM STAT −1</div>
   </div>
 
-  <!-- INVENTORY (hidden when empty) -->
   <div class="panel hidden" id="inventory-panel">
     <div class="panel-label"><span><span class="dot"></span>INVENTORY</span><span id="inv-count">0 ITEMS</span></div>
     <div class="inv-grid" id="inv-grid"></div>
   </div>
 
-  <!-- TITLES (hidden until first title earned) -->
   <div class="panel hidden" id="titles-panel">
     <div class="panel-label"><span><span class="dot"></span>TITLES</span><span id="titles-equipped-label">NONE EQUIPPED</span></div>
-    <div class="titles-meta">
-      <span>ACQUIRED</span>
-      <span><span class="count" id="titles-count">0</span> / <span id="titles-total">0</span></span>
-    </div>
+    <div class="titles-meta"><span>ACQUIRED</span><span><span class="count" id="titles-count">0</span> / <span id="titles-total">0</span></span></div>
     <div class="titles-grid" id="titles-grid"></div>
   </div>
 
-  <!-- SYSTEM LOG -->
   <div class="panel">
     <div class="panel-label"><span><span class="dot"></span>SYSTEM LOG</span><span>RECENT</span></div>
     <div class="system-log" id="log"></div>
@@ -433,49 +404,38 @@
 
 </div>
 
-<!-- ══════════════ SETTINGS VIEW ══════════════ -->
 <div id="settings-view" class="hidden">
 
-  <!-- PLAYER -->
   <div class="panel">
     <div class="panel-label"><span><span class="dot"></span>PLAYER</span></div>
     <div class="settings-section">
       <div class="field-row"><label>NAME</label><input type="text" id="set-name" maxlength="24"></div>
       <div class="field-row"><label>CLASS</label><input type="text" id="set-class" maxlength="32"></div>
-      <div class="field-row">
-        <label>TITLE</label>
-        <select id="set-title"></select>
-      </div>
+      <div class="field-row"><label>TITLE</label><select id="set-title"></select></div>
       <div class="hint">// equipped title replaces class on status window</div>
     </div>
   </div>
 
-  <!-- TITLE ARCHIVE -->
   <div class="panel">
     <div class="panel-label"><span><span class="dot"></span>TITLE ARCHIVE</span><span id="settings-titles-count">0 / 0</span></div>
     <div class="settings-section" id="titles-browser"></div>
   </div>
 
-  <!-- QUEST EDITOR -->
   <div class="panel">
     <div class="panel-label"><span><span class="dot"></span>DAILY QUEST EDITOR</span></div>
     <div class="settings-section">
-      <div class="qe-header">
-        <span>QUEST NAME</span><span>XP</span><span>SCALE</span><span></span>
-      </div>
+      <div class="qe-header"><span>QUEST NAME</span><span>XP</span><span>SCALE</span><span></span></div>
       <div id="quest-editor"></div>
       <button class="btn wide" onclick="addQuestRow()" style="margin-top:8px;">+ ADD QUEST</button>
       <div class="hint" style="padding-left:0;margin-top:10px;">// SCALE: daily multiplier on the target rep/min count (e.g. 1.08 = +8% per clear). Leave blank or 1 to disable.</div>
     </div>
   </div>
 
-  <!-- FULL LOG -->
   <div class="panel">
     <div class="panel-label"><span><span class="dot"></span>FULL SYSTEM LOG</span><span id="full-log-count">0 ENTRIES</span></div>
     <div class="system-log full" id="full-log"></div>
   </div>
 
-  <!-- DATA -->
   <div class="panel">
     <div class="panel-label"><span><span class="dot"></span>DATA</span></div>
     <div class="settings-section">
@@ -490,22 +450,16 @@
         <button class="btn wide" onclick="importPaste()" style="margin-top:8px;">IMPORT FROM TEXT</button>
       </div>
     </div>
-    <div class="settings-section">
-      <h3>DANGER ZONE</h3>
-      <button class="btn danger wide" onclick="resetAll()">RESET ALL PROGRESS</button>
-    </div>
+    <div class="settings-section"><h3>DANGER ZONE</h3><button class="btn danger wide" onclick="resetAll()">RESET ALL PROGRESS</button></div>
   </div>
 
-  <!-- DEBUG -->
   <div class="panel">
     <div class="panel-label"><span><span class="dot"></span>DEBUG</span></div>
     <div class="actions">
       <button class="btn gold" onclick="triggerLevelUp()">FORCE LEVEL UP</button>
       <button class="btn danger" onclick="triggerPenalty()">FORCE PENALTY</button>
     </div>
-    <div style="margin-top:10px;">
-      <button class="btn wide" style="border-color:var(--green);color:var(--green);" onclick="debugDrop()">FORCE ITEM DROP</button>
-    </div>
+    <div style="margin-top:10px;"><button class="btn wide" style="border-color:var(--green);color:var(--green);" onclick="debugDrop()">FORCE ITEM DROP</button></div>
   </div>
 
 </div>
@@ -515,96 +469,68 @@
 
 <script>
 'use strict';
-
-const VERSION = 2;
-const STORAGE_KEY = 'gorgon.system.v2';
-const STAT_KEYS = ['STR','AGI','VIT','INT','SEN'];
-
-const ITEM_CATALOGUE = [
-  { id:'recovery_draft',   name:'RECOVERY DRAFT',    icon:'🧪', desc:'Absorb the next daily penalty. Failure costs nothing.',    rarity:'common',    type:'consumable', effect:'penalty_shield_1', weight:25 },
-  { id:'iron_supplement',  name:'IRON SUPPLEMENT',   icon:'💊', desc:'+50% XP on your next completed quest.',                    rarity:'common',    type:'consumable', effect:'xp_boost_next',    weight:25 },
-  { id:'warriors_resolve', name:"WARRIOR'S RESOLVE", icon:'⚔️', desc:'+3 STR for 3 days. Train while the buff holds.',           rarity:'uncommon',  type:'buff',       effect:'stat_str_3',       weight:18, days:3 },
-  { id:'scholars_focus',   name:"SCHOLAR'S FOCUS",   icon:'📖', desc:'+3 INT for 3 days. Study while the window is open.',        rarity:'uncommon',  type:'buff',       effect:'stat_int_3',       weight:18, days:3 },
-  { id:'awakening_crystal',name:'AWAKENING CRYSTAL',  icon:'💎', desc:'Immediately grants +2 to all stats.',                      rarity:'rare',      type:'consumable', effect:'stat_all_2',        weight:7  },
-  { id:'iron_constitution',name:'IRON CONSTITUTION',  icon:'🛡️', desc:'Absorb the next 2 daily penalties.',                  rarity:'rare',      type:'consumable', effect:'penalty_shield_2',  weight:5  },
-  { id:'battle_manual',    name:'BATTLE MANUAL',      icon:'📜', desc:'+25% XP on all quests for 5 days.',                        rarity:'rare',      type:'buff',       effect:'xp_boost_days',    weight:4,  days:5 },
-  { id:'challengers_mark', name:"CHALLENGER'S MARK",  icon:'⚡', desc:'×2 XP on all quests for 1 day. Use it wisely.',             rarity:'legendary', type:'buff',       effect:'xp_double_day',    weight:2,  days:1 },
+const VERSION=2,STORAGE_KEY='gorgon.system.v2',STAT_KEYS=['STR','AGI','VIT','INT','SEN'];
+const ITEM_CATALOGUE=[
+  {id:'recovery_draft',name:'RECOVERY DRAFT',icon:'🧪',desc:'Absorb the next daily penalty. Failure costs nothing.',rarity:'common',type:'consumable',effect:'penalty_shield_1',weight:25},
+  {id:'iron_supplement',name:'IRON SUPPLEMENT',icon:'💊',desc:'+50% XP on your next completed quest.',rarity:'common',type:'consumable',effect:'xp_boost_next',weight:25},
+  {id:'warriors_resolve',name:"WARRIOR'S RESOLVE",icon:'⚔️',desc:'+3 STR for 3 days. Train while the buff holds.',rarity:'uncommon',type:'buff',effect:'stat_str_3',weight:18,days:3},
+  {id:'scholars_focus',name:"SCHOLAR'S FOCUS",icon:'📖',desc:'+3 INT for 3 days. Study while the window is open.',rarity:'uncommon',type:'buff',effect:'stat_int_3',weight:18,days:3},
+  {id:'awakening_crystal',name:'AWAKENING CRYSTAL',icon:'💎',desc:'Immediately grants +2 to all stats.',rarity:'rare',type:'consumable',effect:'stat_all_2',weight:7},
+  {id:'iron_constitution',name:'IRON CONSTITUTION',icon:'🛡️',desc:'Absorb the next 2 daily penalties.',rarity:'rare',type:'consumable',effect:'penalty_shield_2',weight:5},
+  {id:'battle_manual',name:'BATTLE MANUAL',icon:'📜',desc:'+25% XP on all quests for 5 days.',rarity:'rare',type:'buff',effect:'xp_boost_days',weight:4,days:5},
+  {id:'challengers_mark',name:"CHALLENGER'S MARK",icon:'⚡',desc:'×2 XP on all quests for 1 day. Use it wisely.',rarity:'legendary',type:'buff',effect:'xp_double_day',weight:2,days:1},
 ];
-
-const RARITY_COLORS = { common:'var(--cyan-dim)', uncommon:'var(--cyan)', rare:'var(--gold)', legendary:'var(--magenta)' };
-
-const DEFAULT_QUESTS = [
-  { nameTemplate:'{n} Push-Ups',            baseTarget:25, currentTarget:25, scaleFactor:1.08, xp:20 },
-  { nameTemplate:'{n} Sit-Ups',             baseTarget:25, currentTarget:25, scaleFactor:1.08, xp:15 },
-  { nameTemplate:'{n}-min Walk or Run',     baseTarget:20, currentTarget:20, scaleFactor:1.06, xp:25 },
-  { nameTemplate:'{n}-min Focused Reading', baseTarget:20, currentTarget:20, scaleFactor:1.05, xp:20 },
-  { name:'Drink 8 glasses of water',                                                            xp:10 },
-  { name:"Tackle one thing you've been putting off",                                             xp:30 },
+const RARITY_COLORS={common:'var(--cyan-dim)',uncommon:'var(--cyan)',rare:'var(--gold)',legendary:'var(--magenta)'};
+const DEFAULT_QUESTS=[
+  {nameTemplate:'{n} Push-Ups',baseTarget:25,currentTarget:25,scaleFactor:1.08,xp:20},
+  {nameTemplate:'{n} Sit-Ups',baseTarget:25,currentTarget:25,scaleFactor:1.08,xp:15},
+  {nameTemplate:'{n}-min Walk or Run',baseTarget:20,currentTarget:20,scaleFactor:1.06,xp:25},
+  {nameTemplate:'{n}-min Focused Reading',baseTarget:20,currentTarget:20,scaleFactor:1.05,xp:20},
+  {name:'Drink 8 glasses of water',xp:10},
+  {name:"Tackle one thing you've been putting off",xp:30},
 ];
-
-const TITLES = [
-  { id:'awakened',     name:'AWAKENED',          desc:'Reach Level 5.',                       tier:'rare',      xp:50,   check:s=>s.lvl>=5 },
-  { id:'erank',        name:'E-RANK HUNTER',     desc:'Reach Level 10.',                      tier:'rare',      xp:100,  check:s=>s.lvl>=10 },
-  { id:'drank',        name:'D-RANK HUNTER',     desc:'Reach Level 25.',                      tier:'rare',      xp:250,  check:s=>s.lvl>=25 },
-  { id:'crank',        name:'C-RANK HUNTER',     desc:'Reach Level 50.',                      tier:'epic',      xp:500,  check:s=>s.lvl>=50 },
-  { id:'brank',        name:'B-RANK HUNTER',     desc:'Reach Level 75.',                      tier:'epic',      xp:750,  check:s=>s.lvl>=75 },
-  { id:'arank',        name:'A-RANK HUNTER',     desc:'Reach Level 90.',                      tier:'legendary', xp:1000, check:s=>s.lvl>=90 },
-  { id:'srank',        name:'S-RANK HUNTER',     desc:'Reach Level 100.',                     tier:'legendary', xp:2000, check:s=>s.lvl>=100 },
-  { id:'monarch',      name:'SHADOW MONARCH',    desc:'Reach Level 150.',                     tier:'legendary', xp:5000, hidden:true, check:s=>s.lvl>=150 },
-  { id:'streak7',      name:'IRON WILL',         desc:'Hold a 7-day streak.',                 tier:'common',    xp:50,   check:s=>s.streak>=7||s.streakBest>=7 },
-  { id:'streak30',     name:'DISCIPLINED',       desc:'Hold a 30-day streak.',                tier:'rare',      xp:200,  check:s=>s.streak>=30||s.streakBest>=30 },
-  { id:'streak100',    name:'UNBREAKABLE',       desc:'Hold a 100-day streak.',               tier:'epic',      xp:500,  check:s=>s.streak>=100||s.streakBest>=100 },
-  { id:'streak365',    name:'ARCHITECT OF SELF', desc:'Hold a 365-day streak.',               tier:'legendary', xp:2000, check:s=>s.streak>=365||s.streakBest>=365 },
-  { id:'spec_str',     name:'STRONGMAN',         desc:'STR reaches 25.',                      tier:'rare',      xp:100,  check:s=>s.stats.STR>=25 },
-  { id:'spec_agi',     name:'SWIFT',             desc:'AGI reaches 25.',                      tier:'rare',      xp:100,  check:s=>s.stats.AGI>=25 },
-  { id:'spec_vit',     name:'ENDURING',          desc:'VIT reaches 25.',                      tier:'rare',      xp:100,  check:s=>s.stats.VIT>=25 },
-  { id:'spec_int',     name:'SCHOLAR',           desc:'INT reaches 25.',                      tier:'rare',      xp:100,  check:s=>s.stats.INT>=25 },
-  { id:'spec_sen',     name:'AWARE',             desc:'SEN reaches 25.',                      tier:'rare',      xp:100,  check:s=>s.stats.SEN>=25 },
-  { id:'master_any',   name:'MASTER',            desc:'Any single stat reaches 50.',          tier:'epic',      xp:300,  check:s=>STAT_KEYS.some(k=>s.stats[k]>=50) },
-  { id:'sovereign',    name:'SOVEREIGN',         desc:'Any single stat reaches 100.',         tier:'legendary', xp:1500, check:s=>STAT_KEYS.some(k=>s.stats[k]>=100) },
-  { id:'balanced',     name:'WELL-ROUNDED',      desc:'All stats reach 20.',                  tier:'rare',      xp:200,  check:s=>STAT_KEYS.every(k=>s.stats[k]>=20) },
-  { id:'polymath',     name:'POLYMATH',          desc:'All stats reach 50.',                  tier:'legendary', xp:1000, check:s=>STAT_KEYS.every(k=>s.stats[k]>=50) },
-  { id:'initiate',     name:'INITIATE',          desc:'Clear 10 Daily Quests in total.',      tier:'common',    xp:50,   check:s=>s.questsCleared>=10 },
-  { id:'veteran',      name:'VETERAN HUNTER',    desc:'Clear 100 Daily Quests in total.',     tier:'epic',      xp:500,  check:s=>s.questsCleared>=100 },
-  { id:'legend',       name:'LEGENDARY HUNTER',  desc:'Clear 365 Daily Quests in total.',     tier:'legendary', xp:2000, check:s=>s.questsCleared>=365 },
-  { id:'phoenix',      name:'PHOENIX',           desc:'Clear a quest the day after a penalty.',tier:'rare',     xp:150,  hidden:true, check:s=>s._phoenixUnlock===true },
-  { id:'reincarnated', name:'REINCARNATED',      desc:'Import a save file.',                  tier:'common',    xp:25,   hidden:true, check:s=>s.importedOnce===true },
-  { id:'hoarder',      name:'HOARDER',           desc:'Hold 3 items in inventory at once.',   tier:'common',    xp:30,   check:s=>(s.inventory||[]).length>=3 },
-  { id:'well_equipped',name:'WELL EQUIPPED',     desc:'Receive 10 item drops total.',         tier:'rare',      xp:150,  check:s=>(s.totalDrops||0)>=10 },
+const TITLES=[
+  {id:'awakened',name:'AWAKENED',desc:'Reach Level 5.',tier:'rare',xp:50,check:s=>s.lvl>=5},
+  {id:'erank',name:'E-RANK HUNTER',desc:'Reach Level 10.',tier:'rare',xp:100,check:s=>s.lvl>=10},
+  {id:'drank',name:'D-RANK HUNTER',desc:'Reach Level 25.',tier:'rare',xp:250,check:s=>s.lvl>=25},
+  {id:'crank',name:'C-RANK HUNTER',desc:'Reach Level 50.',tier:'epic',xp:500,check:s=>s.lvl>=50},
+  {id:'brank',name:'B-RANK HUNTER',desc:'Reach Level 75.',tier:'epic',xp:750,check:s=>s.lvl>=75},
+  {id:'arank',name:'A-RANK HUNTER',desc:'Reach Level 90.',tier:'legendary',xp:1000,check:s=>s.lvl>=90},
+  {id:'srank',name:'S-RANK HUNTER',desc:'Reach Level 100.',tier:'legendary',xp:2000,check:s=>s.lvl>=100},
+  {id:'monarch',name:'SHADOW MONARCH',desc:'Reach Level 150.',tier:'legendary',xp:5000,hidden:true,check:s=>s.lvl>=150},
+  {id:'streak7',name:'IRON WILL',desc:'Hold a 7-day streak.',tier:'common',xp:50,check:s=>s.streak>=7||s.streakBest>=7},
+  {id:'streak30',name:'DISCIPLINED',desc:'Hold a 30-day streak.',tier:'rare',xp:200,check:s=>s.streak>=30||s.streakBest>=30},
+  {id:'streak100',name:'UNBREAKABLE',desc:'Hold a 100-day streak.',tier:'epic',xp:500,check:s=>s.streak>=100||s.streakBest>=100},
+  {id:'streak365',name:'ARCHITECT OF SELF',desc:'Hold a 365-day streak.',tier:'legendary',xp:2000,check:s=>s.streak>=365||s.streakBest>=365},
+  {id:'spec_str',name:'STRONGMAN',desc:'STR reaches 25.',tier:'rare',xp:100,check:s=>s.stats.STR>=25},
+  {id:'spec_agi',name:'SWIFT',desc:'AGI reaches 25.',tier:'rare',xp:100,check:s=>s.stats.AGI>=25},
+  {id:'spec_vit',name:'ENDURING',desc:'VIT reaches 25.',tier:'rare',xp:100,check:s=>s.stats.VIT>=25},
+  {id:'spec_int',name:'SCHOLAR',desc:'INT reaches 25.',tier:'rare',xp:100,check:s=>s.stats.INT>=25},
+  {id:'spec_sen',name:'AWARE',desc:'SEN reaches 25.',tier:'rare',xp:100,check:s=>s.stats.SEN>=25},
+  {id:'master_any',name:'MASTER',desc:'Any single stat reaches 50.',tier:'epic',xp:300,check:s=>STAT_KEYS.some(k=>s.stats[k]>=50)},
+  {id:'sovereign',name:'SOVEREIGN',desc:'Any single stat reaches 100.',tier:'legendary',xp:1500,check:s=>STAT_KEYS.some(k=>s.stats[k]>=100)},
+  {id:'balanced',name:'WELL-ROUNDED',desc:'All stats reach 20.',tier:'rare',xp:200,check:s=>STAT_KEYS.every(k=>s.stats[k]>=20)},
+  {id:'polymath',name:'POLYMATH',desc:'All stats reach 50.',tier:'legendary',xp:1000,check:s=>STAT_KEYS.every(k=>s.stats[k]>=50)},
+  {id:'initiate',name:'INITIATE',desc:'Clear 10 Daily Quests in total.',tier:'common',xp:50,check:s=>s.questsCleared>=10},
+  {id:'veteran',name:'VETERAN HUNTER',desc:'Clear 100 Daily Quests in total.',tier:'epic',xp:500,check:s=>s.questsCleared>=100},
+  {id:'legend',name:'LEGENDARY HUNTER',desc:'Clear 365 Daily Quests in total.',tier:'legendary',xp:2000,check:s=>s.questsCleared>=365},
+  {id:'phoenix',name:'PHOENIX',desc:'Clear a quest the day after a penalty.',tier:'rare',xp:150,hidden:true,check:s=>s._phoenixUnlock===true},
+  {id:'reincarnated',name:'REINCARNATED',desc:'Import a save file.',tier:'common',xp:25,hidden:true,check:s=>s.importedOnce===true},
+  {id:'hoarder',name:'HOARDER',desc:'Hold 3 items in inventory at once.',tier:'common',xp:30,check:s=>(s.inventory||[]).length>=3},
+  {id:'well_equipped',name:'WELL EQUIPPED',desc:'Receive 10 item drops total.',tier:'rare',xp:150,check:s=>(s.totalDrops||0)>=10},
 ];
-
-const DEFAULT_STATE = {
-  version:VERSION, player:{name:'PLAYER',class:'CLASS — UNAWAKENED'},
-  lvl:1, xp:0, points:0, hp:100, mp:100,
-  stats:{STR:10,AGI:10,VIT:10,INT:10,SEN:10},
-  streak:0, streakBest:0, lastQuestDate:null, questsToday:[],
-  questTemplate:DEFAULT_QUESTS.map(q=>({...q})), log:[],
-  titles:[], equippedTitle:null,
-  questsCleared:0, lastClearedDate:null, penaltyYesterday:false, importedOnce:false,
-  inventory:[], activeBuffs:[], penaltyShields:0, xpBoostNext:false, nextDropDate:null, totalDrops:0,
-};
-
+const DEFAULT_STATE={version:VERSION,player:{name:'PLAYER',class:'CLASS — UNAWAKENED'},lvl:1,xp:0,points:0,hp:100,mp:100,stats:{STR:10,AGI:10,VIT:10,INT:10,SEN:10},streak:0,streakBest:0,lastQuestDate:null,questsToday:[],questTemplate:DEFAULT_QUESTS.map(q=>({...q})),log:[],titles:[],equippedTitle:null,questsCleared:0,lastClearedDate:null,penaltyYesterday:false,importedOnce:false,inventory:[],activeBuffs:[],penaltyShields:0,xpBoostNext:false,nextDropDate:null,totalDrops:0};
 let state=loadState();
-
 function xpForNext(l){return l*l*100;}
 function todayStr(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function nowTimeStr(){const d=new Date();return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}
 function addDays(ds,n){const d=new Date(ds+'T00:00:00');d.setDate(d.getDate()+n);return d.toISOString().slice(0,10);}
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function resolveQuestName(q){if(q.nameTemplate&&q.currentTarget!=null)return q.nameTemplate.replace('{n}',Math.round(q.currentTarget));return q.name||'Quest';}
-
 function saveState(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}catch(e){console.warn('Save failed',e);}}
 function loadState(){try{const r=localStorage.getItem(STORAGE_KEY);if(!r)return structuredClone(DEFAULT_STATE);return migrate(JSON.parse(r));}catch(e){return structuredClone(DEFAULT_STATE);}}
-function migrate(s){
-  const m=structuredClone(DEFAULT_STATE);
-  for(const k of Object.keys(m)){if(s[k]!==undefined)m[k]=s[k];}
-  if(!m.questTemplate||!m.questTemplate.length)m.questTemplate=DEFAULT_QUESTS.map(q=>({...q}));
-  for(const qt of m.questTemplate){if(qt.nameTemplate&&qt.currentTarget==null)qt.currentTarget=qt.baseTarget||10;}
-  for(const k of STAT_KEYS)if(m.stats[k]===undefined)m.stats[k]=10;
-  return m;
-}
+function migrate(s){const m=structuredClone(DEFAULT_STATE);for(const k of Object.keys(m)){if(s[k]!==undefined)m[k]=s[k];}if(!m.questTemplate||!m.questTemplate.length)m.questTemplate=DEFAULT_QUESTS.map(q=>({...q}));for(const qt of m.questTemplate){if(qt.nameTemplate&&qt.currentTarget==null)qt.currentTarget=qt.baseTarget||10;}for(const k of STAT_KEYS)if(m.stats[k]===undefined)m.stats[k]=10;return m;}
 function daysBetween(a,b){const da=new Date(a+'T00:00:00'),db=new Date(b+'T00:00:00');return Math.max(1,Math.round((db-da)/86400000));}
-
 function ensureTodayQuest(){
   const today=todayStr();if(state.lastQuestDate===today)return;
   if(state.lastQuestDate&&state.questsToday.length>0){
@@ -689,8 +615,7 @@ function checkTitles(){
   if(titleCheckTimer)return;
   titleCheckTimer=setTimeout(()=>{
     titleCheckTimer=null;
-    const ne=[];
-    for(const t of TITLES){if(hasTitle(t.id))continue;if(t.check(state))ne.push(t);}
+    const ne=[];for(const t of TITLES){if(hasTitle(t.id))continue;if(t.check(state))ne.push(t);}
     if(!ne.length)return;
     let delay=800;
     for(const t of ne){
