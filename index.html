@@ -51,7 +51,7 @@
     position: relative;
   }
   header .brand { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.4em; color: var(--cyan-dim); }
-  header .title { font-size: 28px; font-weight: 700; letter-spacing: 0.2em; color: var(--cyan); text-shadow: 0 0 16px var(--cyan-glow); margin-top: 4px; }
+  header .title { font-size: 28px; font-weight: 700; letter-spacing: 0.2em; color: var(--cyan); text-shadow: 0 0 16px var(--cyan-glow); margin-top: 4px; animation: title-breathe 3.5s ease-in-out infinite; }
   .settings-toggle {
     position: absolute; right: 0; top: 28px;
     background: transparent; border: 1px solid var(--cyan-dim); color: var(--cyan);
@@ -70,6 +70,7 @@
     clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
     padding: 18px 18px 20px;
     margin-bottom: 16px;
+    animation: panel-breathe 4s ease-in-out infinite;
   }
   .panel-label {
     font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 0.3em;
@@ -215,7 +216,7 @@
     transform: translateX(-50%) translateY(-200%);
     background: rgba(2,8,18,0.96); border: 1px solid var(--cyan); box-shadow: 0 0 24px var(--cyan-glow);
     padding: 14px 22px; font-family: 'Share Tech Mono', monospace; font-size: 13px;
-    color: var(--cyan); letter-spacing: 0.2em; z-index: 100;
+    color: var(--cyan); letter-spacing: 0.2em; z-index: 1000;
     transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
     clip-path: polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);
     max-width: 90vw; text-align: center;
@@ -275,12 +276,65 @@
   .title-row .tr-name.tier-epic      { color: var(--gold); }
   .title-row .tr-name.tier-legendary { color: var(--magenta); }
 
+  /* ── Solo Leveling ambient effects ── */
+
+  /* Scanline overlay — CRT / holographic texture */
+  #scanlines {
+    position: fixed; inset: 0;
+    background: repeating-linear-gradient(
+      180deg,
+      transparent 0px, transparent 3px,
+      rgba(0,15,35,0.055) 3px, rgba(0,15,35,0.055) 4px
+    );
+    pointer-events: none; z-index: 997;
+  }
+
+  /* Ambient radial glow behind everything — breathes slowly */
+  #ambient-bg {
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse 90% 55% at 50% -5%, rgba(42,139,184,0.16) 0%, transparent 65%),
+      radial-gradient(ellipse 40% 30% at 50% 100%, rgba(42,139,184,0.07) 0%, transparent 60%);
+    pointer-events: none; z-index: -1;
+    animation: ambient-breathe 6s ease-in-out infinite;
+  }
+  @keyframes ambient-breathe {
+    0%, 100% { opacity: 0.75; }
+    50%       { opacity: 1.0; }
+  }
+
+  /* Panel glow breathe */
+  @keyframes panel-breathe {
+    0%, 100% {
+      box-shadow:
+        0 0 0 1px rgba(95,212,255,0.08) inset,
+        0 0 24px rgba(42,139,184,0.25),
+        0 0 60px rgba(42,139,184,0.10);
+    }
+    50% {
+      box-shadow:
+        0 0 0 1px rgba(95,212,255,0.16) inset,
+        0 0 32px rgba(42,139,184,0.44),
+        0 0 80px rgba(42,139,184,0.22),
+        0 0 120px rgba(42,139,184,0.08);
+    }
+  }
+
+  /* Title text-shadow breathe */
+  @keyframes title-breathe {
+    0%, 100% { text-shadow: 0 0 16px var(--cyan-glow); }
+    50%       { text-shadow: 0 0 28px var(--cyan-glow), 0 0 56px rgba(95,212,255,0.28), 0 0 90px rgba(95,212,255,0.10); }
+  }
+
   .footer-note { text-align: center; font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--dim); letter-spacing: 0.3em; margin-top: 24px; opacity: 0.6; }
   .hidden { display: none !important; }
   .hint { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--cyan-dim); letter-spacing: 0.12em; margin-top: 4px; padding-left: 78px; }
 </style>
 </head>
 <body>
+
+<div id="scanlines"></div>
+<div id="ambient-bg"></div>
 
 <header>
   <div class="brand">// GORGON.LIVE</div>
@@ -447,7 +501,6 @@ const VERSION = 2;
 const STORAGE_KEY = 'gorgon.system.v2';
 const STAT_KEYS = ['STR','AGI','VIT','INT','SEN'];
 
-// ── Item/perk catalogue ────────────────────────────────────────────
 const ITEM_CATALOGUE = [
   { id:'recovery_draft',   name:'RECOVERY DRAFT',    icon:'🧪', desc:'Absorb the next daily penalty. Failure costs nothing.',    rarity:'common',    type:'consumable', effect:'penalty_shield_1', weight:25 },
   { id:'iron_supplement',  name:'IRON SUPPLEMENT',   icon:'💊', desc:'+50% XP on your next completed quest.',                    rarity:'common',    type:'consumable', effect:'xp_boost_next',    weight:25 },
@@ -455,13 +508,12 @@ const ITEM_CATALOGUE = [
   { id:'scholars_focus',   name:"SCHOLAR'S FOCUS",   icon:'📖', desc:'+3 INT for 3 days. Study while the window is open.',        rarity:'uncommon',  type:'buff',       effect:'stat_int_3',       weight:18, days:3 },
   { id:'awakening_crystal',name:'AWAKENING CRYSTAL',  icon:'💎', desc:'Immediately grants +2 to all stats.',                      rarity:'rare',      type:'consumable', effect:'stat_all_2',        weight:7  },
   { id:'iron_constitution',name:'IRON CONSTITUTION',  icon:'🛡️', desc:'Absorb the next 2 daily penalties.',                  rarity:'rare',      type:'consumable', effect:'penalty_shield_2',  weight:5  },
-  { id:'battle_manual',    name:'BATTLE MANUAL',      icon:'📜', desc:'+25% XP on all quests for 5 days.',                        rarity:'rare',      type:'buff',       effect:'xp_boost_days',    weight:4, days:5 },
-  { id:'challengers_mark', name:"CHALLENGER'S MARK",  icon:'⚡', desc:'×2 XP on all quests for 1 day. Use it wisely.',             rarity:'legendary', type:'buff',       effect:'xp_double_day',    weight:2, days:1 },
+  { id:'battle_manual',    name:'BATTLE MANUAL',      icon:'📜', desc:'+25% XP on all quests for 5 days.',                        rarity:'rare',      type:'buff',       effect:'xp_boost_days',    weight:4,  days:5 },
+  { id:'challengers_mark', name:"CHALLENGER'S MARK",  icon:'⚡', desc:'×2 XP on all quests for 1 day. Use it wisely.',             rarity:'legendary', type:'buff',       effect:'xp_double_day',    weight:2,  days:1 },
 ];
 
 const RARITY_COLORS = { common:'var(--cyan-dim)', uncommon:'var(--cyan)', rare:'var(--gold)', legendary:'var(--magenta)' };
 
-// ── Default quest templates ──────────────────────────────────────────
 const DEFAULT_QUESTS = [
   { nameTemplate:'{n} Push-Ups',            baseTarget:25, currentTarget:25, scaleFactor:1.08, xp:20 },
   { nameTemplate:'{n} Sit-Ups',             baseTarget:25, currentTarget:25, scaleFactor:1.08, xp:15 },
@@ -471,7 +523,6 @@ const DEFAULT_QUESTS = [
   { name:"Tackle one thing you've been putting off",                                             xp:30 },
 ];
 
-// ── Titles registry ────────────────────────────────────────────
 const TITLES = [
   { id:'awakened',     name:'AWAKENED',          desc:'Reach Level 5.',                       tier:'rare',      xp:50,   check:s=>s.lvl>=5 },
   { id:'erank',        name:'E-RANK HUNTER',     desc:'Reach Level 10.',                      tier:'rare',      xp:100,  check:s=>s.lvl>=10 },
@@ -503,23 +554,20 @@ const TITLES = [
   { id:'well_equipped',name:'WELL EQUIPPED',     desc:'Receive 10 item drops total.',         tier:'rare',      xp:150,  check:s=>(s.totalDrops||0)>=10 },
 ];
 
-// ── Default state ─────────────────────────────────────────────────
 const DEFAULT_STATE = {
-  version: VERSION,
-  player: { name:'PLAYER', class:'CLASS — UNAWAKENED' },
-  lvl:1, xp:0, points:0,
-  hp:100, mp:100,
-  stats: { STR:10, AGI:10, VIT:10, INT:10, SEN:10 },
-  streak:0, streakBest:0,
-  lastQuestDate:null, questsToday:[], questTemplate:DEFAULT_QUESTS.map(q=>({...q})), log:[],
+  version:VERSION, player:{name:'PLAYER',class:'CLASS — UNAWAKENED'},
+  lvl:1, xp:0, points:0, hp:100, mp:100,
+  stats:{STR:10,AGI:10,VIT:10,INT:10,SEN:10},
+  streak:0, streakBest:0, lastQuestDate:null, questsToday:[],
+  questTemplate:DEFAULT_QUESTS.map(q=>({...q})), log:[],
   titles:[], equippedTitle:null,
   questsCleared:0, lastClearedDate:null, penaltyYesterday:false, importedOnce:false,
   inventory:[], activeBuffs:[], penaltyShields:0, xpBoostNext:false, nextDropDate:null, totalDrops:0,
 };
 
-let state = loadState();
+let state=loadState();
 
-function xpForNext(lvl){return lvl*lvl*100;}
+function xpForNext(l){return l*l*100;}
 function todayStr(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function nowTimeStr(){const d=new Date();return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}
 function addDays(ds,n){const d=new Date(ds+'T00:00:00');d.setDate(d.getDate()+n);return d.toISOString().slice(0,10);}
@@ -527,13 +575,7 @@ function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':
 function resolveQuestName(q){if(q.nameTemplate&&q.currentTarget!=null)return q.nameTemplate.replace('{n}',Math.round(q.currentTarget));return q.name||'Quest';}
 
 function saveState(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}catch(e){console.warn('Save failed',e);}}
-function loadState(){
-  try{
-    const raw=localStorage.getItem(STORAGE_KEY);
-    if(!raw)return structuredClone(DEFAULT_STATE);
-    return migrate(JSON.parse(raw));
-  }catch(e){console.warn('Load failed',e);return structuredClone(DEFAULT_STATE);}
-}
+function loadState(){try{const r=localStorage.getItem(STORAGE_KEY);if(!r)return structuredClone(DEFAULT_STATE);return migrate(JSON.parse(r));}catch(e){return structuredClone(DEFAULT_STATE);}}
 function migrate(s){
   const m=structuredClone(DEFAULT_STATE);
   for(const k of Object.keys(m)){if(s[k]!==undefined)m[k]=s[k];}
@@ -545,100 +587,54 @@ function migrate(s){
 function daysBetween(a,b){const da=new Date(a+'T00:00:00'),db=new Date(b+'T00:00:00');return Math.max(1,Math.round((db-da)/86400000));}
 
 function ensureTodayQuest(){
-  const today=todayStr();
-  if(state.lastQuestDate===today)return;
+  const today=todayStr();if(state.lastQuestDate===today)return;
   if(state.lastQuestDate&&state.questsToday.length>0){
     const allDone=state.questsToday.every(q=>q.done);
-    if(allDone){
-      state.streak++;if(state.streak>state.streakBest)state.streakBest=state.streak;
-      logLine(`${state.lastQuestDate} — Daily Quest cleared. Streak: ${state.streak}.`,'gold');
-      state.penaltyYesterday=false;scaleQuestTargets();checkItemDrop(today);
-    }else{
-      const completed=state.questsToday.filter(q=>q.done).length;
-      const missed=daysBetween(state.lastQuestDate,today);
-      for(let i=0;i<missed;i++)applyPenalty(true);
-      state.streak=0;state.penaltyYesterday=true;
-      logLine(`${state.lastQuestDate} — Daily Quest failed (${completed}/${state.questsToday.length}). Streak broken.`,'penalty');
-    }
+    if(allDone){state.streak++;if(state.streak>state.streakBest)state.streakBest=state.streak;logLine(`${state.lastQuestDate} — Daily Quest cleared. Streak: ${state.streak}.`,'gold');state.penaltyYesterday=false;scaleQuestTargets();checkItemDrop(today);}
+    else{const c=state.questsToday.filter(q=>q.done).length,missed=daysBetween(state.lastQuestDate,today);for(let i=0;i<missed;i++)applyPenalty(true);state.streak=0;state.penaltyYesterday=true;logLine(`${state.lastQuestDate} — Daily Quest failed (${c}/${state.questsToday.length}). Streak broken.`,'penalty');}
   }
   tickBuffExpiry(today);
   state.questsToday=state.questTemplate.map((q,i)=>({id:'q'+i,name:resolveQuestName(q),xp:q.xp,done:false}));
-  state.lastQuestDate=today;
-  logLine(`${nowTimeStr()} — Daily Quest issued.`);
-  saveState();checkTitles();
+  state.lastQuestDate=today;logLine(`${nowTimeStr()} — Daily Quest issued.`);saveState();checkTitles();
 }
-
-function scaleQuestTargets(){
-  for(const qt of state.questTemplate){
-    if(qt.nameTemplate&&qt.scaleFactor&&qt.scaleFactor>1&&qt.currentTarget){
-      const max=qt.maxTarget||(qt.baseTarget*5);
-      qt.currentTarget=Math.min(qt.currentTarget*qt.scaleFactor,max);
-    }
-  }
-}
-
+function scaleQuestTargets(){for(const qt of state.questTemplate){if(qt.nameTemplate&&qt.scaleFactor&&qt.scaleFactor>1&&qt.currentTarget){const max=qt.maxTarget||(qt.baseTarget*5);qt.currentTarget=Math.min(qt.currentTarget*qt.scaleFactor,max);}}}
 function completeQuest(id){
-  const q=state.questsToday.find(x=>x.id===id);if(!q||q.done)return;
-  q.done=true;
-  let xpAmt=q.xp;
-  if(state.xpBoostNext){xpAmt=Math.round(xpAmt*1.5);state.xpBoostNext=false;logLine(`${nowTimeStr()} — IRON SUPPLEMENT consumed. XP boosted.`,'item');}
-  const xpBuff=getActiveBuff('xp_boost_days');if(xpBuff)xpAmt=Math.round(xpAmt*1.25);
-  const x2Buff=getActiveBuff('xp_double_day');if(x2Buff)xpAmt=Math.round(xpAmt*2);
-  gainXP(xpAmt);
-  toast(`[QUEST CLEARED. +${xpAmt} XP]`,'cyan');
-  logLine(`${nowTimeStr()} — ${q.name} cleared. +${xpAmt} XP.`);
+  const q=state.questsToday.find(x=>x.id===id);if(!q||q.done)return;q.done=true;
+  let xp=q.xp;
+  if(state.xpBoostNext){xp=Math.round(xp*1.5);state.xpBoostNext=false;logLine(`${nowTimeStr()} — IRON SUPPLEMENT consumed. XP boosted.`,'item');}
+  const xpB=getActiveBuff('xp_boost_days');if(xpB)xp=Math.round(xp*1.25);
+  const x2B=getActiveBuff('xp_double_day');if(x2B)xp=Math.round(xp*2);
+  gainXP(xp);toast(`[QUEST CLEARED. +${xp} XP]`,'cyan');logLine(`${nowTimeStr()} — ${q.name} cleared. +${xp} XP.`);
   if(state.questsToday.every(x=>x.done)){
     setTimeout(()=>toast('[DAILY QUEST COMPLETE]','gold'),600);
     const today=todayStr();
-    if(state.lastClearedDate!==today){
-      state.lastClearedDate=today;state.questsCleared=(state.questsCleared||0)+1;
-      if(state.penaltyYesterday){state._phoenixUnlock=true;state.penaltyYesterday=false;}
-    }
+    if(state.lastClearedDate!==today){state.lastClearedDate=today;state.questsCleared=(state.questsCleared||0)+1;if(state.penaltyYesterday){state._phoenixUnlock=true;state.penaltyYesterday=false;}}
     checkTitles();
   }
   saveState();render();
 }
-
-function gainXP(amt){
-  state.xp+=amt;
-  while(state.xp>=xpForNext(state.lvl)){state.xp-=xpForNext(state.lvl);state.lvl++;state.points+=5;setTimeout(()=>toast(`[LEVEL UP — LV ${state.lvl}]`,'gold'),400);logLine(`${nowTimeStr()} — LEVEL UP. Reached Lv ${state.lvl}. +5 stat points.`,'gold');}
-  checkTitles();
-}
-function allocateStat(k){
-  if(state.points<=0)return;state.stats[k]++;state.points--;
-  toast(`[${k} +1]`,'cyan');logLine(`${nowTimeStr()} — Stat allocated. ${k} +1.`);
-  saveState();render();checkTitles();
-}
+function gainXP(amt){state.xp+=amt;while(state.xp>=xpForNext(state.lvl)){state.xp-=xpForNext(state.lvl);state.lvl++;state.points+=5;setTimeout(()=>toast(`[LEVEL UP — LV ${state.lvl}]`,'gold'),400);logLine(`${nowTimeStr()} — LEVEL UP. Reached Lv ${state.lvl}. +5 stat points.`,'gold');}checkTitles();}
+function allocateStat(k){if(state.points<=0)return;state.stats[k]++;state.points--;toast(`[${k} +1]`,'cyan');logLine(`${nowTimeStr()} — Stat allocated. ${k} +1.`);saveState();render();checkTitles();}
 function applyPenalty(silent){
-  if(state.penaltyShields>0){
-    state.penaltyShields--;const msg=`${silent?state.lastQuestDate:nowTimeStr()} — Penalty blocked by shield. Shields left: ${state.penaltyShields}.`;
-    logLine(msg,'item');if(!silent){toast('[PENALTY BLOCKED BY SHIELD]','item');saveState();render();}return;
-  }
+  if(state.penaltyShields>0){state.penaltyShields--;const msg=`${silent?state.lastQuestDate:nowTimeStr()} — Penalty blocked by shield. Shields left: ${state.penaltyShields}.`;logLine(msg,'item');if(!silent){toast('[PENALTY BLOCKED BY SHIELD]','item');saveState();render();}return;}
   const keys=STAT_KEYS.filter(k=>state.stats[k]>0);if(!keys.length)return;
   const k=keys[Math.floor(Math.random()*keys.length)];state.stats[k]--;
-  if(!silent){toast(`[PENALTY APPLIED. ${k} −1]`,'danger');logLine(`${nowTimeStr()} — PENALTY APPLIED. ${k} −1.`,'penalty');saveState();render();}
-  else logLine(`${state.lastQuestDate} — PENALTY. ${k} −1.`,'penalty');
+  if(!silent){toast(`[PENALTY APPLIED. ${k} −1]`,'danger');logLine(`${nowTimeStr()} — PENALTY APPLIED. ${k} −1.`,'penalty');saveState();render();}else logLine(`${state.lastQuestDate} — PENALTY. ${k} −1.`,'penalty');
 }
-
 function getItemDef(id){return ITEM_CATALOGUE.find(x=>x.id===id);}
 function getActiveBuff(effect){return state.activeBuffs.find(b=>b.effect===effect);}
-function rollDrop(){
-  const total=ITEM_CATALOGUE.reduce((s,x)=>s+x.weight,0);let r=Math.random()*total;
-  for(const item of ITEM_CATALOGUE){r-=item.weight;if(r<=0)return item;}return ITEM_CATALOGUE[0];
-}
+function rollDrop(){const t=ITEM_CATALOGUE.reduce((s,x)=>s+x.weight,0);let r=Math.random()*t;for(const item of ITEM_CATALOGUE){r-=item.weight;if(r<=0)return item;}return ITEM_CATALOGUE[0];}
 function checkItemDrop(today){
-  if(!state.nextDropDate)state.nextDropDate=today;
-  if(today<state.nextDropDate)return;
-  const dropped=rollDrop();state.totalDrops=(state.totalDrops||0)+1;
+  if(!state.nextDropDate)state.nextDropDate=today;if(today<state.nextDropDate)return;
+  const d=rollDrop();state.totalDrops=(state.totalDrops||0)+1;
   state.nextDropDate=addDays(today,3+Math.floor(Math.random()*3));
-  if(dropped.type==='buff')applyBuffDrop(dropped,today);
-  else{const inst={id:dropped.id,instanceId:Date.now()+'',addedDate:today};state.inventory.push(inst);logLine(`${nowTimeStr()} — ITEM RECEIVED: ${dropped.name}.`,'item');setTimeout(()=>toast(`[ITEM DROP — ${dropped.name}]`,'item'),1000);}
+  if(d.type==='buff')applyBuffDrop(d,today);
+  else{state.inventory.push({id:d.id,instanceId:Date.now()+'',addedDate:today});logLine(`${nowTimeStr()} — ITEM RECEIVED: ${d.name}.`,'item');setTimeout(()=>toast(`[ITEM DROP — ${d.name}]`,'item'),1000);}
   checkTitles();
 }
 function applyBuffDrop(item,today){
-  const expiresDate=addDays(today,item.days);
-  state.activeBuffs=state.activeBuffs.filter(b=>b.effect!==item.effect);
-  state.activeBuffs.push({id:item.id,instanceId:Date.now()+'',effect:item.effect,expiresDate,daysLeft:item.days});
+  const exp=addDays(today,item.days);state.activeBuffs=state.activeBuffs.filter(b=>b.effect!==item.effect);
+  state.activeBuffs.push({id:item.id,instanceId:Date.now()+'',effect:item.effect,expiresDate:exp,daysLeft:item.days});
   if(item.effect==='stat_str_3'){state.stats.STR+=3;logLine(`${nowTimeStr()} — BUFF ACTIVE: ${item.name}. STR +3 for ${item.days} days.`,'item');}
   if(item.effect==='stat_int_3'){state.stats.INT+=3;logLine(`${nowTimeStr()} — BUFF ACTIVE: ${item.name}. INT +3 for ${item.days} days.`,'item');}
   if(item.effect==='xp_boost_days')logLine(`${nowTimeStr()} — BUFF ACTIVE: ${item.name}. +25% XP for ${item.days} days.`,'item');
@@ -656,8 +652,8 @@ function useInventoryItem(instanceId){
   saveState();render();checkTitles();
 }
 function tickBuffExpiry(today){
-  const expired=[];state.activeBuffs=state.activeBuffs.filter(b=>{if(today>=b.expiresDate){expired.push(b);return false;}return true;});
-  for(const b of expired){const item=getItemDef(b.id);if(b.effect==='stat_str_3')state.stats.STR=Math.max(10,state.stats.STR-3);if(b.effect==='stat_int_3')state.stats.INT=Math.max(10,state.stats.INT-3);if(item)logLine(`${today} — BUFF EXPIRED: ${item.name}.`,'item');}
+  const exp=[];state.activeBuffs=state.activeBuffs.filter(b=>{if(today>=b.expiresDate){exp.push(b);return false;}return true;});
+  for(const b of exp){const item=getItemDef(b.id);if(b.effect==='stat_str_3')state.stats.STR=Math.max(10,state.stats.STR-3);if(b.effect==='stat_int_3')state.stats.INT=Math.max(10,state.stats.INT-3);if(item)logLine(`${today} — BUFF EXPIRED: ${item.name}.`,'item');}
 }
 function debugDrop(){checkItemDrop(todayStr());state.nextDropDate=todayStr();saveState();render();}
 function buffSummaryLines(){
@@ -667,7 +663,6 @@ function buffSummaryLines(){
   if(state.xpBoostNext)lines.push('💊 IRON SUPPLEMENT  [next quest +50% XP]');
   return lines;
 }
-
 function getTitle(id){return TITLES.find(t=>t.id===id);}
 function hasTitle(id){return state.titles.some(x=>x.id===id);}
 let titleCheckTimer=null;
@@ -675,13 +670,12 @@ function checkTitles(){
   if(titleCheckTimer)return;
   titleCheckTimer=setTimeout(()=>{
     titleCheckTimer=null;
-    const newlyEarned=[];
-    for(const t of TITLES){if(hasTitle(t.id))continue;if(t.check(state))newlyEarned.push(t);}
-    if(!newlyEarned.length)return;
+    const ne=[];
+    for(const t of TITLES){if(hasTitle(t.id))continue;if(t.check(state))ne.push(t);}
+    if(!ne.length)return;
     let delay=800;
-    for(const t of newlyEarned){
-      state.titles.push({id:t.id,t:Date.now()});
-      logLine(`${nowTimeStr()} — TITLE ACQUIRED: ${t.name}. +${t.xp} XP.`,'title');
+    for(const t of ne){
+      state.titles.push({id:t.id,t:Date.now()});logLine(`${nowTimeStr()} — TITLE ACQUIRED: ${t.name}. +${t.xp} XP.`,'title');
       setTimeout(()=>toast(`[TITLE ACQUIRED — ${t.name}]`,'title'),delay);delay+=1400;
       state.xp+=t.xp;
       while(state.xp>=xpForNext(state.lvl)){state.xp-=xpForNext(state.lvl);state.lvl++;state.points+=5;logLine(`${nowTimeStr()} — LEVEL UP. Reached Lv ${state.lvl}. +5 stat points.`,'gold');}
@@ -690,11 +684,10 @@ function checkTitles(){
     saveState();render();
   },50);
 }
-
 function render(){
   document.getElementById('player-name').textContent=state.player.name;
-  const equipped=state.equippedTitle?getTitle(state.equippedTitle):null;
-  document.getElementById('player-class').textContent=equipped?`[ ${equipped.name} ]`:state.player.class;
+  const eq=state.equippedTitle?getTitle(state.equippedTitle):null;
+  document.getElementById('player-class').textContent=eq?`[ ${eq.name} ]`:state.player.class;
   document.getElementById('lvl').textContent=state.lvl;
   document.getElementById('xp-v').textContent=state.xp;
   document.getElementById('xp-next-v').textContent=xpForNext(state.lvl);
@@ -702,104 +695,47 @@ function render(){
   document.getElementById('hp-v').textContent=state.hp;document.getElementById('hp-bar').style.width=state.hp+'%';
   document.getElementById('mp-v').textContent=state.mp;document.getElementById('mp-bar').style.width=state.mp+'%';
   document.getElementById('streak').textContent=state.streak;document.getElementById('streak-best').textContent=state.streakBest;
-
-  const statBuffs={};
-  for(const b of state.activeBuffs){if(b.effect==='stat_str_3')statBuffs['STR']=(statBuffs['STR']||0)+3;if(b.effect==='stat_int_3')statBuffs['INT']=(statBuffs['INT']||0)+3;}
+  const sB={};for(const b of state.activeBuffs){if(b.effect==='stat_str_3')sB['STR']=(sB['STR']||0)+3;if(b.effect==='stat_int_3')sB['INT']=(sB['INT']||0)+3;}
   const grid=document.getElementById('stats-grid');grid.innerHTML='';
-  for(const k of STAT_KEYS){
-    const el=document.createElement('div');el.className='stat'+(state.points>0?' allocatable':'');
-    const ba=statBuffs[k]||0;
-    el.innerHTML=`<div class="stat-key">${k}</div><div class="stat-val">${state.stats[k]}</div>${ba?`<div class="stat-buff">+${ba}</div>`:''}` ;
-    el.addEventListener('click',()=>allocateStat(k));grid.appendChild(el);
-  }
+  for(const k of STAT_KEYS){const el=document.createElement('div');el.className='stat'+(state.points>0?' allocatable':'');const ba=sB[k]||0;el.innerHTML=`<div class="stat-key">${k}</div><div class="stat-val">${state.stats[k]}</div>${ba?`<div class="stat-buff">+${ba}</div>`:''}`;el.addEventListener('click',()=>allocateStat(k));grid.appendChild(el);}
   document.getElementById('points').textContent=state.points;
   document.getElementById('points-banner').classList.toggle('show',state.points>0);
-
-  const buffLines=buffSummaryLines();const buffRow=document.getElementById('buff-row');
-  if(buffLines.length){buffRow.innerHTML=buffLines.map(l=>`<div>${l}</div>`).join('');buffRow.classList.add('show');}else buffRow.classList.remove('show');
-
+  const bLines=buffSummaryLines();const bRow=document.getElementById('buff-row');
+  if(bLines.length){bRow.innerHTML=bLines.map(l=>`<div>${l}</div>`).join('');bRow.classList.add('show');}else bRow.classList.remove('show');
   const ql=document.getElementById('quest-list');ql.innerHTML='';
-  for(const q of state.questsToday){
-    const el=document.createElement('div');el.className='quest'+(q.done?' done':'');
-    el.innerHTML=`<div class="check"></div><div class="q-text">${escapeHtml(q.name)}</div><div class="q-xp">+${q.xp} XP</div>`;
-    el.addEventListener('click',()=>completeQuest(q.id));ql.appendChild(el);
-  }
-
-  const invPanel=document.getElementById('inventory-panel');const invGrid=document.getElementById('inv-grid');
-  const invItems=state.inventory||[];
-  const hasInv=invItems.length>0;const hasBuff=state.activeBuffs.length>0;
-  if(hasInv||hasBuff){
-    invPanel.classList.remove('hidden');invGrid.innerHTML='';
-    document.getElementById('inv-count').textContent=invItems.length+' ITEM'+(invItems.length!==1?'S':'');
-    for(const inst of invItems){
-      const item=getItemDef(inst.id);if(!item)continue;
-      const el=document.createElement('div');el.className='inv-item';
-      el.innerHTML=`<div class="inv-icon">${item.icon}</div><div class="inv-info"><div class="inv-name" style="color:${RARITY_COLORS[item.rarity]}">${escapeHtml(item.name)}</div><div class="inv-desc">${escapeHtml(item.desc)}</div><div class="inv-badge">${item.rarity.toUpperCase()}</div></div><button class="inv-use-btn" data-iid="${escapeHtml(inst.instanceId)}">USE</button>`;
-      el.querySelector('.inv-use-btn').addEventListener('click',e=>{useInventoryItem(e.target.dataset.iid);e.stopPropagation();});
-      invGrid.appendChild(el);
-    }
-    const today=todayStr();
-    for(const b of state.activeBuffs){
-      const item=getItemDef(b.id);if(!item)continue;
-      const dl=Math.max(0,Math.round((new Date(b.expiresDate+' 00:00:00')-new Date(today+' 00:00:00'))/86400000));
-      const el=document.createElement('div');el.className='inv-active';
-      el.innerHTML=`<span>${item.icon} ${escapeHtml(item.name)}</span><span class="inv-expires">EXPIRES IN ${dl}d</span>`;
-      invGrid.appendChild(el);
-    }
-  }else invPanel.classList.add('hidden');
-
-  const titlesPanel=document.getElementById('titles-panel');
+  for(const q of state.questsToday){const el=document.createElement('div');el.className='quest'+(q.done?' done':'');el.innerHTML=`<div class="check"></div><div class="q-text">${escapeHtml(q.name)}</div><div class="q-xp">+${q.xp} XP</div>`;el.addEventListener('click',()=>completeQuest(q.id));ql.appendChild(el);}
+  const invP=document.getElementById('inventory-panel'),invG=document.getElementById('inv-grid'),invI=state.inventory||[];
+  if(invI.length||state.activeBuffs.length){
+    invP.classList.remove('hidden');invG.innerHTML='';
+    document.getElementById('inv-count').textContent=invI.length+' ITEM'+(invI.length!==1?'S':'');
+    for(const inst of invI){const item=getItemDef(inst.id);if(!item)continue;const el=document.createElement('div');el.className='inv-item';el.innerHTML=`<div class="inv-icon">${item.icon}</div><div class="inv-info"><div class="inv-name" style="color:${RARITY_COLORS[item.rarity]}">${escapeHtml(item.name)}</div><div class="inv-desc">${escapeHtml(item.desc)}</div><div class="inv-badge">${item.rarity.toUpperCase()}</div></div><button class="inv-use-btn" data-iid="${escapeHtml(inst.instanceId)}">USE</button>`;el.querySelector('.inv-use-btn').addEventListener('click',e=>{useInventoryItem(e.target.dataset.iid);e.stopPropagation();});invG.appendChild(el);}
+    const today=todayStr();for(const b of state.activeBuffs){const item=getItemDef(b.id);if(!item)continue;const dl=Math.max(0,Math.round((new Date(b.expiresDate+' 00:00:00')-new Date(today+' 00:00:00'))/86400000));const el=document.createElement('div');el.className='inv-active';el.innerHTML=`<span>${item.icon} ${escapeHtml(item.name)}</span><span class="inv-expires">EXPIRES IN ${dl}d</span>`;invG.appendChild(el);}
+  }else invP.classList.add('hidden');
+  const tP=document.getElementById('titles-panel');
   if(state.titles.length){
-    titlesPanel.classList.remove('hidden');
-    const tgrid=document.getElementById('titles-grid');tgrid.innerHTML='';
-    for(const t of state.titles.slice().reverse().map(x=>getTitle(x.id)).filter(Boolean)){
-      const pill=document.createElement('div');
-      pill.className='title-pill '+t.tier+(state.equippedTitle===t.id?' equipped':'');
-      pill.title=t.desc;pill.textContent=t.name;tgrid.appendChild(pill);
-    }
+    tP.classList.remove('hidden');const tg=document.getElementById('titles-grid');tg.innerHTML='';
+    for(const t of state.titles.slice().reverse().map(x=>getTitle(x.id)).filter(Boolean)){const p=document.createElement('div');p.className='title-pill '+t.tier+(state.equippedTitle===t.id?' equipped':'');p.title=t.desc;p.textContent=t.name;tg.appendChild(p);}
     document.getElementById('titles-count').textContent=state.titles.length;
     document.getElementById('titles-total').textContent=TITLES.length;
     document.getElementById('titles-equipped-label').textContent=state.equippedTitle?`EQUIPPED: ${getTitle(state.equippedTitle)?.name||''}`:'NONE EQUIPPED';
-  }else titlesPanel.classList.add('hidden');
-
+  }else tP.classList.add('hidden');
   const logEl=document.getElementById('log');logEl.innerHTML='';
-  for(const entry of state.log.slice(0,20)){const d=document.createElement('div');d.className='line '+(entry.cls||'');d.textContent=entry.text;logEl.appendChild(d);}
-
-  const fullLogEl=document.getElementById('full-log');
-  if(fullLogEl){fullLogEl.innerHTML='';for(const entry of state.log){const d=document.createElement('div');d.className='line '+(entry.cls||'');d.textContent=entry.text;fullLogEl.appendChild(d);}const cEl=document.getElementById('full-log-count');if(cEl)cEl.textContent=state.log.length+' ENTR'+(state.log.length===1?'Y':'IES');}
-
-  const browser=document.getElementById('titles-browser');
-  if(browser){
-    browser.innerHTML='';
-    for(const t of TITLES){
-      const earned=hasTitle(t.id);if(t.hidden&&!earned)continue;
-      const row=document.createElement('div');row.className='title-row '+(earned?'unlocked':'locked');
-      row.innerHTML=`<div><div class="tr-name tier-${t.tier}">${earned?'✓ ':'🔒 '}${escapeHtml(t.name)}</div><div class="tr-desc">${escapeHtml(t.desc)}</div></div><div class="tr-badge">${t.tier.toUpperCase()} · +${t.xp} XP</div>`;
-      browser.appendChild(row);
-    }
-    const sc=document.getElementById('settings-titles-count');if(sc)sc.textContent=`${state.titles.length} / ${TITLES.length}`;
-  }
+  for(const e of state.log.slice(0,20)){const d=document.createElement('div');d.className='line '+(e.cls||'');d.textContent=e.text;logEl.appendChild(d);}
+  const fLog=document.getElementById('full-log');
+  if(fLog){fLog.innerHTML='';for(const e of state.log){const d=document.createElement('div');d.className='line '+(e.cls||'');d.textContent=e.text;fLog.appendChild(d);}const cEl=document.getElementById('full-log-count');if(cEl)cEl.textContent=state.log.length+' ENTR'+(state.log.length===1?'Y':'IES');}
+  const br=document.getElementById('titles-browser');
+  if(br){br.innerHTML='';for(const t of TITLES){const earned=hasTitle(t.id);if(t.hidden&&!earned)continue;const row=document.createElement('div');row.className='title-row '+(earned?'unlocked':'locked');row.innerHTML=`<div><div class="tr-name tier-${t.tier}">${earned?'✓ ':'🔒 '}${escapeHtml(t.name)}</div><div class="tr-desc">${escapeHtml(t.desc)}</div></div><div class="tr-badge">${t.tier.toUpperCase()} · +${t.xp} XP</div>`;br.appendChild(row);}const sc=document.getElementById('settings-titles-count');if(sc)sc.textContent=`${state.titles.length} / ${TITLES.length}`;}
 }
-
 function logLine(text,cls){state.log.unshift({t:Date.now(),text,cls:cls||''});if(state.log.length>1000)state.log.length=1000;}
-
 function tickClock(){const d=new Date();document.getElementById('sys-time').textContent=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+':'+String(d.getSeconds()).padStart(2,'0');}
-function tickCountdown(){
-  const now=new Date(),end=new Date(now);end.setHours(24,0,0,0);const diff=end-now;
-  const h=Math.floor(diff/3600000),m=Math.floor((diff%3600000)/60000),s=Math.floor((diff%60000)/1000);
-  const el=document.getElementById('countdown');el.textContent=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');el.classList.toggle('warn',h<2);
-  if(state.lastQuestDate!==todayStr()){ensureTodayQuest();render();}
-}
-
+function tickCountdown(){const now=new Date(),end=new Date(now);end.setHours(24,0,0,0);const diff=end-now;const h=Math.floor(diff/3600000),m=Math.floor((diff%3600000)/60000),s=Math.floor((diff%60000)/1000);const el=document.getElementById('countdown');el.textContent=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');el.classList.toggle('warn',h<2);if(state.lastQuestDate!==todayStr()){ensureTodayQuest();render();}}
 let toastTimer;
 function toast(msg,type='cyan'){const t=document.getElementById('toast');t.textContent=msg;t.className='';if(type!=='cyan')t.classList.add(type);requestAnimationFrame(()=>t.classList.add('show'));clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2600);}
-
 function toggleView(){
   const main=document.getElementById('main-view'),settings=document.getElementById('settings-view'),label=document.getElementById('toggle-label');
   if(!settings.classList.contains('hidden')){saveSettings();settings.classList.add('hidden');main.classList.remove('hidden');label.textContent='SETTINGS';render();}
   else{populateSettings();main.classList.add('hidden');settings.classList.remove('hidden');label.textContent='BACK';}
 }
-
 function populateSettings(){
   document.getElementById('set-name').value=state.player.name;
   document.getElementById('set-class').value=state.player.class;
@@ -810,10 +746,9 @@ function populateSettings(){
 function saveSettings(){
   state.player.name=(document.getElementById('set-name').value.trim()||'PLAYER').toUpperCase();
   state.player.class=document.getElementById('set-class').value.trim()||'CLASS — UNAWAKENED';
-  const sel=document.getElementById('set-title');if(sel){const chosen=sel.value||null;state.equippedTitle=chosen&&hasTitle(chosen)?chosen:null;}
+  const sel=document.getElementById('set-title');if(sel){const c=sel.value||null;state.equippedTitle=c&&hasTitle(c)?c:null;}
   syncTodaysQuestsWithTemplate();saveState();
 }
-
 function renderQuestEditor(){
   const wrap=document.getElementById('quest-editor');wrap.innerHTML='';
   state.questTemplate.forEach((q,idx)=>{
@@ -832,20 +767,14 @@ function renderQuestEditor(){
   wrap.querySelectorAll('.remove-btn').forEach(btn=>btn.addEventListener('click',()=>{state.questTemplate.splice(+btn.dataset.i,1);renderQuestEditor();}));
 }
 function addQuestRow(){state.questTemplate.push({name:'New Quest',xp:10});renderQuestEditor();}
-function syncTodaysQuestsWithTemplate(){state.questsToday=state.questTemplate.map((qt,i)=>{const name=resolveQuestName(qt);const existing=state.questsToday.find(q=>q.name===name);return{id:'q'+i,name,xp:qt.xp,done:existing?existing.done:false};});}
-
+function syncTodaysQuestsWithTemplate(){state.questsToday=state.questTemplate.map((qt,i)=>{const name=resolveQuestName(qt);const ex=state.questsToday.find(q=>q.name===name);return{id:'q'+i,name,xp:qt.xp,done:ex?ex.done:false};});}
 function exportData(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`the-system-${todayStr().replace(/-/g,'')}.json`;document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);toast('[EXPORT COMPLETE]','cyan');}
 function importFile(e){const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=ev=>applyImport(ev.target.result);reader.readAsText(file);e.target.value='';}
 function importPaste(){const text=document.getElementById('import-text').value;if(!text.trim()){toast('[NO DATA TO IMPORT]','danger');return;}applyImport(text);}
-function applyImport(text){
-  try{const parsed=JSON.parse(text);if(typeof parsed!=='object'||!parsed.stats)throw new Error('Invalid');if(!confirm('Replace all current progress with imported data?'))return;state=migrate(parsed);state.importedOnce=true;saveState();populateSettings();render();toast('[IMPORT COMPLETE]','gold');logLine(`${nowTimeStr()} — Data imported.`);checkTitles();}
-  catch(e){toast('[IMPORT FAILED — INVALID JSON]','danger');console.error(e);}
-}
+function applyImport(text){try{const parsed=JSON.parse(text);if(typeof parsed!=='object'||!parsed.stats)throw new Error('Invalid');if(!confirm('Replace all current progress with imported data?'))return;state=migrate(parsed);state.importedOnce=true;saveState();populateSettings();render();toast('[IMPORT COMPLETE]','gold');logLine(`${nowTimeStr()} — Data imported.`);checkTitles();}catch(e){toast('[IMPORT FAILED — INVALID JSON]','danger');console.error(e);}}
 function resetAll(){if(!confirm('Reset ALL progress?'))return;if(!confirm('Are you absolutely sure?'))return;state=structuredClone(DEFAULT_STATE);saveState();ensureTodayQuest();populateSettings();render();toast('[SYSTEM RESET]','danger');}
-
 function triggerLevelUp(){gainXP(xpForNext(state.lvl)-state.xp);saveState();render();}
 function triggerPenalty(){applyPenalty(false);}
-
 ensureTodayQuest();render();checkTitles();
 setInterval(tickClock,1000);tickClock();
 setInterval(tickCountdown,1000);tickCountdown();
