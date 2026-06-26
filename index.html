@@ -39,8 +39,6 @@
     padding-bottom: 40px;
     position: relative;
   }
-
-  /* ── Header ── */
   header {
     padding: 24px 0 16px;
     text-align: center;
@@ -58,8 +56,6 @@
     clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
   }
   .settings-toggle:hover { background: var(--cyan-soft); }
-
-  /* ── Panels ── */
   .panel {
     position: relative;
     background: linear-gradient(180deg, rgba(10,22,40,0.85), rgba(2,8,18,0.85));
@@ -80,8 +76,6 @@
     display: inline-block; margin-right: 6px; animation: blink 2s infinite;
   }
   @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
-
-  /* ── Status window ── */
   .status-head {
     display: flex; justify-content: space-between; align-items: flex-end;
     margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px dashed var(--cyan-soft);
@@ -91,7 +85,6 @@
   .level-block { text-align: right; }
   .level-block .lvl-label { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--cyan-dim); letter-spacing: 0.2em; }
   .level-block .lvl-num { font-size: 36px; font-weight: 700; color: var(--cyan); text-shadow: 0 0 12px var(--cyan-glow); line-height: 1; }
-
   .bar-row { margin-bottom: 10px; }
   .bar-label { display: flex; justify-content: space-between; font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.15em; margin-bottom: 4px; }
   .bar-label .key { color: var(--dim); }
@@ -101,101 +94,53 @@
   .bar-fill.hp { background: linear-gradient(90deg,#c2185b,#ff4d6d); box-shadow: 0 0 8px rgba(255,77,109,0.6); }
   .bar-fill.mp { background: linear-gradient(90deg,#1e88e5,#5fd4ff); }
   .bar-fill.xp { background: linear-gradient(90deg,#b8860b,var(--gold)); box-shadow: 0 0 8px rgba(255,209,102,0.5); }
-
   .stats { display: grid; grid-template-columns: repeat(5,1fr); gap: 8px; margin-top: 16px; }
-  .stat {
-    background: rgba(95,212,255,0.04); border: 1px solid var(--cyan-soft);
-    padding: 10px 6px; text-align: center; cursor: pointer; transition: all 0.2s;
-  }
+  .stat { background: rgba(95,212,255,0.04); border: 1px solid var(--cyan-soft); padding: 10px 6px; text-align: center; cursor: pointer; transition: all 0.2s; }
   .stat:hover { background: rgba(95,212,255,0.1); border-color: var(--cyan); transform: translateY(-1px); }
   .stat.allocatable { border-color: var(--gold); box-shadow: 0 0 8px rgba(255,209,102,0.3); }
   .stat .stat-key { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--cyan-dim); letter-spacing: 0.15em; }
   .stat .stat-val { font-size: 20px; font-weight: 600; color: var(--white); margin-top: 2px; }
   .stat .stat-buff { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--green); margin-top: 1px; }
-
-  .points-banner {
-    margin-top: 12px; padding: 8px;
-    background: rgba(255,209,102,0.08); border: 1px dashed var(--gold);
-    text-align: center; font-family: 'Share Tech Mono', monospace; font-size: 11px;
-    color: var(--gold); letter-spacing: 0.15em; display: none;
-  }
+  .points-banner { margin-top: 12px; padding: 8px; background: rgba(255,209,102,0.08); border: 1px dashed var(--gold); text-align: center; font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--gold); letter-spacing: 0.15em; display: none; }
   .points-banner.show { display: block; }
-
-  .buff-row {
-    margin-top: 12px; padding: 8px 10px;
-    background: rgba(127,255,106,0.05); border: 1px solid rgba(127,255,106,0.3);
-    font-family: 'Share Tech Mono', monospace; font-size: 10px;
-    color: var(--green); letter-spacing: 0.12em; line-height: 1.8; display: none;
-  }
+  .buff-row { margin-top: 12px; padding: 8px 10px; background: rgba(127,255,106,0.05); border: 1px solid rgba(127,255,106,0.3); font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--green); letter-spacing: 0.12em; line-height: 1.8; display: none; }
   .buff-row.show { display: block; }
-
   .streak-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.15em; }
   .streak-row .cell { padding: 8px; border: 1px solid var(--cyan-soft); text-align: center; }
   .streak-row .cell .k { color: var(--cyan-dim); }
   .streak-row .cell .v { color: var(--cyan); font-size: 16px; margin-top: 4px; }
-
-  /* ── Daily Quest ── */
   .quest-meta { display: flex; justify-content: space-between; font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--cyan-dim); margin-bottom: 14px; letter-spacing: 0.1em; }
   .quest-meta .countdown { color: var(--cyan); }
   .quest-meta .countdown.warn { color: var(--danger); }
-  .quest {
-    display: flex; align-items: center; gap: 12px; padding: 12px 10px;
-    border: 1px solid var(--cyan-soft); margin-bottom: 8px;
-    background: rgba(95,212,255,0.03); cursor: pointer; transition: all 0.2s;
-  }
+  .quest { display: flex; align-items: center; gap: 12px; padding: 12px 10px; border: 1px solid var(--cyan-soft); margin-bottom: 8px; background: rgba(95,212,255,0.03); cursor: pointer; transition: all 0.2s; }
   .quest:hover { border-color: var(--cyan-dim); background: rgba(95,212,255,0.06); }
   .quest.done { opacity: 0.5; text-decoration: line-through; text-decoration-color: var(--cyan); }
   .quest .check { width: 18px; height: 18px; border: 1.5px solid var(--cyan); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .quest.done .check::after { content: '✓'; color: var(--cyan); font-weight: bold; text-shadow: 0 0 6px var(--cyan-glow); }
+  .quest.done .check::after { content: '\u2713'; color: var(--cyan); font-weight: bold; text-shadow: 0 0 6px var(--cyan-glow); }
   .quest .q-text { flex: 1; font-size: 16px; letter-spacing: 0.05em; }
   .quest .q-xp { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--gold); letter-spacing: 0.1em; white-space: nowrap; }
   .warning { margin-top: 12px; padding: 10px; border: 1px solid var(--danger); background: rgba(255,77,109,0.08); font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--danger); letter-spacing: 0.15em; text-align: center; }
-
-  /* ── Inventory ── */
   .inv-grid { display: flex; flex-direction: column; gap: 8px; }
-  .inv-item {
-    display: flex; align-items: center; gap: 12px; padding: 10px 12px;
-    border: 1px solid var(--green-soft, rgba(127,255,106,0.2));
-    background: rgba(127,255,106,0.04);
-  }
+  .inv-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border: 1px solid rgba(127,255,106,0.2); background: rgba(127,255,106,0.04); }
   .inv-item .inv-icon { font-size: 18px; flex-shrink: 0; width: 28px; text-align: center; }
   .inv-item .inv-info { flex: 1; }
   .inv-item .inv-name { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.18em; color: var(--green); }
   .inv-item .inv-desc { font-size: 13px; color: var(--dim); margin-top: 2px; letter-spacing: 0.02em; }
   .inv-item .inv-badge { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--cyan-dim); letter-spacing: 0.15em; margin-top: 2px; }
-  .inv-use-btn {
-    background: transparent; border: 1px solid var(--green); color: var(--green);
-    padding: 6px 12px; font-family: 'Share Tech Mono', monospace; font-size: 10px;
-    letter-spacing: 0.15em; cursor: pointer; flex-shrink: 0;
-    clip-path: polygon(5px 0,100% 0,100% calc(100% - 5px),calc(100% - 5px) 100%,0 100%,0 5px);
-  }
+  .inv-use-btn { background: transparent; border: 1px solid var(--green); color: var(--green); padding: 6px 12px; font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 0.15em; cursor: pointer; flex-shrink: 0; clip-path: polygon(5px 0,100% 0,100% calc(100% - 5px),calc(100% - 5px) 100%,0 100%,0 5px); }
   .inv-use-btn:hover { background: rgba(127,255,106,0.1); box-shadow: 0 0 8px var(--green-glow); }
-  .inv-active {
-    font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--green);
-    padding: 8px 12px; border: 1px solid rgba(127,255,106,0.3);
-    background: rgba(127,255,106,0.05); display: flex; justify-content: space-between;
-    align-items: center; letter-spacing: 0.12em;
-  }
+  .inv-active { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--green); padding: 8px 12px; border: 1px solid rgba(127,255,106,0.3); background: rgba(127,255,106,0.05); display: flex; justify-content: space-between; align-items: center; letter-spacing: 0.12em; }
   .inv-active .inv-expires { color: var(--dim); font-size: 9px; }
-
-  /* ── Titles ── */
   .titles-meta { display: flex; justify-content: space-between; font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--cyan-dim); margin-bottom: 12px; letter-spacing: 0.15em; }
   .titles-meta .count { color: var(--cyan); }
   .titles-grid { display: flex; flex-wrap: wrap; gap: 6px; }
-  .title-pill {
-    font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 0.15em;
-    padding: 6px 10px; border: 1px solid var(--cyan-dim);
-    background: rgba(95,212,255,0.05); color: var(--cyan); cursor: default;
-    clip-path: polygon(5px 0,100% 0,100% calc(100% - 5px),calc(100% - 5px) 100%,0 100%,0 5px);
-  }
+  .title-pill { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 0.15em; padding: 6px 10px; border: 1px solid var(--cyan-dim); background: rgba(95,212,255,0.05); color: var(--cyan); cursor: default; clip-path: polygon(5px 0,100% 0,100% calc(100% - 5px),calc(100% - 5px) 100%,0 100%,0 5px); }
   .title-pill.common    { border-color: var(--cyan-dim); color: var(--cyan-dim); background: rgba(95,212,255,0.03); }
   .title-pill.rare      { border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 6px rgba(95,212,255,0.25); }
   .title-pill.epic      { border-color: var(--gold); color: var(--gold); background: rgba(255,209,102,0.04); box-shadow: 0 0 8px rgba(255,209,102,0.3); }
   .title-pill.legendary { border-color: var(--magenta); color: var(--magenta); background: rgba(216,133,255,0.05); box-shadow: 0 0 10px var(--magenta-glow); animation: legend-pulse 2.4s ease-in-out infinite; }
   @keyframes legend-pulse { 0%,100%{box-shadow:0 0 10px var(--magenta-glow)} 50%{box-shadow:0 0 18px var(--magenta-glow),0 0 28px rgba(216,133,255,0.35)} }
   .title-pill.equipped { outline: 1px solid var(--white); outline-offset: 1px; }
-
-  /* ── System log ── */
   .system-log { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--cyan-dim); letter-spacing: 0.15em; line-height: 1.8; margin-top: 8px; max-height: 180px; overflow-y: auto; }
   .system-log.full { max-height: 420px; }
   .system-log .line::before { content: '> '; color: var(--cyan); }
@@ -207,59 +152,32 @@
   .system-log .line.title::before { color: var(--magenta); }
   .system-log .line.item { color: var(--green); }
   .system-log .line.item::before { color: var(--green); }
-
-  /* ── Toast ── */
-  #toast {
-    position: fixed; top: 20px; left: 50%;
-    transform: translateX(-50%) translateY(-200%);
-    background: rgba(2,8,18,0.96); border: 1px solid var(--cyan); box-shadow: 0 0 24px var(--cyan-glow);
-    padding: 14px 22px; font-family: 'Share Tech Mono', monospace; font-size: 13px;
-    color: var(--cyan); letter-spacing: 0.2em; z-index: 1000;
-    transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
-    clip-path: polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);
-    max-width: 90vw; text-align: center;
-  }
+  #toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-200%); background: rgba(2,8,18,0.96); border: 1px solid var(--cyan); box-shadow: 0 0 24px var(--cyan-glow); padding: 14px 22px; font-family: 'Share Tech Mono', monospace; font-size: 13px; color: var(--cyan); letter-spacing: 0.2em; z-index: 1000; transition: transform 0.4s cubic-bezier(0.16,1,0.3,1); clip-path: polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px); max-width: 90vw; text-align: center; }
   #toast.show { transform: translateX(-50%) translateY(0); }
   #toast.danger { border-color: var(--danger); box-shadow: 0 0 24px rgba(255,77,109,0.6); color: var(--danger); }
   #toast.gold   { border-color: var(--gold);   box-shadow: 0 0 24px rgba(255,209,102,0.6); color: var(--gold); }
   #toast.title  { border-color: var(--magenta); box-shadow: 0 0 28px var(--magenta-glow);  color: var(--magenta); }
   #toast.item   { border-color: var(--green);  box-shadow: 0 0 24px var(--green-glow);    color: var(--green); }
-
-  /* ── Buttons ── */
   .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
-  .btn {
-    background: transparent; border: 1px solid var(--cyan-dim); color: var(--cyan);
-    padding: 12px; font-family: 'Share Tech Mono', monospace; font-size: 11px;
-    letter-spacing: 0.2em; cursor: pointer; transition: all 0.2s;
-    clip-path: polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);
-    text-align: center;
-  }
+  .btn { background: transparent; border: 1px solid var(--cyan-dim); color: var(--cyan); padding: 12px; font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.2em; cursor: pointer; transition: all 0.2s; clip-path: polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px); text-align: center; }
   .btn:hover { background: var(--cyan-soft); border-color: var(--cyan); box-shadow: 0 0 12px var(--cyan-glow); }
   .btn.danger { border-color: var(--danger); color: var(--danger); }
   .btn.danger:hover { background: rgba(255,77,109,0.08); box-shadow: 0 0 12px rgba(255,77,109,0.4); }
   .btn.gold { border-color: var(--gold); color: var(--gold); }
   .btn.gold:hover { background: rgba(255,209,102,0.08); box-shadow: 0 0 12px rgba(255,209,102,0.4); }
   .btn.wide { grid-column: 1 / -1; }
-
-  /* ── Settings ── */
   .settings-section { margin-bottom: 18px; }
   .settings-section h3 { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--cyan); letter-spacing: 0.25em; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px dashed var(--cyan-soft); }
   .field-row { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
   .field-row label { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--cyan-dim); letter-spacing: 0.15em; min-width: 70px; }
-  input[type=text], input[type=number], textarea, select {
-    flex: 1; background: rgba(95,212,255,0.05); border: 1px solid var(--cyan-dim);
-    color: var(--white); padding: 8px 10px; font-family: 'Rajdhani', sans-serif;
-    font-size: 14px; letter-spacing: 0.05em;
-  }
+  input[type=text], input[type=number], textarea, select { flex: 1; background: rgba(95,212,255,0.05); border: 1px solid var(--cyan-dim); color: var(--white); padding: 8px 10px; font-family: 'Rajdhani', sans-serif; font-size: 14px; letter-spacing: 0.05em; }
   textarea { font-family: 'Share Tech Mono', monospace; font-size: 11px; width: 100%; min-height: 120px; resize: vertical; }
   input:focus, textarea:focus, select:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 8px var(--cyan-glow); }
   input[type=number] { max-width: 80px; flex: 0 0 auto; }
-
   .qe-header { display: grid; grid-template-columns: 1fr 64px 64px 36px; gap: 6px; margin-bottom: 6px; font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 0.15em; color: var(--cyan-dim); padding: 0 4px; }
   .qe-row    { display: grid; grid-template-columns: 1fr 64px 64px 36px; gap: 6px; margin-bottom: 6px; }
   .qe-row .remove-btn { background: transparent; border: 1px solid var(--danger); color: var(--danger); cursor: pointer; font-family: 'Share Tech Mono', monospace; }
   .qe-row .remove-btn:hover { background: rgba(255,77,109,0.1); }
-
   .title-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: start; padding: 10px 12px; border: 1px solid var(--cyan-soft); margin-bottom: 6px; background: rgba(95,212,255,0.02); }
   .title-row.unlocked { background: rgba(95,212,255,0.05); }
   .title-row .tr-name { font-family: 'Share Tech Mono', monospace; font-size: 12px; letter-spacing: 0.18em; color: var(--cyan); }
@@ -271,101 +189,39 @@
   .title-row .tr-name.tier-rare      { color: var(--cyan); }
   .title-row .tr-name.tier-epic      { color: var(--gold); }
   .title-row .tr-name.tier-legendary { color: var(--magenta); }
-
-  /* ── Solo Leveling ambient effects ── */
-
-  #scanlines {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: repeating-linear-gradient(
-      180deg,
-      transparent 0px, transparent 3px,
-      rgba(0,15,35,0.055) 3px, rgba(0,15,35,0.055) 4px
-    );
-    pointer-events: none; z-index: 999;
-  }
-
-  #ambient-bg {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background:
-      radial-gradient(ellipse 110% 70% at 50% -5%, rgba(42,139,184,0.55) 0%, transparent 58%),
-      radial-gradient(ellipse 70% 50% at 50% 108%, rgba(42,139,184,0.25) 0%, transparent 55%),
-      linear-gradient(180deg, #02060d 0%, #000510 100%);
-    pointer-events: none; z-index: 1;
-    animation: ambient-breathe 4s ease-in-out infinite;
-  }
-  header, #main-view, #settings-view, .footer-note {
-    position: relative; z-index: 2;
-  }
+  /* ── Ambient effects ── */
+  #scanlines { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: repeating-linear-gradient(180deg, transparent 0px, transparent 3px, rgba(0,15,35,0.055) 3px, rgba(0,15,35,0.055) 4px); pointer-events: none; z-index: 999; }
+  #ambient-bg { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(ellipse 110% 70% at 50% -5%, rgba(42,139,184,0.55) 0%, transparent 58%), radial-gradient(ellipse 70% 50% at 50% 108%, rgba(42,139,184,0.25) 0%, transparent 55%), linear-gradient(180deg, #02060d 0%, #000510 100%); pointer-events: none; z-index: 1; animation: ambient-breathe 4s ease-in-out infinite; }
+  header, #main-view, #settings-view, .footer-note { position: relative; z-index: 2; }
   #toast { z-index: 1000; }
-
-  @keyframes ambient-breathe {
-    0%, 100% { opacity: 0.65; }
-    50%       { opacity: 1.0; }
-  }
-
+  @keyframes ambient-breathe { 0%, 100% { opacity: 0.65; } 50% { opacity: 1.0; } }
   @keyframes panel-breathe {
-    0%, 100% {
-      border-color: rgba(42,139,184,0.7);
-      filter:
-        drop-shadow(0 0 6px rgba(42,139,184,0.7))
-        drop-shadow(0 0 18px rgba(42,139,184,0.4));
-    }
-    50% {
-      border-color: rgba(95,212,255,1);
-      filter:
-        drop-shadow(0 0 10px rgba(95,212,255,1))
-        drop-shadow(0 0 28px rgba(95,212,255,0.65))
-        drop-shadow(0 0 55px rgba(42,139,184,0.45));
-    }
+    0%, 100% { border-color: rgba(42,139,184,0.7); filter: drop-shadow(0 0 6px rgba(42,139,184,0.7)) drop-shadow(0 0 18px rgba(42,139,184,0.4)); }
+    50%       { border-color: rgba(95,212,255,1);   filter: drop-shadow(0 0 10px rgba(95,212,255,1)) drop-shadow(0 0 28px rgba(95,212,255,0.65)) drop-shadow(0 0 55px rgba(42,139,184,0.45)); }
   }
-
   @keyframes title-breathe {
-    0%, 100% {
-      text-shadow:
-        0 0 14px rgba(95,212,255,0.9),
-        0 0 35px rgba(95,212,255,0.5),
-        0 0 60px rgba(95,212,255,0.2);
-    }
-    50% {
-      text-shadow:
-        0 0 22px rgba(95,212,255,1),
-        0 0 55px rgba(95,212,255,0.75),
-        0 0 100px rgba(95,212,255,0.35),
-        0 0 140px rgba(42,139,184,0.2);
-    }
+    0%, 100% { text-shadow: 0 0 14px rgba(95,212,255,0.9), 0 0 35px rgba(95,212,255,0.5), 0 0 60px rgba(95,212,255,0.2); }
+    50%       { text-shadow: 0 0 22px rgba(95,212,255,1), 0 0 55px rgba(95,212,255,0.75), 0 0 100px rgba(95,212,255,0.35), 0 0 140px rgba(42,139,184,0.2); }
   }
-
   .footer-note { text-align: center; font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--dim); letter-spacing: 0.3em; margin-top: 24px; opacity: 0.6; }
   .hidden { display: none !important; }
   .hint { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--cyan-dim); letter-spacing: 0.12em; margin-top: 4px; padding-left: 78px; }
 </style>
 </head>
 <body>
-
 <div id="scanlines"></div>
 <div id="ambient-bg"></div>
-
 <header>
   <div class="brand">// GORGON.LIVE</div>
   <div class="title">THE SYSTEM</div>
   <button class="settings-toggle" onclick="toggleView()">⚙ <span id="toggle-label">SETTINGS</span></button>
 </header>
-
 <div id="main-view">
-
   <div class="panel">
     <div class="panel-label"><span><span class="dot"></span>STATUS WINDOW</span><span id="sys-time">00:00:00</span></div>
     <div class="status-head">
-      <div class="name-block">
-        <div class="name" id="player-name">PLAYER</div>
-        <div class="class" id="player-class">CLASS — UNAWAKENED</div>
-      </div>
-      <div class="level-block">
-        <div class="lvl-label">LEVEL</div>
-        <div class="lvl-num" id="lvl">1</div>
-      </div>
+      <div class="name-block"><div class="name" id="player-name">PLAYER</div><div class="class" id="player-class">CLASS — UNAWAKENED</div></div>
+      <div class="level-block"><div class="lvl-label">LEVEL</div><div class="lvl-num" id="lvl">1</div></div>
     </div>
     <div class="bar-row"><div class="bar-label"><span class="key">HP</span><span class="val"><span id="hp-v">100</span> / 100</span></div><div class="bar-track"><div class="bar-fill hp" id="hp-bar" style="width:100%"></div></div></div>
     <div class="bar-row"><div class="bar-label"><span class="key">MP</span><span class="val"><span id="mp-v">100</span> / 100</span></div><div class="bar-track"><div class="bar-fill mp" id="mp-bar" style="width:100%"></div></div></div>
@@ -378,34 +234,27 @@
       <div class="cell"><div class="k">BEST STREAK</div><div class="v" id="streak-best">0</div></div>
     </div>
   </div>
-
   <div class="panel">
     <div class="panel-label"><span><span class="dot"></span>DAILY QUEST</span><span>MANDATORY</span></div>
     <div class="quest-meta"><span>ISSUED 00:00</span><span>EXPIRES IN <span class="countdown" id="countdown">00:00:00</span></span></div>
     <div id="quest-list"></div>
     <div class="warning">⚠ PENALTY ON FAILURE — RANDOM STAT −1</div>
   </div>
-
   <div class="panel hidden" id="inventory-panel">
     <div class="panel-label"><span><span class="dot"></span>INVENTORY</span><span id="inv-count">0 ITEMS</span></div>
     <div class="inv-grid" id="inv-grid"></div>
   </div>
-
   <div class="panel hidden" id="titles-panel">
     <div class="panel-label"><span><span class="dot"></span>TITLES</span><span id="titles-equipped-label">NONE EQUIPPED</span></div>
     <div class="titles-meta"><span>ACQUIRED</span><span><span class="count" id="titles-count">0</span> / <span id="titles-total">0</span></span></div>
     <div class="titles-grid" id="titles-grid"></div>
   </div>
-
   <div class="panel">
     <div class="panel-label"><span><span class="dot"></span>SYSTEM LOG</span><span>RECENT</span></div>
     <div class="system-log" id="log"></div>
   </div>
-
 </div>
-
 <div id="settings-view" class="hidden">
-
   <div class="panel">
     <div class="panel-label"><span><span class="dot"></span>PLAYER</span></div>
     <div class="settings-section">
@@ -415,12 +264,10 @@
       <div class="hint">// equipped title replaces class on status window</div>
     </div>
   </div>
-
   <div class="panel">
     <div class="panel-label"><span><span class="dot"></span>TITLE ARCHIVE</span><span id="settings-titles-count">0 / 0</span></div>
     <div class="settings-section" id="titles-browser"></div>
   </div>
-
   <div class="panel">
     <div class="panel-label"><span><span class="dot"></span>DAILY QUEST EDITOR</span></div>
     <div class="settings-section">
@@ -430,12 +277,10 @@
       <div class="hint" style="padding-left:0;margin-top:10px;">// SCALE: daily multiplier on the target rep/min count (e.g. 1.08 = +8% per clear). Leave blank or 1 to disable.</div>
     </div>
   </div>
-
   <div class="panel">
     <div class="panel-label"><span><span class="dot"></span>FULL SYSTEM LOG</span><span id="full-log-count">0 ENTRIES</span></div>
     <div class="system-log full" id="full-log"></div>
   </div>
-
   <div class="panel">
     <div class="panel-label"><span><span class="dot"></span>DATA</span></div>
     <div class="settings-section">
@@ -450,9 +295,13 @@
         <button class="btn wide" onclick="importPaste()" style="margin-top:8px;">IMPORT FROM TEXT</button>
       </div>
     </div>
-    <div class="settings-section"><h3>DANGER ZONE</h3><button class="btn danger wide" onclick="resetAll()">RESET ALL PROGRESS</button></div>
+    <div class="settings-section">
+      <h3>DANGER ZONE</h3>
+      <button class="btn danger wide" onclick="resetAll()" style="margin-bottom:8px;">RESET ALL PROGRESS</button>
+      <button class="btn danger wide" onclick="clearSiteData()">CLEAR ALL BROWSER STORAGE</button>
+      <div class="hint" style="padding-left:0;margin-top:6px;">// wipes localStorage, sessionStorage &amp; cookies for this site, then reloads</div>
+    </div>
   </div>
-
   <div class="panel">
     <div class="panel-label"><span><span class="dot"></span>DEBUG</span></div>
     <div class="actions">
@@ -461,12 +310,9 @@
     </div>
     <div style="margin-top:10px;"><button class="btn wide" style="border-color:var(--green);color:var(--green);" onclick="debugDrop()">FORCE ITEM DROP</button></div>
   </div>
-
 </div>
-
 <div class="footer-note">// THE SYSTEM v2 — gorgon.live</div>
 <div id="toast"></div>
-
 <script>
 'use strict';
 const VERSION=2,STORAGE_KEY='gorgon.system.v2',STAT_KEYS=['STR','AGI','VIT','INT','SEN'];
@@ -482,10 +328,10 @@ const ITEM_CATALOGUE=[
 ];
 const RARITY_COLORS={common:'var(--cyan-dim)',uncommon:'var(--cyan)',rare:'var(--gold)',legendary:'var(--magenta)'};
 const DEFAULT_QUESTS=[
-  {nameTemplate:'{n} Push-Ups',baseTarget:15,currentTarget:15,scaleFactor:1.08,xp:20},
-  {nameTemplate:'{n} Sit-Ups',baseTarget:10,currentTarget:10,scaleFactor:1.08,xp:15},
-  {nameTemplate:'{n}-min Walk or Run',baseTarget:10,currentTarget:20,scaleFactor:1.02,xp:25},
-  {nameTemplate:'{n}-min Focused Reading',baseTarget:20,currentTarget:20,scaleFactor:1.01,xp:20},
+  {nameTemplate:'{n} Push-Ups',baseTarget:25,currentTarget:25,scaleFactor:1.08,xp:20},
+  {nameTemplate:'{n} Sit-Ups',baseTarget:25,currentTarget:25,scaleFactor:1.08,xp:15},
+  {nameTemplate:'{n}-min Walk or Run',baseTarget:20,currentTarget:20,scaleFactor:1.06,xp:25},
+  {nameTemplate:'{n}-min Focused Reading',baseTarget:20,currentTarget:20,scaleFactor:1.05,xp:20},
   {name:'Drink 8 glasses of water',xp:10},
   {name:"Tackle one thing you've been putting off",xp:30},
 ];
@@ -668,7 +514,7 @@ function render(){
   const fLog=document.getElementById('full-log');
   if(fLog){fLog.innerHTML='';for(const e of state.log){const d=document.createElement('div');d.className='line '+(e.cls||'');d.textContent=e.text;fLog.appendChild(d);}const cEl=document.getElementById('full-log-count');if(cEl)cEl.textContent=state.log.length+' ENTR'+(state.log.length===1?'Y':'IES');}
   const br=document.getElementById('titles-browser');
-  if(br){br.innerHTML='';for(const t of TITLES){const earned=hasTitle(t.id);if(t.hidden&&!earned)continue;const row=document.createElement('div');row.className='title-row '+(earned?'unlocked':'locked');row.innerHTML=`<div><div class="tr-name tier-${t.tier}">${earned?'✓ ':'🔒 '}${escapeHtml(t.name)}</div><div class="tr-desc">${escapeHtml(t.desc)}</div></div><div class="tr-badge">${t.tier.toUpperCase()} · +${t.xp} XP</div>`;br.appendChild(row);}const sc=document.getElementById('settings-titles-count');if(sc)sc.textContent=`${state.titles.length} / ${TITLES.length}`;}
+  if(br){br.innerHTML='';for(const t of TITLES){const earned=hasTitle(t.id);if(t.hidden&&!earned)continue;const row=document.createElement('div');row.className='title-row '+(earned?'unlocked':'locked');row.innerHTML=`<div><div class="tr-name tier-${t.tier}">${earned?'\u2713 ':'\ud83d\udd12 '}${escapeHtml(t.name)}</div><div class="tr-desc">${escapeHtml(t.desc)}</div></div><div class="tr-badge">${t.tier.toUpperCase()} \u00b7 +${t.xp} XP</div>`;br.appendChild(row);}const sc=document.getElementById('settings-titles-count');if(sc)sc.textContent=`${state.titles.length} / ${TITLES.length}`;}
 }
 function logLine(text,cls){state.log.unshift({t:Date.now(),text,cls:cls||''});if(state.log.length>1000)state.log.length=1000;}
 function tickClock(){const d=new Date();document.getElementById('sys-time').textContent=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+':'+String(d.getSeconds()).padStart(2,'0');}
@@ -717,6 +563,13 @@ function importFile(e){const file=e.target.files[0];if(!file)return;const reader
 function importPaste(){const text=document.getElementById('import-text').value;if(!text.trim()){toast('[NO DATA TO IMPORT]','danger');return;}applyImport(text);}
 function applyImport(text){try{const parsed=JSON.parse(text);if(typeof parsed!=='object'||!parsed.stats)throw new Error('Invalid');if(!confirm('Replace all current progress with imported data?'))return;state=migrate(parsed);state.importedOnce=true;saveState();populateSettings();render();toast('[IMPORT COMPLETE]','gold');logLine(`${nowTimeStr()} — Data imported.`);checkTitles();}catch(e){toast('[IMPORT FAILED — INVALID JSON]','danger');console.error(e);}}
 function resetAll(){if(!confirm('Reset ALL progress?'))return;if(!confirm('Are you absolutely sure?'))return;state=structuredClone(DEFAULT_STATE);saveState();ensureTodayQuest();populateSettings();render();toast('[SYSTEM RESET]','danger');}
+function clearSiteData(){
+  if(!confirm('Clear ALL browser storage for this site? Everything will be wiped and the page will reload.'))return;
+  try{localStorage.clear();}catch(e){}
+  try{sessionStorage.clear();}catch(e){}
+  try{document.cookie.split(';').forEach(c=>{const k=c.trim().split('=')[0];document.cookie=k+'=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/';});}catch(e){}
+  location.reload();
+}
 function triggerLevelUp(){gainXP(xpForNext(state.lvl)-state.xp);saveState();render();}
 function triggerPenalty(){applyPenalty(false);}
 ensureTodayQuest();render();checkTitles();
