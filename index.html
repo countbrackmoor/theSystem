@@ -168,6 +168,11 @@
   .btn.wide { grid-column: 1 / -1; }
   .settings-section { margin-bottom: 18px; }
   .settings-section h3 { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--cyan); letter-spacing: 0.25em; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px dashed var(--cyan-soft); }
+  .cloud-status { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 0.2em; }
+  .cloud-status-dim { color: var(--cyan-dim, #4a6a7a); }
+  .cloud-status-cyan { color: var(--cyan); }
+  .cloud-status-gold { color: var(--gold, #c9a84c); }
+  .cloud-status-danger { color: var(--danger, #ff6b6b); }
   .field-row { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
   .field-row label { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--cyan-dim); letter-spacing: 0.15em; min-width: 70px; }
   input[type=text], input[type=number], textarea, select { flex: 1; background: rgba(95,212,255,0.05); border: 1px solid var(--cyan-dim); color: var(--white); padding: 8px 10px; font-family: 'Rajdhani', sans-serif; font-size: 14px; letter-spacing: 0.05em; }
@@ -282,6 +287,29 @@
     <div class="system-log full" id="full-log"></div>
   </div>
   <div class="panel">
+    <div class="panel-label"><span><span class="dot"></span>CLOUD SYNC</span><span id="cloud-status" class="cloud-status cloud-status-dim">IDLE</span></div>
+    <div class="settings-section">
+      <h3>ENDPOINT</h3>
+      <label class="hint" style="display:block;margin-bottom:4px;">API URL</label>
+      <input type="text" id="cloud-url" placeholder="https://gorgon-api.workers.dev" style="width:100%;margin-bottom:8px;">
+      <label class="hint" style="display:block;margin-bottom:4px;">Device Token</label>
+      <input type="password" id="cloud-token" placeholder="Bearer token" style="width:100%;margin-bottom:8px;">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn" onclick="applyCloudConfigForm()">SAVE CONFIG</button>
+        <button class="btn" onclick="cloudTestConnection()">TEST CONNECTION</button>
+      </div>
+    </div>
+    <div class="settings-section">
+      <h3>MANUAL SYNC</h3>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn" onclick="cloudPush({manual:true})">PUSH NOW</button>
+        <button class="btn" onclick="cloudPull({manual:true})">PULL NOW</button>
+      </div>
+      <div id="cloud-last-synced" class="hint" style="margin-top:8px;">never synced</div>
+      <div id="cloud-error" class="hint" style="margin-top:4px;color:var(--danger,#ff6b6b);"></div>
+    </div>
+  </div>
+  <div class="panel">
     <div class="panel-label"><span><span class="dot"></span>DATA</span></div>
     <div class="settings-section">
       <div class="actions">
@@ -311,11 +339,12 @@
     <div style="margin-top:10px;"><button class="btn wide" style="border-color:var(--green);color:var(--green);" onclick="debugDrop()">FORCE ITEM DROP</button></div>
   </div>
 </div>
-<div class="footer-note">// THE SYSTEM v2 — gorgon.live</div>
+<div class="footer-note">// THE SYSTEM v3 — gorgon.live</div>
 <div id="toast"></div>
 <script>
 'use strict';
-const VERSION=2,STORAGE_KEY='gorgon.system.v2',STAT_KEYS=['STR','AGI','VIT','INT','SEN'];
+const VERSION=3,STORAGE_KEY='gorgon.system.v3',LEGACY_KEYS=['gorgon.system.v2','gorgon.system.v1'],STAT_KEYS=['STR','AGI','VIT','INT','SEN'];
+const CLOUD_CONFIG_KEY='gorgon.cloud.config';
 const ITEM_CATALOGUE=[
   {id:'recovery_draft',name:'RECOVERY DRAFT',icon:'🧪',desc:'Absorb the next daily penalty. Failure costs nothing.',rarity:'common',type:'consumable',effect:'penalty_shield_1',weight:25},
   {id:'iron_supplement',name:'IRON SUPPLEMENT',icon:'💊',desc:'+50% XP on your next completed quest.',rarity:'common',type:'consumable',effect:'xp_boost_next',weight:25},
@@ -365,7 +394,7 @@ const TITLES=[
   {id:'hoarder',name:'HOARDER',desc:'Hold 3 items in inventory at once.',tier:'common',xp:30,check:s=>(s.inventory||[]).length>=3},
   {id:'well_equipped',name:'WELL EQUIPPED',desc:'Receive 10 item drops total.',tier:'rare',xp:150,check:s=>(s.totalDrops||0)>=10},
 ];
-const DEFAULT_STATE={version:VERSION,player:{name:'PLAYER',class:'CLASS — UNAWAKENED'},lvl:1,xp:0,points:0,hp:100,mp:100,stats:{STR:10,AGI:10,VIT:10,INT:10,SEN:10},streak:0,streakBest:0,lastQuestDate:null,questsToday:[],questTemplate:DEFAULT_QUESTS.map(q=>({...q})),log:[],titles:[],equippedTitle:null,questsCleared:0,lastClearedDate:null,penaltyYesterday:false,importedOnce:false,inventory:[],activeBuffs:[],penaltyShields:0,xpBoostNext:false,nextDropDate:null,totalDrops:0};
+const DEFAULT_STATE={version:VERSION,player:{name:'PLAYER',class:'CLASS — UNAWAKENED'},lvl:1,xp:0,points:0,hp:100,mp:100,stats:{STR:10,AGI:10,VIT:10,INT:10,SEN:10},streak:0,streakBest:0,lastQuestDate:null,questsToday:[],questTemplate:DEFAULT_QUESTS.map(q=>({...q})),log:[],titles:[],equippedTitle:null,questsCleared:0,lastClearedDate:null,penaltyYesterday:false,importedOnce:false,inventory:[],activeBuffs:[],penaltyShields:0,xpBoostNext:false,nextDropDate:null,totalDrops:0,lastModified:null,lastSyncedAt:null};
 let state=loadState();
 function xpForNext(l){return l*l*100;}
 function todayStr(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
@@ -373,9 +402,27 @@ function nowTimeStr(){const d=new Date();return String(d.getHours()).padStart(2,
 function addDays(ds,n){const d=new Date(ds+'T00:00:00');d.setDate(d.getDate()+n);return d.toISOString().slice(0,10);}
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function resolveQuestName(q){if(q.nameTemplate&&q.currentTarget!=null)return q.nameTemplate.replace('{n}',Math.round(q.currentTarget));return q.name||'Quest';}
-function saveState(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}catch(e){console.warn('Save failed',e);}}
-function loadState(){try{const r=localStorage.getItem(STORAGE_KEY);if(!r)return structuredClone(DEFAULT_STATE);return migrate(JSON.parse(r));}catch(e){return structuredClone(DEFAULT_STATE);}}
-function migrate(s){const m=structuredClone(DEFAULT_STATE);for(const k of Object.keys(m)){if(s[k]!==undefined)m[k]=s[k];}if(!m.questTemplate||!m.questTemplate.length)m.questTemplate=DEFAULT_QUESTS.map(q=>({...q}));for(const qt of m.questTemplate){if(qt.nameTemplate&&qt.currentTarget==null)qt.currentTarget=qt.baseTarget||10;}for(const k of STAT_KEYS)if(m.stats[k]===undefined)m.stats[k]=10;return m;}
+function saveState(opts){opts=opts||{};if(!opts.skipTimestamp)state.lastModified=new Date().toISOString();try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}catch(e){console.warn('Save failed',e);}if(!opts.skipCloud)scheduleCloudPush();}
+function loadState(){try{let r=localStorage.getItem(STORAGE_KEY);if(!r){for(const k of LEGACY_KEYS){const legacy=localStorage.getItem(k);if(legacy){r=legacy;break;}}}if(!r)return structuredClone(DEFAULT_STATE);return migrate(JSON.parse(r));}catch(e){return structuredClone(DEFAULT_STATE);}}
+function migrate(s){const m=structuredClone(DEFAULT_STATE);for(const k of Object.keys(m)){if(s[k]!==undefined)m[k]=s[k];}if(!m.questTemplate||!m.questTemplate.length)m.questTemplate=DEFAULT_QUESTS.map(q=>({...q}));for(const qt of m.questTemplate){if(qt.nameTemplate&&qt.currentTarget==null)qt.currentTarget=qt.baseTarget||10;}for(const k of STAT_KEYS)if(m.stats[k]===undefined)m.stats[k]=10;m.version=VERSION;return m;}
+// ─── CLOUD SYNC ──────────────────────────────────────────────────────────
+const CLOUD_PUSH_DEBOUNCE_MS=2000;
+let cloudConfig=loadCloudConfig();
+let cloudPushTimer=null;
+let cloudStatus='idle'; // idle | offline | pending | syncing | synced | error
+let cloudLastError=null;
+function loadCloudConfig(){try{const r=localStorage.getItem(CLOUD_CONFIG_KEY);if(!r)return null;const c=JSON.parse(r);if(!c||!c.url||!c.token)return null;return c;}catch(e){return null;}}
+function saveCloudConfig(url,token){if(!url||!token){localStorage.removeItem(CLOUD_CONFIG_KEY);cloudConfig=null;setCloudStatus('idle');return;}cloudConfig={url:url.replace(/\/+$/,''),token};localStorage.setItem(CLOUD_CONFIG_KEY,JSON.stringify(cloudConfig));setCloudStatus('idle');}
+function setCloudStatus(s,err){cloudStatus=s;cloudLastError=err||null;renderCloudStatus();}
+function cloudHeaders(){return{'Content-Type':'application/json','Authorization':'Bearer '+cloudConfig.token};}
+async function cloudHealth(){if(!cloudConfig)throw new Error('No cloud config');const r=await fetch(cloudConfig.url+'/health');if(!r.ok)throw new Error('Health check failed: '+r.status);return r.json();}
+async function cloudTestConnection(){if(!cloudConfig){toast('[CLOUD: NO CONFIG]','danger');return;}setCloudStatus('syncing');try{await cloudHealth();const r=await fetch(cloudConfig.url+'/system/state',{headers:cloudHeaders()});if(r.status===401){setCloudStatus('error','Unauthorized (bad token)');toast('[CLOUD: BAD TOKEN]','danger');return;}if(!r.ok)throw new Error('HTTP '+r.status);setCloudStatus('synced');toast('[CLOUD: CONNECTION OK]','cyan');}catch(e){setCloudStatus('error',e.message);toast('[CLOUD: CONNECTION FAILED]','danger');}}
+async function cloudPull(opts){opts=opts||{};if(!cloudConfig){if(opts.manual)toast('[CLOUD: NO CONFIG]','danger');return;}setCloudStatus('syncing');try{const r=await fetch(cloudConfig.url+'/system/state',{headers:cloudHeaders()});if(r.status===401){setCloudStatus('error','Unauthorized');return;}if(!r.ok)throw new Error('HTTP '+r.status);const body=await r.json();if(!body||!body.state){setCloudStatus('synced');if(opts.manual)toast('[CLOUD: NO REMOTE STATE]','cyan');return;}const remoteMod=body.lastModified||body.state.lastModified;const localMod=state.lastModified;const shouldReplace=opts.manual||!localMod||(remoteMod&&remoteMod>localMod);if(shouldReplace){state=migrate(body.state);state.lastSyncedAt=new Date().toISOString();saveState({skipCloud:true,skipTimestamp:true});ensureTodayQuest();populateSettings();render();checkTitles();toast('[CLOUD: PULLED'+(opts.manual?'':' NEWER STATE')+']','cyan');logLine(`${nowTimeStr()} — Cloud state pulled.`);}setCloudStatus('synced');}catch(e){setCloudStatus('error',e.message);if(opts.manual)toast('[CLOUD: PULL FAILED]','danger');}}
+function scheduleCloudPush(){if(!cloudConfig)return;setCloudStatus('pending');if(cloudPushTimer)clearTimeout(cloudPushTimer);cloudPushTimer=setTimeout(()=>{cloudPushTimer=null;cloudPush();},CLOUD_PUSH_DEBOUNCE_MS);}
+async function cloudPush(opts){opts=opts||{};if(!cloudConfig){if(opts.manual)toast('[CLOUD: NO CONFIG]','danger');return;}setCloudStatus('syncing');try{const body={state,lastModified:state.lastModified||new Date().toISOString()};const r=await fetch(cloudConfig.url+'/system/state',{method:'PUT',headers:cloudHeaders(),body:JSON.stringify(body)});if(r.status===401){setCloudStatus('error','Unauthorized');if(opts.manual)toast('[CLOUD: BAD TOKEN]','danger');return;}if(!r.ok)throw new Error('HTTP '+r.status);const result=await r.json();state.lastSyncedAt=result.lastModified||new Date().toISOString();try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}catch(e){}setCloudStatus('synced');if(opts.manual)toast('[CLOUD: PUSHED]','cyan');}catch(e){setCloudStatus('error',e.message);if(opts.manual)toast('[CLOUD: PUSH FAILED]','danger');}}
+function renderCloudStatus(){const el=document.getElementById('cloud-status');if(!el)return;const map={idle:['IDLE','dim'],offline:['OFFLINE','dim'],pending:['PENDING…','gold'],syncing:['SYNCING…','cyan'],synced:['SYNCED','cyan'],error:['ERROR','danger']};const[label,cls]=map[cloudStatus]||['—','dim'];el.textContent=label;el.className='cloud-status cloud-status-'+cls;const ts=document.getElementById('cloud-last-synced');if(ts)ts.textContent=state.lastSyncedAt?'last synced: '+new Date(state.lastSyncedAt).toLocaleString():'never synced';const err=document.getElementById('cloud-error');if(err)err.textContent=cloudLastError||'';}
+function applyCloudConfigForm(){const url=document.getElementById('cloud-url').value.trim();const token=document.getElementById('cloud-token').value.trim();if(!url||!token){if(!confirm('Clear cloud config?'))return;saveCloudConfig(null,null);toast('[CLOUD: CONFIG CLEARED]','cyan');return;}saveCloudConfig(url,token);toast('[CLOUD: CONFIG SAVED]','cyan');cloudTestConnection();}
+// ─── END CLOUD SYNC ──────────────────────────────────────────────────────
 function daysBetween(a,b){const da=new Date(a+'T00:00:00'),db=new Date(b+'T00:00:00');return Math.max(1,Math.round((db-da)/86400000));}
 function ensureTodayQuest(){
   const today=todayStr();if(state.lastQuestDate===today)return;
@@ -531,6 +578,8 @@ function populateSettings(){
   document.getElementById('set-class').value=state.player.class;
   const sel=document.getElementById('set-title');sel.innerHTML='<option value="">— NONE —</option>';
   for(const x of state.titles){const t=getTitle(x.id);if(!t)continue;const opt=document.createElement('option');opt.value=t.id;opt.textContent=t.name+' ['+t.tier.toUpperCase()+']';if(state.equippedTitle===t.id)opt.selected=true;sel.appendChild(opt);}
+  const cu=document.getElementById('cloud-url');const ct=document.getElementById('cloud-token');if(cu&&ct){cu.value=cloudConfig?cloudConfig.url:'';ct.value=cloudConfig?cloudConfig.token:'';}
+  renderCloudStatus();
   renderQuestEditor();render();
 }
 function saveSettings(){
@@ -576,6 +625,7 @@ ensureTodayQuest();render();checkTitles();
 setInterval(tickClock,1000);tickClock();
 setInterval(tickCountdown,1000);tickCountdown();
 setTimeout(()=>toast('[STATUS WINDOW ONLINE]','cyan'),400);
+if(cloudConfig){setTimeout(()=>cloudPull(),800);}
 </script>
 </body>
 </html>

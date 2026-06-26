@@ -6,6 +6,43 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 
 ---
 
+## 2026-06-26 — v3.0
+
+### Added
+
+**Cloud sync (optional, single-user)**
+- New settings panel: **CLOUD SYNC** (positioned before DATA panel)
+- Fields: API URL, Device Token (password input)
+- Buttons: SAVE CONFIG, TEST CONNECTION, PUSH NOW, PULL NOW
+- Status indicator: IDLE · PENDING · SYNCING · SYNCED · ERROR (color-coded)
+- Last-synced timestamp displayed under manual controls
+- Cloud config persisted in `localStorage` key `gorgon.cloud.config` (`{url, token}`)
+- Backed by [`gorgon-api`](https://github.com/countbrackmoor/gorgon-api) Cloudflare Worker
+- KV key: `system:state` (Worker side); payload `{state, lastModified}`
+- Auth: `Authorization: Bearer <DEVICE_TOKEN>` header on all requests
+- Pull strategy: on app load, if cloud's `lastModified` > local's, cloud wins and replaces local state (re-renders, re-checks titles, logs `Cloud state pulled`)
+- Push strategy: `saveState()` triggers a debounced 2 s push to cloud after every state change
+- Manual buttons bypass debounce and force-push/pull regardless of timestamps
+- All cloud functions are no-ops when `cloudConfig` is unset — the app behaves identically to v2 with no config
+
+### Changed
+- Storage key: `gorgon.system.v2` → `gorgon.system.v3`. Old saves (v2, v1) auto-imported on first load if no v3 save exists.
+- `DEFAULT_STATE` gains `lastModified` and `lastSyncedAt` ISO-timestamp fields
+- `saveState()` updates `state.lastModified` on every call and schedules a cloud push (unless `{skipCloud:true}` is passed — used internally by cloud pull to avoid echo)
+- `loadState()` walks `LEGACY_KEYS` fallback list (`['gorgon.system.v2','gorgon.system.v1']`) when v3 key is missing
+- `migrate()` stamps `m.version = VERSION` on every migrated payload
+- `populateSettings()` rehydrates the cloud config form fields and re-renders cloud status
+- Footer updated to `THE SYSTEM v3`
+
+### Notes
+- Cloud sync is fully opt-in. Existing users see the new panel but no change in behavior until they paste a URL + token.
+- Conflict resolution is last-write-wins by `lastModified` ISO string. Since this is a single-user model, divergence between devices is bounded by the 2 s debounce window plus network latency.
+- Status indicator updates on every state transition: pending fires the moment `saveState()` runs; synced fires on successful PUT response.
+- 401 responses surface as `ERROR · Unauthorized` and a `[CLOUD: BAD TOKEN]` toast on manual operations.
+- Worker source and setup steps live in the `gorgon-api` repo.
+
+---
+
 ## 2026-06-24 — v2.0
 
 ### Added
