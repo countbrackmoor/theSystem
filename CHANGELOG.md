@@ -6,6 +6,83 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 
 ---
 
+## 2026-11-19 — v4.0
+
+### Added
+- **Two palettes, one save.** `index.html` (cyan) and `ember.html` (orange) are built from one template and share `gorgon.system.v4`. You can switch between them from Settings → PLAYER.
+- **Sticky top strip** with `[SYSTEM] DAILY QUEST · d/n · %` and a progress bar. It turns gold when the day is cleared and shows REST DAY when nothing is scheduled.
+- **New section headers.** Every panel uses `[!] [SYSTEM] NAME ─── meta`.
+- **Corner-bracket frames** on every panel, with `///` hash marks.
+- **Rank chip** (UNRANKED / E–S, derived from level) next to the level chip.
+- **Per-quest icons**: 14 stroke SVGs, auto-guessed from the quest name and selectable in the quest editor.
+- **Per-quest weekday schedules**: S–S pills in the quest editor, minimum 1 day. A day with nothing scheduled is a rest day, with no penalty and no change to the streak.
+- **TODAY / THIS WEEK toggle** on Daily Quest. The week view shows each quest's Sun–Sat pills (scheduled / done / missed / today) and an `N× / WEEK · N DONE` count.
+- **QUEST CLEARED stamp**: rotated, gold, with a slam animation on the clear that completes the day.
+- **Daily history**: `history[date] = {s:{stats}, q:{questId:[done, target]}}`, recorded on each save and capped at 400 days.
+- **Baseline snapshot** (`baseline = {date, stats}`), written once on first v4 load.
+- **NOW / DAY 1 stat toggle.** DAY 1 shows the baseline values with a ± delta to now.
+- **PROGRESS panel**:
+  - Pentagon stat radar: filled for now, dashed for the latest snapshot ≥30 days old (falls back to Day 1).
+  - Quest-target chart for each scalable quest. Icon tabs switch between quests. The actual line is solid and built from cleared days in history; the dashed projection covers the next 20 clears at the scale factor, up to the 5× cap.
+- **Optional TRIAL** (Settings → TRIAL), off by default:
+  - A bounded N-day window (7–365, default 66) inside the endless System.
+  - Pass with a clear rate ≥70% of scheduled days; rest days are excluded.
+  - Shows day X/N, the current clear rate, a 70% marker and start/end dates in the status window.
+  - Can be abandoned.
+- **Title TRIAL CONQUEROR** (epic, +1000 XP) for passing a Trial.
+
+### Changed
+- Storage key `gorgon.system.v3` → `gorgon.system.v4`. `LEGACY_KEYS` now walks v3 → v2 → v1.
+- `migrate()` changes:
+  - Quest templates gain a stable `id`, `icon` and `days`.
+  - v3 positional `questsToday` ids (`q0`…) are remapped to template ids by name, then by index.
+  - `questsToday` entries now carry `t`, the target at issue time.
+- Day rollover rewritten (`ensureTodayQuest` / `evaluateDay`):
+  - Each missed day in the gap is evaluated against its own schedule.
+  - Only the last 7 days are penalized. An older gap logs `SYSTEM DORMANT N DAYS. Unrecorded, unpenalized.`
+  - Quest scaling applies only to quests that were scheduled and cleared that day.
+- All date math uses local time (`fmtDate` / `parseDate`). The old `addDays` mixed UTC (`toISOString`) with local time and could be off by a day near midnight.
+- Panel glow rebuilt structurally:
+  - The old `drop-shadow` sat on the clip-pathed panel. CSS applies `filter` before `clip-path`, so the glow was most likely being clipped away (the earlier iOS "fix" probably did nothing).
+  - Now a separate `.glow` layer is blurred behind the panel inside a `.frame` wrapper, and the brackets sit outside the clip.
+- Ambient background gains a faint HUD grid.
+- The log keeps 1000 entries.
+- Footer reads `THE SYSTEM v4 — <palette>`.
+
+### Fixed
+- Restored Adam's default quest values from `1cbda5a`, which the `1e692c0` clear-storage push overwrote from a stale local copy:
+  - 15 Push-Ups (×1.08)
+  - 10 Sit-Ups (×1.08)
+  - 20-min Walk or Run (×1.02)
+  - 20-min Focused Reading (×1.01)
+  - Water
+  - Put-off task
+
+  This only affects new or reset saves; existing saves keep their own templates.
+
+### Notes
+- Cloud sync is unchanged (code carried over verbatim). An older v3 client pushing to the same KV after v4 will write a state without `history`, and the next v4 pull would accept it under last-write-wins. Update every device.
+
+---
+
+## Undated — between v3.0 and v4.0 (backfilled)
+
+These pushes shipped without changelog entries. Short hashes are listed for reference.
+
+### Added
+- `553e235` — Ambient effects: breathing panel glow, scanline overlay, radial ambient background, title text-shadow breathe.
+- `1e692c0` — Settings → DATA: **CLEAR ALL BROWSER STORAGE** (localStorage, sessionStorage, cookies, then reload).
+
+### Changed
+- `01245b2` — Made the effects more prominent and attempted an iOS Safari fix (z-index layering, `inset` → explicit offsets, `-webkit-` prefixes).
+- `9ff76fe` — Dimmed the scanlines back to `rgba(0,15,35,0.055)`.
+- `1cbda5a` — Adam edited the default quests directly on GitHub (the values restored in v4.0 above).
+
+### Regressed
+- `1e692c0` also reverted `1cbda5a`'s default quests, because it was built from a stale copy. Fixed in v4.0.
+
+---
+
 ## 2026-06-26 — v3.0
 
 ### Added

@@ -1,73 +1,79 @@
 # The System
 
-A Solo Leveling–inspired self-improvement tracker. Single-file HTML, `localStorage` first, optional cloud sync via [gorgon-api](https://github.com/countbrackmoor/gorgon-api).
+A self-improvement tracker inspired by Solo Leveling. It is a single HTML file that stores everything in `localStorage` first, with optional cloud sync via [gorgon-api](https://github.com/countbrackmoor/gorgon-api).
 
 Part of the [gorgon.live](https://gorgon.live) tool suite.
+
+- **Cyan:** https://gorgon.live/theSystem/
+- **Ember (orange):** https://gorgon.live/theSystem/ember.html
+
+Both palettes read and write the same save. Switch between them in Settings → PLAYER.
 
 ---
 
 ## Concept
 
-You are the Player. The app is the System: an external, semi-sentient overseer that issues a Daily Quest, tracks your stats, and levels you up. Miss the Daily Quest and a random stat is debited the next morning. No fake encouragement, no streak-shaming copy — just bracketed System notifications and consequences.
-
-The design philosophy is laid out in `DESIGN.md` (if present); the short version is that the fiction is load-bearing. The aesthetic and tone are the retention mechanic, not decoration.
+You are the Player and the app is the System. It issues Daily Quests, tracks your stats, levels you up and applies penalties. All copy is terse and bracketed. There is no encouragement copy and no guilt-tripping.
 
 ---
 
 ## Features
 
 ### Status window
-- Player name, class, level
-- HP / MP / XP bars (HP and MP are currently cosmetic; reserved for future mechanics)
-- Five-stat block: **STR · AGI · VIT · INT · SEN**
-- Current and best streak counters
-- Stat allocation: every level grants 5 points; tap a stat to spend them
+- Name, class or equipped title, level, rank chip (UNRANKED → E–S by level)
+- HP / MP / XP bars (HP and MP are cosmetic)
+- Five stats: **STR · AGI · VIT · INT · SEN**
+  - Tap a stat to spend points; each level grants 5.
+  - The **NOW / DAY 1** toggle shows your baseline with a ± delta.
+- Active buffs and shields
+- Current and best streak
+- Progress bar for an active Trial
 
 ### Daily Quest
-- Issued at 00:00 local time
-- Expires at midnight; countdown displayed in real time
-- Defaults to the show's iconic loadout: 100 push-ups, 100 sit-ups, 100 squats, 10 km run
-- Tap a quest segment to mark it complete and bank the XP
+- A sticky top strip shows today's progress (`d/n · %`) and turns gold when the day is cleared.
+- **TODAY** view:
+  - Tap a quest to clear it.
+  - Clearing the last quest slams a QUEST CLEARED stamp.
+  - The countdown turns red in the final 2 hours.
+- **THIS WEEK** view: Sun–Sat pills for each quest (scheduled / done / missed / today).
+- Per-quest icon, XP, weekday schedule and optional scaling:
+  - Use `{n}` in the name to make the number scale.
+  - The factor is applied on each clear, up to a 5× cap.
+- A day with nothing scheduled is a **rest day**: no penalty and no change to the streak.
 
-### Penalty system
-- Missing the Daily Quest → random stat −1 the following day
-- Multiple consecutive missed days stack penalties
-- Streak resets to 0 on any failure
+### Penalties and rollover
+- Each failed scheduled day costs a random stat −1 and resets the streak.
+- Penalty shields from items block it.
+- Only the last **7 days** of absence are penalized. Anything older logs `SYSTEM DORMANT` and is skipped.
 
-### Leveling
-- XP-to-next-level curve: `lvl² × 100`
-- Each level grants 5 stat points
-- Allocatable stats glow gold when points are pending
+### Progress
+- Pentagon stat radar: now versus the latest snapshot ≥30 days old (falls back to Day 1).
+- Quest-target chart for each scalable quest: actual targets on cleared days, plus a dashed 20-clear projection.
 
-### Persistence
-- Auto-saves to `localStorage` (key: `gorgon.system.v3`) on every action
-- Refresh-safe, browser-tab-safe
-- Schema-versioned with a `migrate()` step so future updates don't break old saves
-- Legacy keys (`v1`, `v2`) auto-imported on first load if no `v3` save exists
+### Trial (optional)
+- A bounded N-day window (default 66, range 7–365) that you start from Settings.
+- You pass with a ≥70% clear rate on scheduled days, which unlocks **TRIAL CONQUEROR**.
+- 66 days is the *average* time to habit automaticity found by Lally et al. (2010). Individual times ranged from 18 to 254 days.
 
-### Cloud sync (optional)
-- Single-user, cross-device sync via Cloudflare Workers + KV (`gorgon-api`)
-- Settings → **CLOUD SYNC** panel: paste API URL + device token, hit SAVE CONFIG
-- Cloud config stored in `localStorage` key `gorgon.cloud.config`
-- On load: if cloud's `lastModified` > local's, cloud state wins and replaces local
-- On every state change: debounced 2 s push to cloud
-- Manual PUSH NOW / PULL NOW buttons for explicit control
-- Status indicator: IDLE · PENDING · SYNCING · SYNCED · ERROR
-- Fully optional — leave the config blank and the app behaves exactly as v2
+### Titles and items
+- 29 titles across the common / rare / epic / legendary tiers. Each grants XP, and you can equip one in place of your class.
+- 8 items drop roughly every 3–5 cleared days: consumables (shields, XP boost, all-stats) or timed buffs.
 
 ### Settings
-- Edit player name and class string
-- Custom Daily Quest editor — add, remove, rename, re-XP, re-scale any quest segment
-- **Cloud Sync** — endpoint config, manual push/pull, last-synced timestamp
-- **Export JSON** — downloads a dated save file
-- **Import** via file picker or paste-into-textarea
-- Hard reset (double-confirmed)
-- Debug helpers: force level-up, force penalty, force item drop
+- Player, title archive, quest editor, trial, full log (1000 entries)
+- Cloud sync, export / import JSON, reset, clear all browser storage
+- Debug actions
 
-### System messaging
-- All notifications styled as bracketed System messages (`[QUEST CLEARED. +25 XP]`)
-- Color-coded toast notifications: cyan (info), gold (level/clear), red (penalty)
-- Rolling system log shows the last 50 events, persisted across sessions
+---
+
+## Storage
+
+| Key | Contents |
+|---|---|
+| `gorgon.system.v4` | Full state, including `history` (per-day stats and quest results, capped at 400 days), `baseline` and `trial` |
+| `gorgon.cloud.config` | `{url, token}` for optional cloud sync |
+
+Legacy keys `gorgon.system.v3`, `v2` and `v1` are migrated automatically on first load. Cloud sync is last-write-wins by `lastModified`; update every device to v4.
 
 ---
 
@@ -75,39 +81,31 @@ The design philosophy is laid out in `DESIGN.md` (if present); the short version
 
 | Path | Purpose |
 |---|---|
-| `index.html` | The entire app — HTML, CSS, JS in one file |
-| `README.md` | This file |
+| `index.html` | App, cyan palette |
+| `ember.html` | App, ember palette (same code; only `data-theme` differs) |
 | `CHANGELOG.md` | Dated change log |
 
-No build step, no dependencies beyond two Google Fonts (Rajdhani and Share Tech Mono) loaded via CDN.
+The two HTML files are generated from one template, so any change must go into both. The only dependency is Google Fonts (Rajdhani and Share Tech Mono).
 
 ---
 
 ## Aesthetic
 
-Dark navy/black background, cyan (`#5fd4ff`) primary accent, gold (`#ffd166`) for XP and milestones, red (`#ff4d6d`) for penalties. Sharp clip-path corners on panels and toasts mirror the show's status-window UI. Rajdhani for body text, Share Tech Mono for System messages.
+| Palette | Background | Accent | Gold |
+|---|---|---|---|
+| Cyan | `#02060d` | `#5fd4ff` | `#ffd166` |
+| Ember | `#0c0704` | `#ff8a3d` | `#ffe08a` |
 
----
-
-## Stack
-
-- Pure HTML / CSS / JS, single file
-- No framework, no build, optional cloud backend
-- `localStorage` for primary persistence (key: `gorgon.system.v3`)
-- Optional cloud sync via [gorgon-api](https://github.com/countbrackmoor/gorgon-api) Worker
-- Google Fonts CDN for Rajdhani and Share Tech Mono
-- Hosted via GitHub Pages, fronted by Cloudflare (orange-cloud proxy)
+Both palettes share danger `#ff4d6d`, magenta `#d885ff` and green `#7fff6a`. Panels use clip-path corners, bracket frames and a breathing glow layer. That glow layer sits *behind* the clipped panel, because a filter on a clip-pathed element gets clipped on iOS.
 
 ---
 
 ## Not implemented yet
 
-- Class change mechanic at Lv 10 (Hunter / Mage / Assassin / Tank)
+- A class-change mechanic at Lv 10
 - Skill tree
-- Dungeons (bounded high-stakes challenges)
-- Side Quests and Weekly Quests (v3 design doc exists)
-- HealthKit / Google Fit integration for AGI / VIT auto-tracking
-- Browser push notifications for quest expiry warnings
-- HP / MP mechanical wiring (currently cosmetic)
-
-See `DESIGN.md` for the full roadmap.
+- Dungeons
+- Side and weekly quests
+- HealthKit / Google Fit integration
+- Push notifications
+- HP / MP mechanics
