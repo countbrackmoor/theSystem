@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#02060d">
 <title>THE SYSTEM</title>
+<script>
+(function(){var t='cyan';try{var q=new URLSearchParams(location.search).get('theme');if(q==='cyan'||q==='ember'){localStorage.setItem('gorgon.system.theme',q);t=q;}else{t=localStorage.getItem('gorgon.system.theme')||'cyan';}}catch(e){}
+if(t!=='ember')t='cyan';document.documentElement.setAttribute('data-theme',t);var m=document.querySelector('meta[name=theme-color]');if(m)m.setAttribute('content',t==='ember'?'#0c0704':'#02060d');})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -285,6 +289,55 @@
   .footer-note { text-align: center; font-family: var(--mono); font-size: 9px; color: var(--dim); letter-spacing: 0.3em; margin-top: 24px; opacity: 0.7; }
   .footer-note a { color: var(--ac-dim); }
   .hidden { display: none !important; }
+
+  /* ═══ v5 ═══ */
+  .stat .train { display: flex; gap: 2px; justify-content: center; margin-top: 4px; }
+  .stat .train i { width: 5px; height: 3px; background: rgba(var(--ac-rgb),0.18); }
+  .stat .train i.on { background: var(--ac); }
+  .quest .q-act { font-family: var(--mono); font-size: 10px; color: var(--ac); border: 1px solid rgba(var(--ac-rgb),0.45); padding: 3px 6px; letter-spacing: 0.1em; white-space: nowrap; }
+  .quest .q-stat { font-family: var(--mono); font-size: 9px; color: var(--ac-dim); letter-spacing: 0.12em; }
+  .q-main { flex: 1; min-width: 0; }
+  .penalty-q { border: 1px solid var(--danger); background: rgba(var(--danger-rgb),0.08); padding: 12px 10px; margin-bottom: 12px; display: flex; gap: 12px; align-items: center; cursor: pointer; }
+  .penalty-q .pq-t { flex: 1; font-size: 16px; font-weight: 600; color: var(--white); }
+  .penalty-q .pq-k { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.2em; color: var(--danger); }
+  .penalty-q.done { opacity: 0.5; border-style: dashed; }
+  .penalty-q .check { width: 18px; height: 18px; border: 1.5px solid var(--danger); flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: var(--bg); font-weight: bold; }
+  .penalty-q.done .check { background: var(--danger); }
+  .undo-bar { position: fixed; left: 50%; bottom: calc(env(safe-area-inset-bottom) + 18px); z-index: 1000; -webkit-transform: translate3d(-50%,160%,0); transform: translate3d(-50%,160%,0); transition: transform 0.3s cubic-bezier(0.16,1,0.3,1); display: flex; align-items: center; gap: 14px; padding: 10px 12px 10px 16px; background: rgba(var(--bg-rgb),0.97); border: 1px solid var(--ac); font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em; color: var(--white); max-width: 92vw; }
+  .undo-bar.show { -webkit-transform: translate3d(-50%,0,0); transform: translate3d(-50%,0,0); }
+  .undo-bar button { background: var(--ac); color: var(--on-ac); border: 0; font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; padding: 8px 12px; font-weight: bold; cursor: pointer; }
+  .side { display: flex; align-items: center; gap: 10px; padding: 10px; border: 1px dashed rgba(var(--ac-rgb),0.3); margin-bottom: 8px; cursor: pointer; }
+  .side .s-t { flex: 1; font-size: 16px; font-weight: 600; }
+  .side .s-m { font-family: var(--mono); font-size: 10px; color: var(--dim); letter-spacing: 0.1em; white-space: nowrap; }
+  .side .rm { background: transparent; border: 0; color: var(--dim); font-size: 16px; cursor: pointer; padding: 0 4px; }
+  .side.done { opacity: 0.45; }
+  .side-add { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+  .side-add input[type=text] { flex: 1 1 160px; }
+  .side-add select { flex: 0 0 auto; }
+  .side-add input[type=number] { flex: 0 0 64px; }
+  .heat { display: grid; grid-template-rows: repeat(7, 1fr); grid-auto-flow: column; grid-auto-columns: 1fr; gap: 3px; margin: 6px 0 4px; }
+  .heat i { aspect-ratio: 1; background: rgba(var(--white-rgb),0.04); border: 1px solid transparent; }
+  .heat i.rest { background: repeating-linear-gradient(45deg, rgba(var(--white-rgb),0.06) 0 2px, transparent 2px 4px); }
+  .heat i.miss { border-color: rgba(var(--danger-rgb),0.7); }
+  .heat i.today { border-color: var(--white); }
+  .heat i.fut { background: transparent; border-color: rgba(var(--white-rgb),0.05); }
+  .report { border: 1px solid rgba(var(--gold-rgb),0.5); background: rgba(var(--gold-rgb),0.05); padding: 12px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; line-height: 1.9; color: var(--white); }
+  .report .k { color: var(--gold); }
+  .class-offer { margin: 0 0 14px; padding: 12px; border: 1px solid var(--gold); background: rgba(var(--gold-rgb),0.06); }
+  .class-offer .t { font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; color: var(--gold); margin-bottom: 8px; }
+  .class-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 6px; }
+  .class-grid button { background: transparent; border: 1px solid rgba(var(--gold-rgb),0.5); color: var(--white); font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.08em; padding: 8px 2px; cursor: pointer; line-height: 1.5; }
+  .class-grid button.rec { border-color: var(--gold); color: var(--gold); }
+  #onboard { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 1100; background: rgba(var(--bg-rgb),0.97); overflow-y: auto; -webkit-overflow-scrolling: touch; padding: calc(env(safe-area-inset-top) + 40px) 20px 40px; }
+  #onboard .ob { max-width: 520px; margin: 0 auto; }
+  #onboard .ob-msg { font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; color: var(--white); line-height: 1.9; margin: 14px 0 20px; }
+  #onboard .ob-step { font-family: var(--mono); font-size: 10px; letter-spacing: 0.3em; color: var(--ac-dim); }
+  #onboard label.ck { display: flex; gap: 10px; align-items: center; padding: 9px 0; border-bottom: 1px dashed rgba(var(--ac-rgb),0.15); font-size: 16px; }
+  #onboard input[type=checkbox] { width: 18px; height: 18px; accent-color: var(--ac); }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .frame .glow { opacity: 0.3; }
+  }
 </style>
 </head>
 <body>
@@ -305,6 +358,12 @@
 <!-- ═════════════ MAIN ═════════════ -->
 <div id="main-view">
 
+  <div class="panel hidden" id="report-panel">
+    <div class="sh"><span class="bang">!</span><span class="sys">[SYSTEM]</span><span class="nm">WEEKLY REPORT</span><i class="rule"></i><span class="meta" id="report-meta"></span></div>
+    <div class="report" id="report-body"></div>
+    <button class="btn wide" style="margin-top:10px;" onclick="dismissReport()">ACKNOWLEDGE</button>
+  </div>
+
   <div class="panel" id="p-status">
     <div class="sh"><span class="bang">!</span><span class="sys">[SYSTEM]</span><span class="nm">STATUS WINDOW</span><i class="rule"></i><span class="meta" id="sys-time">00:00:00</span></div>
     <div class="status-head">
@@ -315,6 +374,7 @@
       </div>
       <div class="level-block"><div class="lvl-label">LEVEL</div><div class="lvl-num" id="lvl">1</div></div>
     </div>
+    <div id="class-block"></div>
     <div id="trial-block"></div>
     <div class="bar-row"><div class="bar-label"><span class="key">HP</span><span class="val"><span id="hp-v">100</span> / 100</span></div><div class="bar-track"><div class="bar-fill hp" id="hp-bar" style="width:100%"></div></div></div>
     <div class="bar-row"><div class="bar-label"><span class="key">MP</span><span class="val"><span id="mp-v">100</span> / 100</span></div><div class="bar-track"><div class="bar-fill mp" id="mp-bar" style="width:100%"></div></div></div>
@@ -335,9 +395,21 @@
   <div class="panel" id="p-quest">
     <div class="sh"><span class="bang">!</span><span class="sys">[SYSTEM]</span><span class="nm">DAILY QUEST</span><i class="rule"></i><span class="meta" id="quest-meta">EXPIRES <span id="countdown">00:00:00</span></span></div>
     <div class="seg" id="quest-seg"><button data-v="today" class="on">TODAY</button><button data-v="week">THIS WEEK</button></div>
+    <div id="penalty-block"></div>
     <div id="quest-today"><div id="quest-list"></div><div class="stamp" id="stamp">QUEST CLEARED</div></div>
     <div id="quest-week" class="hidden"></div>
-    <div class="warning" id="quest-warning">⚠ PENALTY ON FAILURE — RANDOM STAT −1</div>
+    <div class="warning" id="quest-warning">⚠ FAILURE → PENALTY QUEST TOMORROW</div>
+  </div>
+
+  <div class="panel" id="side-panel">
+    <div class="sh"><span class="bang">!</span><span class="sys">[SYSTEM]</span><span class="nm">SIDE QUESTS</span><i class="rule"></i><span class="meta" id="side-meta">NO PENALTY</span></div>
+    <div id="side-list"></div>
+    <div class="side-add">
+      <input type="text" id="side-name" maxlength="60" placeholder="New side quest">
+      <select id="side-type"><option value="once">ONCE</option><option value="2">2×/WK</option><option value="3">3×/WK</option><option value="4">4×/WK</option><option value="5">5×/WK</option></select>
+      <input type="number" id="side-xp" value="15" min="1" max="200">
+      <button class="btn" onclick="addSideQuest()">ADD</button>
+    </div>
   </div>
 
   <div class="panel hidden" id="inventory-panel">
@@ -350,6 +422,10 @@
     <div class="sub-label">STAT PROFILE</div>
     <svg id="radar" viewBox="0 0 300 260" aria-label="Stat radar"></svg>
     <div class="legend" id="radar-legend"></div>
+    <div class="divider"></div>
+    <div class="sub-label">LAST 12 WEEKS</div>
+    <div class="heat" id="heat"></div>
+    <div class="legend" id="heat-legend"></div>
     <div id="chart-wrap">
       <div class="divider"></div>
       <div class="sub-label">QUEST TARGETS</div>
@@ -383,7 +459,9 @@
       <div class="field-row"><label>CLASS</label><input type="text" id="set-class" maxlength="32"></div>
       <div class="field-row"><label>TITLE</label><select id="set-title"></select></div>
       <div class="hint">// equipped title replaces class on status window</div>
-      <div class="hint">// palette: CYAN · <a href="ember.html">switch to EMBER →</a> (same save data)</div>
+      <div class="field-row"><label>DAY ENDS</label><select id="set-daystart"><option value="0">00:00 (midnight)</option><option value="1">01:00</option><option value="2">02:00</option><option value="3">03:00</option><option value="4">04:00</option><option value="5">05:00</option></select></div>
+      <div class="hint">// late nights count toward the previous day until this hour</div>
+      <div class="hint">// palette: <span id="theme-label">CYAN</span> · <a href="#" onclick="switchTheme();return false;">switch →</a> (same save data)</div>
     </div>
   </div>
 
@@ -399,10 +477,11 @@
     <div class="hint">// use {n} in a name to make its number scale, e.g. "{n} Push-Ups"</div>
     <div class="hint">// SCALE: multiplier on each clear (1.08 = +8%). blank = fixed. capped at 5× base.</div>
     <div class="hint">// day pills: which days the quest is issued. penalties only count scheduled days.</div>
+    <div class="hint">// STAT: each clear trains that stat. 5 clears = +1 (4 for your class stat).</div>
   </div>
 
   <div class="panel">
-    <div class="sh"><span class="bang">!</span><span class="sys">[SYSTEM]</span><span class="nm">TRIAL</span><i class="rule"></i><span class="meta" id="trial-status-label">INACTIVE</span></div>
+    <div class="sh"><span class="bang">!</span><span class="sys">[SYSTEM]</span><span class="nm">GAUNTLET</span><i class="rule"></i><span class="meta" id="trial-status-label">INACTIVE</span></div>
     <div id="trial-settings"></div>
   </div>
 
@@ -449,8 +528,10 @@
     <div class="settings-section">
       <h3>DANGER ZONE</h3>
       <button class="btn danger wide" onclick="resetAll()" style="margin-bottom:8px;">RESET ALL PROGRESS</button>
-      <button class="btn danger wide" onclick="clearSiteData()">CLEAR ALL BROWSER STORAGE</button>
-      <div class="hint">// wipes localStorage, sessionStorage &amp; cookies for this site, then reloads</div>
+      <button class="btn danger wide" onclick="clearSystemData()" style="margin-bottom:8px;">CLEAR SYSTEM STORAGE</button>
+      <div class="hint" style="margin-bottom:10px;">// removes The System's saves (incl. archives) from this browser, then reloads. cloud config is kept.</div>
+      <button class="btn danger wide" onclick="clearSiteData()">CLEAR ALL GORGON.LIVE STORAGE</button>
+      <div class="hint">// wipes localStorage, sessionStorage &amp; cookies for the whole gorgon.live domain — every tool on the site, not just this one</div>
     </div>
   </div>
 
@@ -465,35 +546,43 @@
 
 </div>
 
-<div class="footer-note">// THE SYSTEM v4 — gorgon.live · CYAN</div>
+<div class="footer-note">// THE SYSTEM v5 — gorgon.live · <a href="archive/">archive</a></div>
 <div id="toast"></div>
+<div class="undo-bar" id="undo-bar"><span id="undo-text">QUEST CLEARED</span><button onclick="undoLast()">UNDO</button></div>
+<div id="onboard" class="hidden"></div>
 
 <script>
 'use strict';
-const VERSION=4,STORAGE_KEY='gorgon.system.v4',LEGACY_KEYS=['gorgon.system.v3','gorgon.system.v2','gorgon.system.v1'],STAT_KEYS=['STR','AGI','VIT','INT','SEN'];
-const CLOUD_CONFIG_KEY='gorgon.cloud.config';
+const VERSION=5,STORAGE_KEY='gorgon.system.v5',LEGACY_KEYS=['gorgon.system.v4','gorgon.system.v3','gorgon.system.v2','gorgon.system.v1'],STAT_KEYS=['STR','AGI','VIT','INT','SEN'];
+const CLOUD_CONFIG_KEY='gorgon.cloud.config',THEME_KEY='gorgon.system.theme';
 const DOW='SMTWTFS';
 const MAX_GAP_PENALTY_DAYS=7;      // absence older than this is logged as dormant, not penalized
 const HISTORY_CAP=400;             // days of history kept
-const TRIAL_REQ=0.7;               // clear rate required to pass a trial
+const TRIAL_REQ=0.7;               // clear rate required to pass a gauntlet
 const PROJ_CLEARS=20;              // projection length on quest target chart
+const TRAIN_PER_POINT=5;           // quest clears per +1 stat (class stat: one fewer)
+const ITEM_MP=20;                  // MP cost to use an item
+const UNDO_MS=8000;
+let DAY_START=0;                   // hour the logical day rolls over (0–5)
+
+const CLASSES={STR:{name:'FIGHTER'},AGI:{name:'ASSASSIN'},VIT:{name:'TANK'},INT:{name:'MAGE'},SEN:{name:'RANGER'}};
 
 // ── Icons (24×24, stroke) ─────────────────────────────────────────────
 const ICONS={
-  pushup:{l:'Push-up',p:'<circle cx="18.5" cy="8" r="2"/><path d="M3 18h18M4 16l12-6M16 10.5l1.5 7.5"/>'},
-  core:{l:'Core',p:'<circle cx="7" cy="6.5" r="2"/><path d="M8 9.5l3 6h7M3 19h18M18 15.5l-2 3.5"/>'},
-  run:{l:'Run / walk',p:'<circle cx="15" cy="4.5" r="2"/><path d="M8 21l3-6 3 2v4M10 13l2-5 4 2 3 1M12 8l-4 1-2 3"/>'},
-  dumbbell:{l:'Lift',p:'<path d="M3 10v4M6 7v10M18 7v10M21 10v4M6 12h12"/>'},
-  book:{l:'Read',p:'<path d="M4 5c3-1 6-1 8 1 2-2 5-2 8-1v14c-3-1-6-1-8 1-2-2-5-2-8-1zM12 6v14"/>'},
-  water:{l:'Water',p:'<path d="M6 4h12l-1.6 16H7.6zM7 9h10"/>'},
-  sleep:{l:'Sleep',p:'<path d="M20 14A8 8 0 1 1 10 4a6 6 0 0 0 10 10z"/>'},
-  meditate:{l:'Meditate',p:'<circle cx="12" cy="5" r="2"/><path d="M12 8v5M7 12l5 2 5-2M4 18c3-2 13-2 16 0M8 18l4-3 4 3"/>'},
-  shower:{l:'Shower',p:'<path d="M5 21V8a4 4 0 0 1 8 0M10 8h8l-1 3h-6zM12 15v1M15 14v1M18 15v1M13 18v1M16 18v1"/>'},
-  phone:{l:'Screen',p:'<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>'},
-  fuel:{l:'Food',p:'<path d="M7 3v8M5 3v5a2 2 0 0 0 4 0V3M7 11v10M17 3c-2 2-2 6 0 8v10"/>'},
-  pen:{l:'Write',p:'<path d="M4 20l4-1 11-11-3-3L5 16zM14 6l3 3"/>'},
-  heart:{l:'Health',p:'<path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/>'},
-  target:{l:'Task',p:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="0.8"/>'},
+  pushup:{l:'Push-up',s:'STR',p:'<circle cx="18.5" cy="8" r="2"/><path d="M3 18h18M4 16l12-6M16 10.5l1.5 7.5"/>'},
+  core:{l:'Core',s:'VIT',p:'<circle cx="7" cy="6.5" r="2"/><path d="M8 9.5l3 6h7M3 19h18M18 15.5l-2 3.5"/>'},
+  run:{l:'Run / walk',s:'AGI',p:'<circle cx="15" cy="4.5" r="2"/><path d="M8 21l3-6 3 2v4M10 13l2-5 4 2 3 1M12 8l-4 1-2 3"/>'},
+  dumbbell:{l:'Lift',s:'STR',p:'<path d="M3 10v4M6 7v10M18 7v10M21 10v4M6 12h12"/>'},
+  book:{l:'Read',s:'INT',p:'<path d="M4 5c3-1 6-1 8 1 2-2 5-2 8-1v14c-3-1-6-1-8 1-2-2-5-2-8-1zM12 6v14"/>'},
+  water:{l:'Water',s:'VIT',p:'<path d="M6 4h12l-1.6 16H7.6zM7 9h10"/>'},
+  sleep:{l:'Sleep',s:'VIT',p:'<path d="M20 14A8 8 0 1 1 10 4a6 6 0 0 0 10 10z"/>'},
+  meditate:{l:'Meditate',s:'SEN',p:'<circle cx="12" cy="5" r="2"/><path d="M12 8v5M7 12l5 2 5-2M4 18c3-2 13-2 16 0M8 18l4-3 4 3"/>'},
+  shower:{l:'Shower',s:'VIT',p:'<path d="M5 21V8a4 4 0 0 1 8 0M10 8h8l-1 3h-6zM12 15v1M15 14v1M18 15v1M13 18v1M16 18v1"/>'},
+  phone:{l:'Screen',s:'SEN',p:'<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>'},
+  fuel:{l:'Food',s:'VIT',p:'<path d="M7 3v8M5 3v5a2 2 0 0 0 4 0V3M7 11v10M17 3c-2 2-2 6 0 8v10"/>'},
+  pen:{l:'Write',s:'INT',p:'<path d="M4 20l4-1 11-11-3-3L5 16zM14 6l3 3"/>'},
+  heart:{l:'Health',s:'VIT',p:'<path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/>'},
+  target:{l:'Task',s:'SEN',p:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="0.8"/>'},
 };
 function iconSvg(k){const i=ICONS[k]||ICONS.target;return `<span class="ico"><svg viewBox="0 0 24 24">${i.p}</svg></span>`;}
 function guessIcon(name){
@@ -526,12 +615,12 @@ const ITEM_CATALOGUE=[
 const RARITY_COLORS={common:'var(--ac-dim)',uncommon:'var(--ac)',rare:'var(--gold)',legendary:'var(--magenta)'};
 const ALL_DAYS=[0,1,2,3,4,5,6];
 const DEFAULT_QUESTS=[
-  {id:'qt_push',icon:'pushup',days:ALL_DAYS.slice(),nameTemplate:'{n} Push-Ups',baseTarget:15,currentTarget:15,scaleFactor:1.08,xp:20},
-  {id:'qt_sit',icon:'core',days:ALL_DAYS.slice(),nameTemplate:'{n} Sit-Ups',baseTarget:10,currentTarget:10,scaleFactor:1.08,xp:15},
-  {id:'qt_walk',icon:'run',days:ALL_DAYS.slice(),nameTemplate:'{n}-min Walk or Run',baseTarget:10,currentTarget:20,scaleFactor:1.02,xp:25},
-  {id:'qt_read',icon:'book',days:ALL_DAYS.slice(),nameTemplate:'{n}-min Focused Reading',baseTarget:20,currentTarget:20,scaleFactor:1.01,xp:20},
-  {id:'qt_water',icon:'water',days:ALL_DAYS.slice(),name:'Drink 8 glasses of water',xp:10},
-  {id:'qt_task',icon:'target',days:ALL_DAYS.slice(),name:"Tackle one thing you've been putting off",xp:30},
+  {id:'qt_push',icon:'pushup',stat:'STR',days:ALL_DAYS.slice(),nameTemplate:'{n} Push-Ups',baseTarget:15,currentTarget:15,scaleFactor:1.08,xp:20},
+  {id:'qt_sit',icon:'core',stat:'VIT',days:ALL_DAYS.slice(),nameTemplate:'{n} Sit-Ups',baseTarget:10,currentTarget:10,scaleFactor:1.08,xp:15},
+  {id:'qt_walk',icon:'run',stat:'AGI',days:ALL_DAYS.slice(),nameTemplate:'{n}-min Walk or Run',baseTarget:10,currentTarget:20,scaleFactor:1.02,xp:25},
+  {id:'qt_read',icon:'book',stat:'INT',days:ALL_DAYS.slice(),nameTemplate:'{n}-min Focused Reading',baseTarget:20,currentTarget:20,scaleFactor:1.01,xp:20},
+  {id:'qt_water',icon:'water',stat:'VIT',days:ALL_DAYS.slice(),name:'Drink 8 glasses of water',xp:10},
+  {id:'qt_task',icon:'target',stat:'SEN',days:ALL_DAYS.slice(),name:"Tackle one thing you've been putting off",xp:30},
 ];
 const TITLES=[
   {id:'awakened',name:'AWAKENED',desc:'Reach Level 5.',tier:'rare',xp:50,check:s=>s.lvl>=5},
@@ -558,34 +647,44 @@ const TITLES=[
   {id:'initiate',name:'INITIATE',desc:'Clear 10 Daily Quests in total.',tier:'common',xp:50,check:s=>s.questsCleared>=10},
   {id:'veteran',name:'VETERAN HUNTER',desc:'Clear 100 Daily Quests in total.',tier:'epic',xp:500,check:s=>s.questsCleared>=100},
   {id:'legend',name:'LEGENDARY HUNTER',desc:'Clear 365 Daily Quests in total.',tier:'legendary',xp:2000,check:s=>s.questsCleared>=365},
-  {id:'trial_clear',name:'TRIAL CONQUEROR',desc:'Pass a Trial (clear rate ≥ 70%).',tier:'epic',xp:1000,check:s=>(s.trialsPassed||0)>=1},
+  {id:'trial_clear',name:'GAUNTLET SURVIVOR',desc:'Clear a Gauntlet (clear rate ≥ 70%).',tier:'epic',xp:1000,check:s=>(s.trialsPassed||0)>=1},
+  {id:'job',name:'CLASSED',desc:'Choose a class at Level 10.',tier:'rare',xp:150,check:s=>!!s.job},
+  {id:'errand',name:'ERRAND RUNNER',desc:'Complete 10 side quests.',tier:'common',xp:75,check:s=>(s.sideCleared||0)>=10},
+  {id:'penitent',name:'PENITENT',desc:'Void a Penalty Quest.',tier:'rare',xp:100,hidden:true,check:s=>(s.penaltiesVoided||0)>=1},
   {id:'phoenix',name:'PHOENIX',desc:'Clear a quest the day after a penalty.',tier:'rare',xp:150,hidden:true,check:s=>s._phoenixUnlock===true},
   {id:'reincarnated',name:'REINCARNATED',desc:'Import a save file.',tier:'common',xp:25,hidden:true,check:s=>s.importedOnce===true},
   {id:'hoarder',name:'HOARDER',desc:'Hold 3 items in inventory at once.',tier:'common',xp:30,check:s=>(s.inventory||[]).length>=3},
   {id:'well_equipped',name:'WELL EQUIPPED',desc:'Receive 10 item drops total.',tier:'rare',xp:150,check:s=>(s.totalDrops||0)>=10},
 ];
 const DEFAULT_STATE={version:VERSION,player:{name:'PLAYER',class:'CLASS — UNAWAKENED'},lvl:1,xp:0,points:0,hp:100,mp:100,stats:{STR:10,AGI:10,VIT:10,INT:10,SEN:10},streak:0,streakBest:0,lastQuestDate:null,questsToday:[],questTemplate:DEFAULT_QUESTS.map(q=>({...q,days:q.days.slice()})),log:[],titles:[],equippedTitle:null,questsCleared:0,lastClearedDate:null,penaltyYesterday:false,importedOnce:false,inventory:[],activeBuffs:[],penaltyShields:0,xpBoostNext:false,nextDropDate:null,totalDrops:0,lastModified:null,lastSyncedAt:null,
-  history:{},baseline:null,trial:{active:false,length:66,start:null,last:null},trialsPassed:0,trialsRun:0};
+  history:{},baseline:null,trial:{active:false,length:66,start:null,last:null},trialsPassed:0,trialsRun:0,
+  settings:{dayStartHour:0},train:{STR:0,AGI:0,VIT:0,INT:0,SEN:0},job:null,penaltyQuest:null,penaltiesVoided:0,sideQuests:[],sideCleared:0,reports:[],reportUnseen:false,lastReportWeek:null,onboarded:false};
 
-// ── Date helpers (local time throughout) ─────────────────────────────
+// ── Date helpers (local time, shifted by DAY_START) ──────────────────
 function fmtDate(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function parseDate(ds){const [y,m,d]=ds.split('-').map(Number);return new Date(y,m-1,d);}
-function todayStr(){return fmtDate(new Date());}
+function todayStr(){return fmtDate(new Date(Date.now()-DAY_START*3600000));}
 function addDays(ds,n){const d=parseDate(ds);d.setDate(d.getDate()+n);return fmtDate(d);}
 function diffDays(a,b){return Math.round((parseDate(b)-parseDate(a))/86400000);}
 function dowOf(ds){return parseDate(ds).getDay();}
+function weekStart(ds){return addDays(ds,-dowOf(ds));}
 function shortDate(ds){return parseDate(ds).toLocaleDateString('en-US',{month:'short',day:'numeric'}).toUpperCase();}
 function nowTimeStr(){const d=new Date();return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}
 function xpForNext(l){return l*l*100;}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-function newId(){return 'qt_'+Math.random().toString(36).slice(2,9);}
+function newId(p){return (p||'qt_')+Math.random().toString(36).slice(2,9);}
 function resolveQuestName(q){if(q.nameTemplate&&q.currentTarget!=null)return q.nameTemplate.replace('{n}',Math.round(q.currentTarget));return q.name||'Quest';}
 function questUnit(qt){if(!qt.nameTemplate)return '';const after=(qt.nameTemplate.split('{n}')[1]||'').trim();if(/^-?min/i.test(after))return 'MIN';return (after.split(/\s+/)[0]||'').toUpperCase();}
 function rankFor(l){return l>=100?'S-RANK':l>=90?'A-RANK':l>=75?'B-RANK':l>=50?'C-RANK':l>=25?'D-RANK':l>=10?'E-RANK':'UNRANKED';}
+function tpl(id){return state.questTemplate.find(t=>t.id===id);}
+function trainNeed(k){return TRAIN_PER_POINT-(state.job===k?1:0);}
 
 let state=loadState();
+applySettings();
 
 // ── Persistence ──────────────────────────────────────────────────────
+function applySettings(){DAY_START=clamp(parseInt(state.settings&&state.settings.dayStartHour,10)||0,0,5);}
 function saveState(opts){opts=opts||{};recordHistory();if(!opts.skipTimestamp)state.lastModified=new Date().toISOString();try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}catch(e){console.warn('Save failed',e);}if(!opts.skipCloud)scheduleCloudPush();}
 function loadState(){try{let r=localStorage.getItem(STORAGE_KEY);if(!r){for(const k of LEGACY_KEYS){const legacy=localStorage.getItem(k);if(legacy){r=legacy;break;}}}if(!r)return migrate({});return migrate(JSON.parse(r));}catch(e){return migrate({});}}
 function migrate(s){
@@ -598,6 +697,7 @@ function migrate(s){
     if(!qt.id||seen.has(qt.id))qt.id=newId();
     seen.add(qt.id);
     if(!qt.icon)qt.icon=guessIcon(qt.nameTemplate||qt.name);
+    if(qt.stat===undefined)qt.stat=(ICONS[qt.icon]||ICONS.target).s;
     if(!Array.isArray(qt.days)||!qt.days.length)qt.days=ALL_DAYS.slice();
   }
   // v3 questsToday used positional ids ('q0'..); remap to template ids by name, then index
@@ -606,18 +706,29 @@ function migrate(s){
     let qt=m.questTemplate.find(t=>resolveQuestName(t)===q.name)||m.questTemplate[i];
     return qt?{id:qt.id,name:q.name,xp:q.xp,done:!!q.done,t:qt.nameTemplate?Math.round(qt.currentTarget):null}:null;
   }).filter(Boolean);
-  for(const k of STAT_KEYS)if(m.stats[k]===undefined)m.stats[k]=10;
+  for(const k of STAT_KEYS){if(m.stats[k]===undefined)m.stats[k]=10;if(m.train[k]===undefined)m.train[k]=0;}
   if(!m.history||typeof m.history!=='object')m.history={};
   if(!m.baseline)m.baseline={date:todayStr(),stats:{...m.stats}};
   if(!m.trial)m.trial={active:false,length:66,start:null,last:null};
+  if(!m.settings||typeof m.settings!=='object')m.settings={dayStartHour:0};
+  if(!Array.isArray(m.sideQuests))m.sideQuests=[];
+  if(!Array.isArray(m.reports))m.reports=[];
+  // existing players skip onboarding
+  if(!m.onboarded&&((m.questsCleared||0)>0||Object.keys(m.history).length>1||(m.log||[]).length>5))m.onboarded=true;
   m.version=VERSION;
   return m;
 }
+function mergeHistory(a,b){
+  const out={...(a||{})};
+  const score=e=>e&&e.q?Object.values(e.q).reduce((n,x)=>n+(x[0]?1:0),0):-1;
+  for(const k of Object.keys(b||{})){if(!out[k]||score(b[k])>=score(out[k]))out[k]=b[k];}
+  return out;
+}
 
 // ── History ──────────────────────────────────────────────────────────
-// history[date] = { s:{stats}, q:{ templateId:[done(0|1), target|null] } }
+// history[date] = { s:{stats}, q:{ templateId:[done(0|1), target|null, actual|null] } }
 function writeHistory(date,quests){
-  const q={};for(const x of quests)q[x.id]=[x.done?1:0,x.t==null?null:x.t];
+  const q={};for(const x of quests)q[x.id]=[x.done?1:0,x.t==null?null:x.t,x.a==null?null:x.a];
   state.history[date]={s:{...state.stats},q};
 }
 function recordHistory(){
@@ -630,30 +741,76 @@ function recordHistory(){
 // ── Scheduling & day rollover ────────────────────────────────────────
 function scheduledFor(ds){const w=dowOf(ds);return state.questTemplate.filter(qt=>(qt.days||ALL_DAYS).includes(w));}
 function buildQuestsFor(ds){return scheduledFor(ds).map(qt=>({id:qt.id,name:resolveQuestName(qt),xp:qt.xp,done:false,t:qt.nameTemplate?Math.round(qt.currentTarget):null}));}
-function scaleQuestTargets(ids){for(const qt of state.questTemplate){if(!ids.includes(qt.id))continue;if(qt.nameTemplate&&qt.scaleFactor&&qt.scaleFactor>1&&qt.currentTarget){const max=qt.maxTarget||(qt.baseTarget*5);qt.currentTarget=Math.min(qt.currentTarget*qt.scaleFactor,max);}}}
+function scaleQuestTargets(quests){
+  for(const q of quests){
+    const qt=tpl(q.id);if(!qt)continue;
+    if(qt.nameTemplate&&qt.scaleFactor&&qt.scaleFactor>1&&qt.currentTarget){
+      const max=qt.maxTarget||(qt.baseTarget*5);
+      let next=qt.currentTarget*qt.scaleFactor;
+      if(q.a!=null&&q.a>next)next=q.a;            // you did more than asked: target follows you
+      qt.currentTarget=Math.min(next,max);
+    }
+  }
+}
+function missedStat(quests){
+  const st=quests.filter(q=>!q.done).map(q=>(tpl(q.id)||{}).stat).filter(Boolean);
+  return st.length?st[Math.floor(Math.random()*st.length)]:null;
+}
 
-function evaluateDay(date,quests,today,gap){
+function evaluateDay(date,quests,today,gap,ctx){
   writeHistory(date,quests);
-  if(!quests.length){logLine(`${date} — Rest day. No quests issued.`);return;}
+  if(!quests.length){state.hp=clamp(state.hp+5,0,100);state.mp=clamp(state.mp+10,0,100);logLine(`${date} — Rest day. No quests issued.`);return;}
   const done=quests.filter(q=>q.done).length;
   if(done===quests.length){
     state.streak++;if(state.streak>state.streakBest)state.streakBest=state.streak;
+    state.hp=clamp(state.hp+10,0,100);state.mp=clamp(state.mp+20,0,100);
     logLine(`${date} — Daily Quest cleared. Streak: ${state.streak}.`,'gold');
     state.penaltyYesterday=false;
-    scaleQuestTargets(quests.map(q=>q.id));
+    scaleQuestTargets(quests);
+    const pq=state.penaltyQuest;if(pq&&pq.auto&&pq.issued===date&&!pq.done){pq.done=true;}
     checkItemDrop(today);
   }else{
-    applyPenalty(true,date);
+    const missed=quests.length-done;
+    damage(Math.max(5,Math.round(25*missed/quests.length)),date);
     state.streak=0;state.penaltyYesterday=true;
     logLine(`${date} — Daily Quest failed (${gap?'no activity':done+'/'+quests.length}). Streak broken.`,'penalty');
+    const stat=missedStat(quests);
+    if(date===addDays(today,-1)&&ctx){ctx.deferred={date,stat,quests};}
+    else applyPenalty(true,date,stat);
   }
+}
+function damage(n,label){
+  state.hp=clamp(state.hp-n,0,100);
+  if(state.hp<=0){state.xp=0;state.hp=50;logLine(`${label} — HP DEPLETED. Level progress lost. HP restored to 50.`,'penalty');}
+}
+function issuePenaltyQuest(def,today){
+  if(state.penaltyShields>0){state.penaltyShields--;logLine(`${def.date} — Penalty blocked by shield. Shields left: ${state.penaltyShields}.`,'item');return;}
+  const missedScalable=def.quests.filter(q=>!q.done).map(q=>tpl(q.id)).filter(t=>t&&t.nameTemplate&&t.currentTarget).sort((a,b)=>b.xp-a.xp)[0];
+  let pq;
+  if(missedScalable){
+    const n=Math.ceil(Math.round(missedScalable.currentTarget)*1.5);
+    pq={name:missedScalable.nameTemplate.replace('{n}',n),stat:missedScalable.stat||def.stat||null,failed:def.date,issued:today,auto:false,done:false};
+  }else{
+    if(!scheduledFor(today).length){applyPenalty(true,def.date,def.stat);return;}
+    pq={name:"Clear today's Daily Quest in full",stat:def.stat,failed:def.date,issued:today,auto:true,done:false};
+  }
+  state.penaltyQuest=pq;
+  logLine(`${today} — PENALTY QUEST ISSUED: ${pq.name}. Clear it to void ${pq.stat||'random stat'} −1.`,'penalty');
+}
+function resolvePenaltyQuest(today){
+  const pq=state.penaltyQuest;if(!pq||pq.issued>=today)return;
+  if(!pq.done){applyPenalty(true,pq.issued,pq.stat,true);logLine(`${pq.issued} — PENALTY QUEST EXPIRED.`,'penalty');}
+  state.penaltyQuest=null;
 }
 
 function ensureTodayQuest(){
   const today=todayStr();
   if(state.lastQuestDate===today)return;
+  if(state.lastQuestDate&&state.lastQuestDate>today)return; // day-start moved later; keep current day
+  const ctx={};
   if(state.lastQuestDate&&state.lastQuestDate<today){
-    evaluateDay(state.lastQuestDate,state.questsToday,today,false);
+    evaluateDay(state.lastQuestDate,state.questsToday,today,false,ctx);
+    resolvePenaltyQuest(today);
     let d=addDays(state.lastQuestDate,1);
     const penalStart=addDays(today,-MAX_GAP_PENALTY_DAYS);
     if(d<penalStart){
@@ -663,26 +820,63 @@ function ensureTodayQuest(){
     }
     let guard=0;
     while(d<today&&guard++<MAX_GAP_PENALTY_DAYS+2){
-      evaluateDay(d,buildQuestsFor(d),today,true);
+      evaluateDay(d,buildQuestsFor(d),today,true,ctx);
       d=addDays(d,1);
     }
+    state.sideQuests=state.sideQuests.filter(sq=>!(sq.per===0&&sq.done));
   }
   tickBuffExpiry(today);
   checkTrial(today);
   state.questsToday=buildQuestsFor(today);
   state.lastQuestDate=today;
+  if(ctx.deferred)issuePenaltyQuest(ctx.deferred,today);
+  buildWeeklyReport(today);
   logLine(state.questsToday.length?`${nowTimeStr()} — Daily Quest issued. ${state.questsToday.length} objective${state.questsToday.length===1?'':'s'}.`:`${nowTimeStr()} — Rest day. No quests issued.`);
   saveState();checkTitles();
 }
 
-function completeQuest(id){
-  const q=state.questsToday.find(x=>x.id===id);if(!q||q.done)return;
-  q.done=true;
-  let xp=q.xp;
+// ── Undo ─────────────────────────────────────────────────────────────
+let undoSnap=null,undoTimer=null;
+function snapshot(label){
+  undoSnap=JSON.stringify(state);
+  document.getElementById('undo-text').textContent=label;
+  const bar=document.getElementById('undo-bar');bar.classList.add('show');
+  clearTimeout(undoTimer);undoTimer=setTimeout(()=>{bar.classList.remove('show');undoSnap=null;},UNDO_MS);
+}
+function undoLast(){
+  if(!undoSnap)return;
+  state=JSON.parse(undoSnap);undoSnap=null;applySettings();
+  clearTimeout(undoTimer);document.getElementById('undo-bar').classList.remove('show');
+  stampSlam=false;
+  logLine(`${nowTimeStr()} — Last action undone.`);
+  saveState();render();toast('[UNDONE]','cyan');
+}
+
+// ── Quest completion ─────────────────────────────────────────────────
+function questXp(base,stat){
+  let xp=base;
   if(state.xpBoostNext){xp=Math.round(xp*1.5);state.xpBoostNext=false;logLine(`${nowTimeStr()} — IRON SUPPLEMENT consumed. XP boosted.`,'item');}
   if(getActiveBuff('xp_boost_days'))xp=Math.round(xp*1.25);
   if(getActiveBuff('xp_double_day'))xp=Math.round(xp*2);
-  gainXP(xp);
+  if(stat&&state.job===stat)xp=Math.round(xp*1.1);
+  return xp;
+}
+function train(stat){
+  if(!stat||!STAT_KEYS.includes(stat))return;
+  state.train[stat]=(state.train[stat]||0)+1;
+  if(state.train[stat]>=trainNeed(stat)){
+    state.train[stat]=0;state.stats[stat]++;
+    logLine(`${nowTimeStr()} — TRAINING COMPLETE. ${stat} +1.`,'gold');
+    setTimeout(()=>toast(`[${stat} +1 — TRAINING]`,'gold'),1100);
+  }
+}
+function completeQuest(id){
+  const q=state.questsToday.find(x=>x.id===id);if(!q||q.done)return;
+  snapshot('QUEST CLEARED');
+  const qt=tpl(id)||{};
+  q.done=true;
+  const xp=questXp(q.xp,qt.stat);
+  gainXP(xp);train(qt.stat);
   toast(`[QUEST CLEARED. +${xp} XP]`,'cyan');
   logLine(`${nowTimeStr()} — ${q.name} cleared. +${xp} XP.`);
   if(state.questsToday.every(x=>x.done)){
@@ -692,20 +886,118 @@ function completeQuest(id){
       state.lastClearedDate=today;state.questsCleared=(state.questsCleared||0)+1;
       if(state.penaltyYesterday){state._phoenixUnlock=true;state.penaltyYesterday=false;}
     }
+    const pq=state.penaltyQuest;
+    if(pq&&pq.auto&&!pq.done){pq.done=true;state.penaltiesVoided=(state.penaltiesVoided||0)+1;logLine(`${nowTimeStr()} — PENALTY QUEST CLEARED. Penalty voided.`,'gold');setTimeout(()=>toast('[PENALTY VOIDED]','gold'),1500);}
     stampSlam=true;
     checkTitles();
   }
   saveState();render();
 }
+function logActual(id){
+  const q=state.questsToday.find(x=>x.id===id);if(!q||!q.done||q.t==null)return;
+  const qt=tpl(id)||{};const unit=questUnit(qt).toLowerCase()||'reps';
+  const raw=prompt(`Actual ${unit} completed (target ${q.t}):`,String(q.a!=null?q.a:q.t));
+  if(raw===null)return;
+  const v=Math.round(Number(raw));
+  if(!isFinite(v)||v<=0){toast('[INVALID NUMBER]','danger');return;}
+  if(v<q.t){toast('[BELOW TARGET — UNDO TO UNCLEAR]','danger');return;}
+  q.a=v===q.t?null:v;
+  logLine(`${nowTimeStr()} — ${qt.nameTemplate?qt.nameTemplate.replace('{n}',v):q.name} logged (target ${q.t}).`);
+  toast(`[LOGGED ${v}${v>q.t?' — TARGET WILL FOLLOW':''}]`,'cyan');
+  saveState();render();
+}
+function completePenaltyQuest(){
+  const pq=state.penaltyQuest;if(!pq||pq.done)return;
+  if(pq.auto){toast("[CLEARS WITH TODAY'S DAILY QUEST]",'danger');return;}
+  snapshot('PENALTY QUEST CLEARED');
+  pq.done=true;state.penaltiesVoided=(state.penaltiesVoided||0)+1;
+  logLine(`${nowTimeStr()} — PENALTY QUEST CLEARED: ${pq.name}. Penalty voided.`,'gold');
+  toast('[PENALTY VOIDED]','gold');
+  saveState();render();checkTitles();
+}
+
+// ── Side quests ──────────────────────────────────────────────────────
+function addSideQuest(){
+  const n=document.getElementById('side-name'),t=document.getElementById('side-type').value,x=document.getElementById('side-xp');
+  const name=n.value.trim();if(!name){toast('[NAME REQUIRED]','danger');return;}
+  const sq={id:newId('sq_'),name,xp:clamp(parseInt(x.value,10)||15,1,200),per:t==='once'?0:parseInt(t,10),done:false,counts:{},stat:(ICONS[guessIcon(name)]||ICONS.target).s};
+  state.sideQuests.push(sq);n.value='';
+  logLine(`${nowTimeStr()} — Side quest registered: ${name}${sq.per?` (${sq.per}×/week)`:''}.`);
+  saveState();renderSide();
+}
+function tapSide(id){
+  const sq=state.sideQuests.find(x=>x.id===id);if(!sq)return;
+  const wk=weekStart(todayStr());
+  if(sq.per===0){
+    if(sq.done)return;
+    snapshot('SIDE QUEST CLEARED');
+    sq.done=true;state.sideCleared=(state.sideCleared||0)+1;
+    const xp=questXp(sq.xp,sq.stat);gainXP(xp);train(sq.stat);
+    toast(`[SIDE QUEST CLEARED. +${xp} XP]`,'cyan');logLine(`${nowTimeStr()} — Side quest cleared: ${sq.name}. +${xp} XP.`);
+  }else{
+    const c=sq.counts[wk]||0;if(c>=sq.per){toast('[WEEKLY QUOTA ALREADY MET]','cyan');return;}
+    snapshot('SIDE QUEST LOGGED');
+    sq.counts={[wk]:c+1};
+    const xp=questXp(sq.xp,sq.stat);gainXP(xp);train(sq.stat);
+    logLine(`${nowTimeStr()} — ${sq.name} ${c+1}/${sq.per} this week. +${xp} XP.`);
+    if(c+1===sq.per){state.sideCleared=(state.sideCleared||0)+1;gainXP(sq.xp);toast(`[WEEKLY SIDE QUEST COMPLETE. +${sq.xp} BONUS]`,'gold');logLine(`${nowTimeStr()} — Weekly quota met: ${sq.name}. +${sq.xp} bonus XP.`,'gold');}
+    else toast(`[${c+1}/${sq.per} THIS WEEK. +${xp} XP]`,'cyan');
+  }
+  saveState();render();checkTitles();
+}
+function removeSide(id){const sq=state.sideQuests.find(x=>x.id===id);if(!sq||!confirm(`Remove side quest "${sq.name}"?`))return;state.sideQuests=state.sideQuests.filter(x=>x.id!==id);saveState();renderSide();}
+
+// ── Class ────────────────────────────────────────────────────────────
+function chooseClass(k){
+  if(state.job||state.lvl<10||!CLASSES[k])return;
+  if(!confirm(`Become ${CLASSES[k].name}? +10% XP and faster training on ${k} quests. This is permanent.`))return;
+  state.job=k;state.player.class='CLASS — '+CLASSES[k].name;
+  logLine(`${nowTimeStr()} — CLASS CHANGE: ${CLASSES[k].name}. ${k} quests +10% XP; ${k} trains in ${trainNeed(k)} clears.`,'gold');
+  toast(`[CLASS CHANGE — ${CLASSES[k].name}]`,'gold');
+  saveState();render();checkTitles();
+}
+
+// ── Weekly report ────────────────────────────────────────────────────
+function buildWeeklyReport(today){
+  const ws=weekStart(today);
+  if(state.lastReportWeek===ws)return;
+  state.lastReportWeek=ws;
+  const from=addDays(ws,-7),to=addDays(ws,-1);
+  let sched=0,cleared=0,partial=0,qDone=0,qTot=0;const per={};let first=null,last=null;
+  for(let d=from;d<=to;d=addDays(d,1)){
+    const h=state.history[d];if(!h)continue;
+    if(!first)first=h;last=h;
+    const ids=Object.keys(h.q);if(!ids.length)continue;
+    sched++;const dn=ids.filter(id=>h.q[id][0]===1).length;qDone+=dn;qTot+=ids.length;
+    if(dn===ids.length)cleared++;else if(dn>0)partial++;
+    for(const id of ids){per[id]=per[id]||[0,0];per[id][1]++;if(h.q[id][0]===1)per[id][0]++;}
+  }
+  if(!first)return;
+  const deltas=STAT_KEYS.map(k=>{const dv=(last.s[k]||0)-(first.s[k]||0);return dv?`${k} ${dv>0?'+':''}${dv}`:null;}).filter(Boolean);
+  const ranked=Object.entries(per).filter(([,v])=>v[1]>=2).map(([id,v])=>({id,r:v[0]/v[1],v})).sort((a,b)=>b.r-a.r);
+  const nm=id=>{const t=tpl(id);return t?resolveQuestName(t):'(removed quest)';};
+  const lines=[
+    ['WEEK',`${shortDate(from)} → ${shortDate(to)}`],
+    ['CLEAR RATE',sched?`${Math.round(cleared/sched*100)}% (${cleared}/${sched} days${partial?`, ${partial} partial`:''})`:'—'],
+    ['OBJECTIVES',`${qDone}/${qTot}`],
+    ['STAT CHANGE',deltas.length?deltas.join(' · '):'none'],
+  ];
+  if(ranked.length>1){lines.push(['STRONGEST',`${nm(ranked[0].id)} ${ranked[0].v[0]}/${ranked[0].v[1]}`]);const w=ranked[ranked.length-1];if(w.r<1)lines.push(['WEAKEST',`${nm(w.id)} ${w.v[0]}/${w.v[1]}`]);}
+  state.reports.unshift({week:from,lines});if(state.reports.length>12)state.reports.length=12;
+  state.reportUnseen=true;
+  logLine(`${today} — WEEKLY REPORT: ${lines[1][1]} clear rate.`,'gold');
+}
+function dismissReport(){state.reportUnseen=false;saveState();render();}
 
 // ── XP / stats / penalty ─────────────────────────────────────────────
 function gainXP(amt){state.xp+=amt;while(state.xp>=xpForNext(state.lvl)){state.xp-=xpForNext(state.lvl);state.lvl++;state.points+=5;const lv=state.lvl;setTimeout(()=>toast(`[LEVEL UP — LV ${lv}]`,'gold'),400);logLine(`${nowTimeStr()} — LEVEL UP. Reached Lv ${lv}. +5 stat points.`,'gold');}checkTitles();}
 function allocateStat(k){if(statView!=='now'||state.points<=0)return;state.stats[k]++;state.points--;toast(`[${k} +1]`,'cyan');logLine(`${nowTimeStr()} — Stat allocated. ${k} +1.`);saveState();render();checkTitles();}
-function applyPenalty(silent,dateLabel){
+function applyPenalty(silent,dateLabel,stat,noShield){
   const label=dateLabel||nowTimeStr();
-  if(state.penaltyShields>0){state.penaltyShields--;logLine(`${label} — Penalty blocked by shield. Shields left: ${state.penaltyShields}.`,'item');if(!silent){toast('[PENALTY BLOCKED BY SHIELD]','item');saveState();render();}return;}
-  const keys=STAT_KEYS.filter(k=>state.stats[k]>0);if(!keys.length)return;
-  const k=keys[Math.floor(Math.random()*keys.length)];state.stats[k]--;
+  if(!noShield&&state.penaltyShields>0){state.penaltyShields--;logLine(`${label} — Penalty blocked by shield. Shields left: ${state.penaltyShields}.`,'item');if(!silent){toast('[PENALTY BLOCKED BY SHIELD]','item');saveState();render();}return;}
+  let k=stat&&state.stats[stat]>0?stat:null;
+  if(!k){const keys=STAT_KEYS.filter(x=>state.stats[x]>0);if(!keys.length)return;k=keys[Math.floor(Math.random()*keys.length)];}
+  state.stats[k]--;
   logLine(`${label} — PENALTY APPLIED. ${k} −1.`,'penalty');
   if(!silent){toast(`[PENALTY APPLIED. ${k} −1]`,'danger');saveState();render();}
 }
@@ -713,17 +1005,23 @@ function applyPenalty(silent,dateLabel){
 // ── Items ────────────────────────────────────────────────────────────
 function getItemDef(id){return ITEM_CATALOGUE.find(x=>x.id===id);}
 function getActiveBuff(effect){return state.activeBuffs.find(b=>b.effect===effect);}
-function rollDrop(){const t=ITEM_CATALOGUE.reduce((s,x)=>s+x.weight,0);let r=Math.random()*t;for(const item of ITEM_CATALOGUE){r-=item.weight;if(r<=0)return item;}return ITEM_CATALOGUE[0];}
-function checkItemDrop(today){
-  if(!state.nextDropDate)state.nextDropDate=today;if(today<state.nextDropDate)return;
-  const d=rollDrop();state.totalDrops=(state.totalDrops||0)+1;
-  state.nextDropDate=addDays(today,3+Math.floor(Math.random()*3));
+function rollDrop(pool){pool=pool||ITEM_CATALOGUE;const t=pool.reduce((s,x)=>s+x.weight,0);let r=Math.random()*t;for(const item of pool){r-=item.weight;if(r<=0)return item;}return pool[0];}
+function grantItem(d,today){
+  state.totalDrops=(state.totalDrops||0)+1;
   if(d.type==='buff')applyBuffDrop(d,today);
   else{state.inventory.push({id:d.id,instanceId:Date.now()+''+Math.floor(Math.random()*1000),addedDate:today});logLine(`${nowTimeStr()} — ITEM RECEIVED: ${d.name}.`,'item');setTimeout(()=>toast(`[ITEM DROP — ${d.name}]`,'item'),1200);}
+}
+function checkItemDrop(today){
+  if(!state.nextDropDate)state.nextDropDate=today;if(today<state.nextDropDate)return;
+  state.nextDropDate=addDays(today,3+Math.floor(Math.random()*3));
+  grantItem(rollDrop(),today);
   checkTitles();
 }
 function applyBuffDrop(item,today){
-  const exp=addDays(today,item.days);state.activeBuffs=state.activeBuffs.filter(b=>b.effect!==item.effect);
+  const exp=addDays(today,item.days);
+  const prev=state.activeBuffs.find(b=>b.effect===item.effect);
+  if(prev){if(prev.effect==='stat_str_3')state.stats.STR=Math.max(0,state.stats.STR-3);if(prev.effect==='stat_int_3')state.stats.INT=Math.max(0,state.stats.INT-3);}
+  state.activeBuffs=state.activeBuffs.filter(b=>b.effect!==item.effect);
   state.activeBuffs.push({id:item.id,instanceId:Date.now()+'',effect:item.effect,expiresDate:exp,daysLeft:item.days});
   if(item.effect==='stat_str_3'){state.stats.STR+=3;logLine(`${nowTimeStr()} — BUFF ACTIVE: ${item.name}. STR +3 for ${item.days} days.`,'item');}
   if(item.effect==='stat_int_3'){state.stats.INT+=3;logLine(`${nowTimeStr()} — BUFF ACTIVE: ${item.name}. INT +3 for ${item.days} days.`,'item');}
@@ -734,6 +1032,9 @@ function applyBuffDrop(item,today){
 function useInventoryItem(instanceId){
   const idx=state.inventory.findIndex(x=>x.instanceId===instanceId);if(idx===-1)return;
   const item=getItemDef(state.inventory[idx].id);if(!item)return;
+  if(state.mp<ITEM_MP){toast(`[INSUFFICIENT MP — ${ITEM_MP} REQUIRED]`,'danger');return;}
+  snapshot('ITEM USED');
+  state.mp-=ITEM_MP;
   state.inventory.splice(idx,1);
   if(item.effect==='penalty_shield_1'){state.penaltyShields+=1;toast('[SHIELD ACTIVE — 1 PENALTY BLOCKED]','item');logLine(`${nowTimeStr()} — ${item.name} used. +1 penalty shield.`,'item');}
   if(item.effect==='penalty_shield_2'){state.penaltyShields+=2;toast('[SHIELD ACTIVE — 2 PENALTIES BLOCKED]','item');logLine(`${nowTimeStr()} — ${item.name} used. +2 penalty shields.`,'item');}
@@ -753,7 +1054,7 @@ function buffSummaryLines(){
   return lines;
 }
 
-// ── Trial ────────────────────────────────────────────────────────────
+// ── Gauntlet (stored as state.trial) ─────────────────────────────────
 function trialEnd(){return addDays(state.trial.start,state.trial.length-1);}
 function trialRate(from,to,includeTodayIfCleared){
   let counted=0,cleared=0;const today=todayStr();
@@ -774,23 +1075,28 @@ function checkTrial(today){
   const passed=r.rate!==null&&r.rate>=TRIAL_REQ;
   t.active=false;t.last={start:t.start,end,rate:r.rate,passed};
   state.trialsRun=(state.trialsRun||0)+1;
-  if(passed){state.trialsPassed=(state.trialsPassed||0)+1;logLine(`${today} — TRIAL COMPLETE. ${t.length} days. Clear rate ${Math.round(r.rate*100)}%. PASSED.`,'gold');setTimeout(()=>toast('[TRIAL PASSED]','gold'),900);}
-  else{logLine(`${today} — TRIAL COMPLETE. Clear rate ${r.rate===null?'—':Math.round(r.rate*100)+'%'}. FAILED (required ${Math.round(TRIAL_REQ*100)}%).`,'penalty');setTimeout(()=>toast('[TRIAL FAILED]','danger'),900);}
+  if(passed){
+    state.trialsPassed=(state.trialsPassed||0)+1;
+    logLine(`${today} — GAUNTLET CLEARED. ${t.length} days. Clear rate ${Math.round(r.rate*100)}%.`,'gold');
+    setTimeout(()=>toast('[GAUNTLET CLEARED]','gold'),900);
+    grantItem(rollDrop(ITEM_CATALOGUE.filter(x=>x.rarity==='rare'||x.rarity==='legendary')),today);
+  }
+  else{logLine(`${today} — GAUNTLET FAILED. Clear rate ${r.rate===null?'—':Math.round(r.rate*100)+'%'} (required ${Math.round(TRIAL_REQ*100)}%).`,'penalty');setTimeout(()=>toast('[GAUNTLET FAILED]','danger'),900);}
 }
-function startTrial(){
-  const inp=document.getElementById('trial-length');
-  const len=Math.max(7,Math.min(365,parseInt(inp&&inp.value,10)||66));
+function startTrial(len){
+  if(!len){const inp=document.getElementById('trial-length');len=parseInt(inp&&inp.value,10)||66;}
+  len=clamp(len,7,365);
   state.trial={active:true,length:len,start:todayStr(),last:state.trial.last||null};
-  logLine(`${nowTimeStr()} — TRIAL ISSUED. ${len} days. Ends ${shortDate(trialEnd())}. Required clear rate ${Math.round(TRIAL_REQ*100)}%.`,'gold');
-  toast(`[TRIAL ISSUED — ${len} DAYS]`,'gold');
+  logLine(`${nowTimeStr()} — GAUNTLET ISSUED. ${len} days. Ends ${shortDate(trialEnd())}. Required clear rate ${Math.round(TRIAL_REQ*100)}%.`,'gold');
+  toast(`[GAUNTLET ISSUED — ${len} DAYS]`,'gold');
   saveState();renderTrialSettings();render();
 }
 function abandonTrial(){
-  if(!confirm('Abandon the active trial? It will be recorded as abandoned.'))return;
+  if(!confirm('Abandon the active Gauntlet? It will be recorded as abandoned.'))return;
   const t=state.trial;const r=trialRate(t.start,todayStr(),true);
   t.last={start:t.start,end:todayStr(),rate:r.rate,passed:false,abandoned:true};t.active=false;
   state.trialsRun=(state.trialsRun||0)+1;
-  logLine(`${nowTimeStr()} — TRIAL ABANDONED on day ${diffDays(t.start,todayStr())+1}.`,'penalty');
+  logLine(`${nowTimeStr()} — GAUNTLET ABANDONED on day ${diffDays(t.start,todayStr())+1}.`,'penalty');
   saveState();renderTrialSettings();render();
 }
 
@@ -828,7 +1134,7 @@ function setCloudStatus(s,err){cloudStatus=s;cloudLastError=err||null;renderClou
 function cloudHeaders(){return{'Content-Type':'application/json','Authorization':'Bearer '+cloudConfig.token};}
 async function cloudHealth(){if(!cloudConfig)throw new Error('No cloud config');const r=await fetch(cloudConfig.url+'/health');if(!r.ok)throw new Error('Health check failed: '+r.status);return r.json();}
 async function cloudTestConnection(){if(!cloudConfig){toast('[CLOUD: NO CONFIG]','danger');return;}setCloudStatus('syncing');try{await cloudHealth();const r=await fetch(cloudConfig.url+'/system/state',{headers:cloudHeaders()});if(r.status===401){setCloudStatus('error','Unauthorized (bad token)');toast('[CLOUD: BAD TOKEN]','danger');return;}if(!r.ok)throw new Error('HTTP '+r.status);setCloudStatus('synced');toast('[CLOUD: CONNECTION OK]','cyan');}catch(e){setCloudStatus('error',e.message);toast('[CLOUD: CONNECTION FAILED]','danger');}}
-async function cloudPull(opts){opts=opts||{};if(!cloudConfig){if(opts.manual)toast('[CLOUD: NO CONFIG]','danger');return;}setCloudStatus('syncing');try{const r=await fetch(cloudConfig.url+'/system/state',{headers:cloudHeaders()});if(r.status===401){setCloudStatus('error','Unauthorized');return;}if(!r.ok)throw new Error('HTTP '+r.status);const body=await r.json();if(!body||!body.state){setCloudStatus('synced');if(opts.manual)toast('[CLOUD: NO REMOTE STATE]','cyan');return;}const remoteMod=body.lastModified||body.state.lastModified;const localMod=state.lastModified;const shouldReplace=opts.manual||!localMod||(remoteMod&&remoteMod>localMod);if(shouldReplace){state=migrate(body.state);state.lastSyncedAt=new Date().toISOString();saveState({skipCloud:true,skipTimestamp:true});ensureTodayQuest();populateSettings();render();checkTitles();toast('[CLOUD: PULLED'+(opts.manual?'':' NEWER STATE')+']','cyan');logLine(`${nowTimeStr()} — Cloud state pulled.`);}setCloudStatus('synced');}catch(e){setCloudStatus('error',e.message);if(opts.manual)toast('[CLOUD: PULL FAILED]','danger');}}
+async function cloudPull(opts){opts=opts||{};if(!cloudConfig){if(opts.manual)toast('[CLOUD: NO CONFIG]','danger');return;}setCloudStatus('syncing');try{const r=await fetch(cloudConfig.url+'/system/state',{headers:cloudHeaders()});if(r.status===401){setCloudStatus('error','Unauthorized');return;}if(!r.ok)throw new Error('HTTP '+r.status);const body=await r.json();if(!body||!body.state){setCloudStatus('synced');if(opts.manual)toast('[CLOUD: NO REMOTE STATE]','cyan');return;}const remoteMod=body.lastModified||body.state.lastModified;const localMod=state.lastModified;const shouldReplace=opts.manual||!localMod||(remoteMod&&remoteMod>localMod);if(shouldReplace){const _localHist=state.history;state=migrate(body.state);state.history=mergeHistory(_localHist,state.history);applySettings();state.lastSyncedAt=new Date().toISOString();saveState({skipCloud:true,skipTimestamp:true});ensureTodayQuest();populateSettings();render();checkTitles();toast('[CLOUD: PULLED'+(opts.manual?'':' NEWER STATE')+']','cyan');logLine(`${nowTimeStr()} — Cloud state pulled.`);}setCloudStatus('synced');}catch(e){setCloudStatus('error',e.message);if(opts.manual)toast('[CLOUD: PULL FAILED]','danger');}}
 function scheduleCloudPush(){if(!cloudConfig)return;setCloudStatus('pending');if(cloudPushTimer)clearTimeout(cloudPushTimer);cloudPushTimer=setTimeout(()=>{cloudPushTimer=null;cloudPush();},CLOUD_PUSH_DEBOUNCE_MS);}
 async function cloudPush(opts){opts=opts||{};if(!cloudConfig){if(opts.manual)toast('[CLOUD: NO CONFIG]','danger');return;}setCloudStatus('syncing');try{const body={state,lastModified:state.lastModified||new Date().toISOString()};const r=await fetch(cloudConfig.url+'/system/state',{method:'PUT',headers:cloudHeaders(),body:JSON.stringify(body)});if(r.status===401){setCloudStatus('error','Unauthorized');if(opts.manual)toast('[CLOUD: BAD TOKEN]','danger');return;}if(!r.ok)throw new Error('HTTP '+r.status);const result=await r.json();state.lastSyncedAt=result.lastModified||new Date().toISOString();try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}catch(e){}setCloudStatus('synced');if(opts.manual)toast('[CLOUD: PUSHED]','cyan');}catch(e){setCloudStatus('error',e.message);if(opts.manual)toast('[CLOUD: PUSH FAILED]','danger');}}
 function renderCloudStatus(){const el=document.getElementById('cloud-status');if(!el)return;const map={idle:['IDLE','dim'],offline:['OFFLINE','dim'],pending:['PENDING…','gold'],syncing:['SYNCING…','cyan'],synced:['SYNCED','cyan'],error:['ERROR','danger']};const[label,cls]=map[cloudStatus]||['—','dim'];el.textContent=label;el.className='cloud-status cloud-status-'+cls;const ts=document.getElementById('cloud-last-synced');if(ts)ts.textContent=state.lastSyncedAt?'last synced: '+new Date(state.lastSyncedAt).toLocaleString():'never synced';const err=document.getElementById('cloud-error');if(err)err.textContent=cloudLastError||'';}
@@ -836,7 +1142,7 @@ function applyCloudConfigForm(){const url=document.getElementById('cloud-url').v
 // ─── END CLOUD SYNC ──────────────────────────────
 
 // ── UI state ─────────────────────────────────────────────────────────
-let statView='now',questView='today',chartQuestId=null,stampSlam=false;
+let statView='now',questView='today',chartQuestId=null,stampSlam=false,obStep=0;
 
 function setPanelHidden(el,hidden){el.classList.toggle('hidden',hidden);if(el.parentElement&&el.parentElement.classList.contains('frame'))el.parentElement.style.display=hidden?'none':'';}
 function wrapPanels(){
@@ -852,15 +1158,25 @@ function wrapPanels(){
 
 // ── Render ───────────────────────────────────────────────────────────
 function render(){
-  renderStrip();renderStatus();renderQuests();renderInventory();renderProgress();renderTitlesPanel();renderLogs();renderArchive();
+  renderReport();renderStrip();renderStatus();renderQuests();renderSide();renderInventory();renderProgress();renderTitlesPanel();renderLogs();renderArchive();
+  if(state.onboarded)document.getElementById('onboard').classList.add('hidden');
+}
+
+function renderReport(){
+  const p=document.getElementById('report-panel');const r=state.reports[0];
+  if(!state.reportUnseen||!r){setPanelHidden(p,true);return;}
+  setPanelHidden(p,false);
+  document.getElementById('report-meta').textContent=shortDate(r.week);
+  document.getElementById('report-body').innerHTML=r.lines.map(([k,v])=>`<div><span class="k">${escapeHtml(k)}</span> · ${escapeHtml(v)}</div>`).join('');
 }
 
 function renderStrip(){
   const qs=state.questsToday,n=qs.length,d=qs.filter(q=>q.done).length;
   const strip=document.getElementById('strip'),label=document.getElementById('strip-label'),val=document.getElementById('strip-val'),fill=document.getElementById('strip-fill');
-  strip.classList.toggle('cleared',n>0&&d===n);
-  if(!n){label.textContent='REST DAY';val.textContent='NO QUESTS';fill.style.width='100%';return;}
-  label.textContent=d===n?'QUEST CLEARED':'DAILY QUEST';
+  const pq=state.penaltyQuest&&!state.penaltyQuest.done;
+  strip.classList.toggle('cleared',n>0&&d===n&&!pq);
+  if(!n){label.textContent=pq?'REST DAY · PENALTY PENDING':'REST DAY';val.textContent='NO QUESTS';fill.style.width='100%';return;}
+  label.textContent=(d===n?'QUEST CLEARED':'DAILY QUEST')+(pq?' · PENALTY PENDING':'');
   val.textContent=`${d}/${n} · ${Math.round(d/n*100)}%`;
   fill.style.width=(d/n*100)+'%';
 }
@@ -871,7 +1187,7 @@ function renderStatus(){
   document.getElementById('player-class').textContent=eq?`[ ${eq.name} ]`:state.player.class;
   document.getElementById('lvl').textContent=state.lvl;
   document.getElementById('chip-lvl').textContent='LV '+state.lvl;
-  document.getElementById('chip-rank').textContent='◆ '+rankFor(state.lvl);
+  document.getElementById('chip-rank').textContent='◆ '+rankFor(state.lvl)+(state.job?' · '+CLASSES[state.job].name:'');
   document.getElementById('xp-v').textContent=state.xp;
   document.getElementById('xp-next-v').textContent=xpForNext(state.lvl);
   document.getElementById('xp-bar').style.width=(state.xp/xpForNext(state.lvl)*100)+'%';
@@ -879,13 +1195,20 @@ function renderStatus(){
   document.getElementById('mp-v').textContent=state.mp;document.getElementById('mp-bar').style.width=state.mp+'%';
   document.getElementById('streak').textContent=state.streak;document.getElementById('streak-best').textContent=state.streakBest;
 
-  // trial block
+  // class offer
+  const cb=document.getElementById('class-block');
+  if(state.lvl>=10&&!state.job){
+    const top=STAT_KEYS.slice().sort((a,b)=>state.stats[b]-state.stats[a])[0];
+    cb.innerHTML=`<div class="class-offer"><div class="t">// CLASS CHANGE AVAILABLE — CHOOSE ONCE</div><div class="class-grid">${STAT_KEYS.map(k=>`<button class="${k===top?'rec':''}" onclick="chooseClass('${k}')">${CLASSES[k].name}<br>${k}</button>`).join('')}</div><div class="hint">// +10% XP and one-clear-faster training on that stat's quests. highlighted = your highest stat.</div></div>`;
+  }else cb.innerHTML='';
+
+  // gauntlet block
   const tb=document.getElementById('trial-block');const t=state.trial;
   if(t.active&&t.start){
     const today=todayStr(),day=Math.min(t.length,diffDays(t.start,today)+1),end=trialEnd();
     const r=trialRate(t.start,today,true);
     const pct=day/t.length*100;
-    tb.innerHTML=`<div class="trial"><div class="trial-top"><span>TRIAL · DAY <b>${day}</b> / ${t.length}</span><span>CLEAR RATE <b>${r.rate===null?'—':Math.round(r.rate*100)+'%'}</b></span></div>
+    tb.innerHTML=`<div class="trial"><div class="trial-top"><span>GAUNTLET · DAY <b>${day}</b> / ${t.length}</span><span>CLEAR RATE <b>${r.rate===null?'—':Math.round(r.rate*100)+'%'}</b></span></div>
       <div class="trial-ticks"><i style="width:${pct}%"></i><span class="req" style="left:${TRIAL_REQ*100}%"></span></div>
       <div class="trial-bot"><span>${shortDate(t.start)}</span><span>REQ ${Math.round(TRIAL_REQ*100)}%</span><span>${shortDate(end)}</span></div></div>`;
   }else tb.innerHTML='';
@@ -897,10 +1220,12 @@ function renderStatus(){
   const grid=document.getElementById('stats-grid');grid.innerHTML='';
   for(const k of STAT_KEYS){
     const el=document.createElement('div');
-    let val,sub='',neg=false;
+    let val,sub='',neg=false,pips='';
     if(statView==='now'){
       val=state.stats[k];
       if(sB[k])sub=`+${sB[k]} BUFF`;
+      const need=trainNeed(k),have=state.train[k]||0;
+      pips=`<div class="train">${Array.from({length:need},(_,i)=>`<i class="${i<have?'on':''}"></i>`).join('')}</div>`;
       el.className='stat'+(state.points>0?' allocatable':'');
       el.addEventListener('click',()=>allocateStat(k));
     }else{
@@ -908,7 +1233,7 @@ function renderStatus(){
       sub=delta===0?'±0':(delta>0?'+':'')+delta+' NOW';neg=delta<0;
       el.className='stat past';
     }
-    el.innerHTML=`<div class="stat-key">${k}</div><div class="stat-val">${val}</div><div class="stat-sub${neg?' neg':''}">${sub}</div>`;
+    el.innerHTML=`<div class="stat-key">${k}${state.job===k?' ◆':''}</div><div class="stat-val">${val}</div><div class="stat-sub${neg?' neg':''}">${sub}</div>${pips}`;
     grid.appendChild(el);
   }
   document.querySelectorAll('#stat-seg button').forEach(b=>b.classList.toggle('on',b.dataset.v===statView));
@@ -918,7 +1243,7 @@ function renderStatus(){
   if(bLines.length){bRow.innerHTML=bLines.map(l=>`<div>${escapeHtml(l)}</div>`).join('');bRow.classList.add('show');}else bRow.classList.remove('show');
 }
 
-function weekDates(){const today=todayStr();const start=addDays(today,-dowOf(today));return [0,1,2,3,4,5,6].map(i=>addDays(start,i));}
+function weekDates(){const start=weekStart(todayStr());return [0,1,2,3,4,5,6].map(i=>addDays(start,i));}
 function dayStatus(qt,ds){
   const today=todayStr();
   if(ds>today)return (qt.days||ALL_DAYS).includes(dowOf(ds))?'sch':'';
@@ -934,14 +1259,21 @@ function renderQuests(){
   const qs=state.questsToday;
   document.getElementById('quest-warning').classList.toggle('hidden',!qs.length||qs.every(q=>q.done));
 
+  // penalty quest
+  const pb=document.getElementById('penalty-block');const pq=state.penaltyQuest;
+  if(pq){
+    pb.innerHTML=`<div class="penalty-q${pq.done?' done':''}" onclick="completePenaltyQuest()"><div class="check">${pq.done?'✓':''}</div><div style="flex:1;min-width:0;"><div class="pq-k">PENALTY QUEST · FAILED ${shortDate(pq.failed)}</div><div class="pq-t">${escapeHtml(pq.name)}</div><div class="pq-k">${pq.done?'VOIDED':`UNCLEARED BY DAY'S END → ${pq.stat||'RANDOM STAT'} −1`}</div></div></div>`;
+  }else pb.innerHTML='';
+
   // today
   const ql=document.getElementById('quest-list');ql.innerHTML='';
   if(!qs.length){ql.innerHTML='<div class="rest">// REST DAY — NO QUESTS ISSUED</div>';}
   for(const q of qs){
-    const qt=state.questTemplate.find(t=>t.id===q.id)||{};
+    const qt=tpl(q.id)||{};
     const el=document.createElement('div');el.className='quest'+(q.done?' done':'');
-    el.innerHTML=`${iconSvg(qt.icon)}<div class="q-text">${escapeHtml(q.name)}</div><div class="q-xp">+${q.xp} XP</div><div class="check">${q.done?'✓':''}</div>`;
-    el.addEventListener('click',()=>completeQuest(q.id));
+    const act=q.done&&q.t!=null?`<span class="q-act" data-act="1">${q.a!=null?q.a:q.t} ✎</span>`:'';
+    el.innerHTML=`${iconSvg(qt.icon)}<div class="q-main"><div class="q-text">${escapeHtml(q.name)}</div><div class="q-stat">+${q.xp} XP${qt.stat?' · '+qt.stat:''}</div></div>${act}<div class="check">${q.done?'✓':''}</div>`;
+    el.addEventListener('click',e=>{if(e.target.closest('[data-act]')){logActual(q.id);return;}completeQuest(q.id);});
     ql.appendChild(el);
   }
   const stamp=document.getElementById('stamp');
@@ -963,6 +1295,21 @@ function renderQuests(){
   }
 }
 
+function renderSide(){
+  const list=document.getElementById('side-list');list.innerHTML='';
+  const wk=weekStart(todayStr());
+  if(!state.sideQuests.length)list.innerHTML='<div class="hint" style="margin:0 0 6px;">// optional objectives. XP and training, no penalty.</div>';
+  for(const sq of state.sideQuests){
+    const c=sq.per?(sq.counts[wk]||0):0;const full=sq.per?c>=sq.per:sq.done;
+    const el=document.createElement('div');el.className='side'+(full?' done':'');
+    el.innerHTML=`${iconSvg(guessIcon(sq.name))}<div class="s-t">${escapeHtml(sq.name)}</div><div class="s-m">${sq.per?`${c}/${sq.per} WK`:(sq.done?'DONE':'ONCE')} · +${sq.xp}</div><button class="rm" title="Remove">×</button>`;
+    el.querySelector('.rm').addEventListener('click',e=>{e.stopPropagation();removeSide(sq.id);});
+    el.addEventListener('click',()=>tapSide(sq.id));
+    list.appendChild(el);
+  }
+  document.getElementById('side-meta').textContent=state.sideQuests.length?`${state.sideQuests.length} ACTIVE`:'NO PENALTY';
+}
+
 function renderInventory(){
   const invP=document.getElementById('inventory-panel'),invG=document.getElementById('inv-grid'),invI=state.inventory||[];
   if(!invI.length&&!state.activeBuffs.length){setPanelHidden(invP,true);return;}
@@ -971,7 +1318,7 @@ function renderInventory(){
   for(const inst of invI){
     const item=getItemDef(inst.id);if(!item)continue;
     const el=document.createElement('div');el.className='inv-item';
-    el.innerHTML=`<div class="inv-icon">${item.icon}</div><div class="inv-info"><div class="inv-name" style="color:${RARITY_COLORS[item.rarity]}">${escapeHtml(item.name)}</div><div class="inv-desc">${escapeHtml(item.desc)}</div><div class="inv-badge">${item.rarity.toUpperCase()}</div></div><button class="inv-use-btn">USE</button>`;
+    el.innerHTML=`<div class="inv-icon">${item.icon}</div><div class="inv-info"><div class="inv-name" style="color:${RARITY_COLORS[item.rarity]}">${escapeHtml(item.name)}</div><div class="inv-desc">${escapeHtml(item.desc)}</div><div class="inv-badge">${item.rarity.toUpperCase()}</div></div><button class="inv-use-btn">USE · ${ITEM_MP} MP</button>`;
     el.querySelector('.inv-use-btn').addEventListener('click',e=>{e.stopPropagation();useInventoryItem(inst.instanceId);});
     invG.appendChild(el);
   }
@@ -979,7 +1326,7 @@ function renderInventory(){
   for(const b of state.activeBuffs){const item=getItemDef(b.id);if(!item)continue;const el=document.createElement('div');el.className='inv-active';el.innerHTML=`<span>${item.icon} ${escapeHtml(item.name)}</span><span class="inv-expires">EXPIRES IN ${Math.max(0,diffDays(today,b.expiresDate))}d</span>`;invG.appendChild(el);}
 }
 
-// ── Progress: radar + quest target chart ─────────────────────────────
+// ── Progress: radar + heatmap + quest target chart ───────────────────
 function compareSnapshot(){
   const cutoff=addDays(todayStr(),-30);
   const keys=Object.keys(state.history).filter(k=>k<=cutoff).sort();
@@ -1005,9 +1352,31 @@ function renderRadar(){
   svg.innerHTML=g;
   document.getElementById('radar-legend').innerHTML=`<span><i class="sw"></i>NOW</span><span><i class="sw dash"></i>${cmp.label}</span>`;
 }
+function renderHeat(){
+  const el=document.getElementById('heat');const today=todayStr();
+  const start=addDays(weekStart(today),-77);
+  let html='';
+  for(let i=0;i<84;i++){
+    const d=addDays(start,i);
+    if(d>today){html+='<i class="fut"></i>';continue;}
+    const qs=d===today?state.questsToday.map(q=>q.done?1:0):(state.history[d]?Object.values(state.history[d].q).map(x=>x[0]):null);
+    let cls=d===today?' today':'',style='',tip=shortDate(d);
+    if(!qs){tip+=' · no data';}
+    else if(!qs.length){cls+=' rest';tip+=' · rest';}
+    else{
+      const f=qs.reduce((a,b)=>a+b,0)/qs.length;
+      if(f===0&&d!==today){cls+=' miss';}
+      if(f>0)style=` style="background:rgba(var(--ac-rgb),${(0.18+0.72*f).toFixed(2)})"`;
+      tip+=` · ${Math.round(f*100)}%`;
+    }
+    html+=`<i class="${cls.trim()}"${style} title="${tip}"></i>`;
+  }
+  el.innerHTML=html;
+  document.getElementById('heat-legend').innerHTML='<span>■ CLEARED</span><span style="opacity:.55">■ PARTIAL</span><span style="color:var(--danger)">□ MISSED</span><span>▨ REST</span>';
+}
 function questSeries(qt){
   const pts=[qt.baseTarget||qt.currentTarget];
-  for(const k of Object.keys(state.history).sort()){const e=state.history[k].q[qt.id];if(e&&e[0]===1&&e[1]!=null)pts.push(e[1]);}
+  for(const k of Object.keys(state.history).sort()){const e=state.history[k].q[qt.id];if(e&&e[0]===1&&e[1]!=null)pts.push(e[2]!=null?e[2]:e[1]);}
   return pts;
 }
 function renderChart(){
@@ -1048,9 +1417,9 @@ function renderChart(){
   g+=`<text x="${W-Rt}" y="${yb}" text-anchor="end" font-family="Share Tech Mono, monospace" font-size="9.5" letter-spacing="1" fill="var(--ac-dim)">+${PROJ_CLEARS} CLEARS</text>`;
   document.getElementById('qchart').innerHTML=g;
   const pctTxt=Math.round((qt.scaleFactor-1)*1000)/10;
-  document.getElementById('chart-legend').innerHTML=`<span><i class="sw"></i>ACTUAL · ${act.length-1} CLEAR${act.length===2?'':'S'}</span><span><i class="sw dash"></i>PROJECTED · +${pctTxt}%/CLEAR · CAP ${Math.round(cap)}</span>`;
+  document.getElementById('chart-legend').innerHTML=`<span><i class="sw"></i>PERFORMED · ${act.length-1} CLEAR${act.length===2?'':'S'}</span><span><i class="sw dash"></i>PROJECTED · +${pctTxt}%/CLEAR · CAP ${Math.round(cap)}</span>`;
 }
-function renderProgress(){renderRadar();renderChart();}
+function renderProgress(){renderRadar();renderHeat();renderChart();}
 
 function renderTitlesPanel(){
   const tP=document.getElementById('titles-panel');
@@ -1076,24 +1445,72 @@ function renderArchive(){
 }
 function renderTrialSettings(){
   const el=document.getElementById('trial-settings'),lab=document.getElementById('trial-status-label'),t=state.trial;
-  const lastLine=t.last?`<div class="hint">// last trial: ${shortDate(t.last.start)} → ${shortDate(t.last.end)} · ${t.last.rate===null?'—':Math.round(t.last.rate*100)+'%'} · ${t.last.abandoned?'ABANDONED':t.last.passed?'PASSED':'FAILED'}</div>`:'';
+  const lastLine=t.last?`<div class="hint">// last gauntlet: ${shortDate(t.last.start)} → ${shortDate(t.last.end)} · ${t.last.rate===null?'—':Math.round(t.last.rate*100)+'%'} · ${t.last.abandoned?'ABANDONED':t.last.passed?'CLEARED':'FAILED'}</div>`:'';
   if(t.active){
     lab.textContent='ACTIVE';
-    el.innerHTML=`<div class="hint" style="margin-top:0;">// day ${Math.min(t.length,diffDays(t.start,todayStr())+1)} of ${t.length} · ends ${shortDate(trialEnd())}</div><button class="btn danger wide" style="margin-top:10px;" onclick="abandonTrial()">ABANDON TRIAL</button>${lastLine}`;
+    el.innerHTML=`<div class="hint" style="margin-top:0;">// day ${Math.min(t.length,diffDays(t.start,todayStr())+1)} of ${t.length} · ends ${shortDate(trialEnd())}</div><button class="btn danger wide" style="margin-top:10px;" onclick="abandonTrial()">ABANDON GAUNTLET</button>${lastLine}`;
   }else{
     lab.textContent='INACTIVE';
-    el.innerHTML=`<div class="field-row"><label>DAYS</label><input type="number" id="trial-length" min="7" max="365" value="${t.length||66}"></div><button class="btn solid wide" onclick="startTrial()">BEGIN TRIAL</button><div class="hint">// a bounded run inside the endless System. clear ≥ ${Math.round(TRIAL_REQ*100)}% of scheduled days to pass. rest days don't count.</div><div class="hint">// 66 days: average time to habit automaticity in Lally et al. 2010 (individual range 18–254).</div>${lastLine}`;
+    el.innerHTML=`<div class="actions" style="grid-template-columns:1fr 1fr 1fr;margin:0 0 10px;"><button class="btn" onclick="startTrial(7)">7 DAYS</button><button class="btn" onclick="startTrial(30)">30 DAYS</button><button class="btn" onclick="startTrial(66)">66 DAYS</button></div><div class="field-row"><label>CUSTOM</label><input type="number" id="trial-length" min="7" max="365" value="${t.length||66}"><button class="btn solid" onclick="startTrial()">BEGIN</button></div><div class="hint">// a bounded run inside the endless System. clear ≥ ${Math.round(TRIAL_REQ*100)}% of scheduled days. rest days don't count. reward: one rare-or-better item.</div><div class="hint">// 66 days: average time to habit automaticity in Lally et al. 2010 (individual range 18–254).</div>${lastLine}`;
   }
+}
+
+// ── Onboarding ───────────────────────────────────────────────────────
+function renderOnboard(){
+  const el=document.getElementById('onboard');
+  if(state.onboarded){el.classList.add('hidden');return;}
+  el.classList.remove('hidden');
+  const head=n=>`<div class="sh"><span class="bang">!</span><span class="sys">[SYSTEM]</span><span class="nm">PLAYER REGISTRATION</span><i class="rule"></i><span class="meta">${n}/3</span></div>`;
+  let body='';
+  if(obStep===0){
+    body=`${head(1)}<div class="ob-msg">You have been selected.<br>The System will issue a Daily Quest each day.<br>Identify yourself.</div><div class="field-row"><label>NAME</label><input type="text" id="ob-name" maxlength="24" value="${state.player.name==='PLAYER'?'':escapeHtml(state.player.name)}" placeholder="PLAYER"></div><button class="btn solid wide" style="margin-top:14px;" onclick="obNext()">CONFIRM</button>`;
+  }else if(obStep===1){
+    body=`${head(2)}<div class="ob-msg">Select today's objectives.<br>Each one trains a stat. Edit them any time in Settings.</div>${state.questTemplate.map(qt=>`<label class="ck"><input type="checkbox" data-ob="${qt.id}" checked>${iconSvg(qt.icon)}<span style="flex:1">${escapeHtml(resolveQuestName(qt))}</span><span class="q-stat">${qt.stat||''}</span></label>`).join('')}<div class="field-row" style="margin-top:14px;"><label>DAY ENDS</label><select id="ob-day">${[0,1,2,3,4,5].map(h=>`<option value="${h}"${h===DAY_START?' selected':''}>${String(h).padStart(2,'0')}:00${h===0?' (midnight)':''}</option>`).join('')}</select></div><button class="btn solid wide" style="margin-top:14px;" onclick="obNext()">CONFIRM</button>`;
+  }else{
+    body=`${head(3)}<div class="ob-msg">Rules.<br><br>· Clear every objective before the day ends.<br>· Fail, and tomorrow a Penalty Quest is issued.<br>· Clear it to void the penalty. Ignore it and a stat is reduced.<br>· Mistakes can be undone for ${UNDO_MS/1000} seconds.<br><br>The System does not negotiate.</div><button class="btn solid wide" onclick="obNext()">ACCEPT</button>`;
+  }
+  el.innerHTML=`<div class="ob"><div class="panel">${body}</div></div>`;
+}
+function obNext(){
+  if(obStep===0){const v=(document.getElementById('ob-name').value.trim()||'PLAYER').toUpperCase();state.player.name=v;obStep=1;}
+  else if(obStep===1){
+    const keep=[...document.querySelectorAll('[data-ob]')].filter(c=>c.checked).map(c=>c.dataset.ob);
+    if(!keep.length){toast('[SELECT AT LEAST ONE]','danger');return;}
+    state.questTemplate=state.questTemplate.filter(qt=>keep.includes(qt.id));
+    state.settings.dayStartHour=parseInt(document.getElementById('ob-day').value,10)||0;applySettings();
+    obStep=2;
+  }else{
+    state.onboarded=true;
+    state.lastQuestDate=null;state.questsToday=[];state.log=[];
+    logLine(`${nowTimeStr()} — Player registered: ${state.player.name}.`);
+    ensureTodayQuest();
+    render();toast('[STATUS WINDOW ONLINE]','cyan');
+  }
+  saveState();renderOnboard();
 }
 
 // ── Log / clock / toast ──────────────────────────────────────────────
 function logLine(text,cls){state.log.unshift({t:Date.now(),text,cls:cls||''});if(state.log.length>1000)state.log.length=1000;}
 function tickClock(){const d=new Date();document.getElementById('sys-time').textContent=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+':'+String(d.getSeconds()).padStart(2,'0');}
-function tickCountdown(){const now=new Date(),end=new Date(now);end.setHours(24,0,0,0);const diff=end-now;const h=Math.floor(diff/3600000),m=Math.floor((diff%3600000)/60000),s=Math.floor((diff%60000)/1000);const el=document.getElementById('countdown');el.textContent=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');el.style.color=h<2?'var(--danger)':'';if(state.lastQuestDate!==todayStr()){ensureTodayQuest();render();}}
+function tickCountdown(){
+  const now=new Date(),end=new Date(now);end.setHours(DAY_START,0,0,0);if(end<=now)end.setDate(end.getDate()+1);
+  const diff=end-now;const h=Math.floor(diff/3600000),m=Math.floor((diff%3600000)/60000),s=Math.floor((diff%60000)/1000);
+  const el=document.getElementById('countdown');el.textContent=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');el.style.color=h<2?'var(--danger)':'';
+  if(state.onboarded&&state.lastQuestDate!==todayStr()){ensureTodayQuest();render();}
+}
 let toastTimer;
 function toast(msg,type='cyan'){const t=document.getElementById('toast');t.textContent=msg;t.className='';if(type!=='cyan')t.classList.add(type);requestAnimationFrame(()=>t.classList.add('show'));clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2600);}
 
 // ── Views / settings ─────────────────────────────────────────────────
+function currentTheme(){return document.documentElement.getAttribute('data-theme')==='ember'?'ember':'cyan';}
+function switchTheme(){
+  const t=currentTheme()==='ember'?'cyan':'ember';
+  try{localStorage.setItem(THEME_KEY,t);}catch(e){}
+  document.documentElement.setAttribute('data-theme',t);
+  const m=document.querySelector('meta[name=theme-color]');if(m)m.setAttribute('content',t==='ember'?'#0c0704':'#02060d');
+  document.getElementById('theme-label').textContent=t.toUpperCase();
+  if(history.replaceState)history.replaceState(null,'',location.pathname);
+}
 function toggleView(){
   const main=document.getElementById('main-view'),settings=document.getElementById('settings-view'),label=document.getElementById('toggle-label');
   if(!settings.classList.contains('hidden')){saveSettings();settings.classList.add('hidden');main.classList.remove('hidden');label.textContent='SETTINGS';render();}
@@ -1103,6 +1520,8 @@ function toggleView(){
 function populateSettings(){
   document.getElementById('set-name').value=state.player.name;
   document.getElementById('set-class').value=state.player.class;
+  document.getElementById('set-daystart').value=String(DAY_START);
+  document.getElementById('theme-label').textContent=currentTheme().toUpperCase();
   const sel=document.getElementById('set-title');sel.innerHTML='<option value="">— NONE —</option>';
   for(const x of state.titles){const t=getTitle(x.id);if(!t)continue;const opt=document.createElement('option');opt.value=t.id;opt.textContent=t.name+' ['+t.tier.toUpperCase()+']';if(state.equippedTitle===t.id)opt.selected=true;sel.appendChild(opt);}
   const cu=document.getElementById('cloud-url'),ct=document.getElementById('cloud-token');if(cu&&ct){cu.value=cloudConfig?cloudConfig.url:'';ct.value=cloudConfig?cloudConfig.token:'';}
@@ -1112,21 +1531,25 @@ function saveSettings(){
   state.player.name=(document.getElementById('set-name').value.trim()||'PLAYER').toUpperCase();
   state.player.class=document.getElementById('set-class').value.trim()||'CLASS — UNAWAKENED';
   const c=document.getElementById('set-title').value||null;state.equippedTitle=c&&hasTitle(c)?c:null;
+  const ds=clamp(parseInt(document.getElementById('set-daystart').value,10)||0,0,5);
+  if(ds!==state.settings.dayStartHour){state.settings.dayStartHour=ds;applySettings();logLine(`${nowTimeStr()} — Day boundary set to ${String(ds).padStart(2,'0')}:00.`);}
   syncTodaysQuestsWithTemplate();saveState();
 }
 function renderQuestEditor(){
   const wrap=document.getElementById('quest-editor');wrap.innerHTML='';
   const iconOpts=k=>Object.keys(ICONS).map(key=>`<option value="${key}"${key===k?' selected':''}>${ICONS[key].l}</option>`).join('');
+  const statOpts=k=>['',...STAT_KEYS].map(s=>`<option value="${s}"${s===(k||'')?' selected':''}>${s||'—'}</option>`).join('');
   state.questTemplate.forEach((q,idx)=>{
     const card=document.createElement('div');card.className='qe-card';
     const dn=q.nameTemplate?q.nameTemplate:q.name||'';
     const sv=q.scaleFactor&&q.scaleFactor>1?q.scaleFactor.toFixed(2):'';
     const days=q.days||ALL_DAYS;
     card.innerHTML=`<div class="qe-r1"><select data-f="icon">${iconOpts(q.icon)}</select><input type="text" value="${escapeHtml(dn)}" data-f="name" maxlength="60" placeholder="Name or {n} template"><button class="rm" title="Remove">×</button></div>
-      <div class="qe-r2"><span class="lbl">XP</span><input type="number" value="${q.xp}" data-f="xp" min="1" max="999"><span class="lbl">SCALE</span><input type="number" value="${sv}" data-f="scale" min="1" max="2" step="0.01" placeholder="—"></div>
+      <div class="qe-r2"><span class="lbl">XP</span><input type="number" value="${q.xp}" data-f="xp" min="1" max="999"><span class="lbl">SCALE</span><input type="number" value="${sv}" data-f="scale" min="1" max="2" step="0.01" placeholder="—"><span class="lbl">STAT</span><select data-f="stat" style="flex:0 0 72px;">${statOpts(q.stat)}</select></div>
       <div class="qe-days">${[0,1,2,3,4,5,6].map(d=>`<button class="pill${days.includes(d)?' sch':''}" data-d="${d}">${DOW[d]}</button>`).join('')}</div>`;
     const qt=state.questTemplate[idx];
     card.querySelector('[data-f=icon]').addEventListener('change',e=>{qt.icon=e.target.value;});
+    card.querySelector('[data-f=stat]').addEventListener('change',e=>{qt.stat=e.target.value||'';});
     card.querySelector('[data-f=name]').addEventListener('change',e=>{
       const val=e.target.value.trim()||'Quest';
       if(val.includes('{n}')){qt.nameTemplate=val;delete qt.name;if(!qt.baseTarget){qt.baseTarget=10;qt.currentTarget=10;}}
@@ -1143,20 +1566,25 @@ function renderQuestEditor(){
     wrap.appendChild(card);
   });
 }
-function addQuestRow(){state.questTemplate.push({id:newId(),icon:'target',days:ALL_DAYS.slice(),name:'New Quest',xp:10});renderQuestEditor();}
+function addQuestRow(){state.questTemplate.push({id:newId(),icon:'target',stat:'',days:ALL_DAYS.slice(),name:'New Quest',xp:10});renderQuestEditor();}
 function syncTodaysQuestsWithTemplate(){
   const prev=state.questsToday;
-  state.questsToday=buildQuestsFor(todayStr()).map(q=>{const ex=prev.find(p=>p.id===q.id);if(ex){q.done=ex.done;if(ex.done)q.t=ex.t;}return q;});
+  state.questsToday=buildQuestsFor(todayStr()).map(q=>{const ex=prev.find(p=>p.id===q.id);if(ex){q.done=ex.done;if(ex.done){q.t=ex.t;q.a=ex.a;}}return q;});
 }
 
 // ── Data ─────────────────────────────────────────────────────────────
 function exportData(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`the-system-${todayStr().replace(/-/g,'')}.json`;document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);toast('[EXPORT COMPLETE]','cyan');}
 function importFile(e){const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=ev=>applyImport(ev.target.result);reader.readAsText(file);e.target.value='';}
 function importPaste(){const text=document.getElementById('import-text').value;if(!text.trim()){toast('[NO DATA TO IMPORT]','danger');return;}applyImport(text);}
-function applyImport(text){try{const parsed=JSON.parse(text);if(typeof parsed!=='object'||!parsed.stats)throw new Error('Invalid');if(!confirm('Replace all current progress with imported data?'))return;state=migrate(parsed);state.importedOnce=true;ensureTodayQuest();saveState();populateSettings();render();toast('[IMPORT COMPLETE]','gold');logLine(`${nowTimeStr()} — Data imported.`);checkTitles();}catch(e){toast('[IMPORT FAILED — INVALID JSON]','danger');console.error(e);}}
-function resetAll(){if(!confirm('Reset ALL progress?'))return;if(!confirm('Are you absolutely sure?'))return;state=migrate({});saveState();ensureTodayQuest();populateSettings();render();toast('[SYSTEM RESET]','danger');}
+function applyImport(text){try{const parsed=JSON.parse(text);if(typeof parsed!=='object'||!parsed.stats)throw new Error('Invalid');if(!confirm('Replace all current progress with imported data?'))return;state=migrate(parsed);state.importedOnce=true;state.onboarded=true;applySettings();ensureTodayQuest();saveState();populateSettings();render();renderOnboard();toast('[IMPORT COMPLETE]','gold');logLine(`${nowTimeStr()} — Data imported.`);checkTitles();}catch(e){toast('[IMPORT FAILED — INVALID JSON]','danger');console.error(e);}}
+function resetAll(){if(!confirm('Reset ALL progress?'))return;if(!confirm('Are you absolutely sure?'))return;state=migrate({});applySettings();obStep=0;saveState();populateSettings();render();renderOnboard();toast('[SYSTEM RESET]','danger');}
+function clearSystemData(){
+  if(!confirm("Remove all of The System's saved data from this browser (including archives)? Cloud config is kept. The page will reload."))return;
+  try{Object.keys(localStorage).filter(k=>k.indexOf('gorgon.system')===0).forEach(k=>localStorage.removeItem(k));}catch(e){}
+  location.reload();
+}
 function clearSiteData(){
-  if(!confirm('Clear ALL browser storage for this site? Everything will be wiped and the page will reload.'))return;
+  if(!confirm('Clear ALL browser storage for the whole gorgon.live site? This wipes every tool on the domain, not just The System. The page will reload.'))return;
   try{localStorage.clear();}catch(e){}
   try{sessionStorage.clear();}catch(e){}
   try{document.cookie.split(';').forEach(c=>{const k=c.trim().split('=')[0];document.cookie=k+'=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/';});}catch(e){}
@@ -1170,10 +1598,11 @@ function debugDrop(){state.nextDropDate=todayStr();checkItemDrop(todayStr());sav
 wrapPanels();
 document.querySelectorAll('#stat-seg button').forEach(b=>b.addEventListener('click',()=>{statView=b.dataset.v;renderStatus();}));
 document.querySelectorAll('#quest-seg button').forEach(b=>b.addEventListener('click',()=>{questView=b.dataset.v;renderQuests();}));
-ensureTodayQuest();render();checkTitles();
+if(state.onboarded)ensureTodayQuest();
+render();renderOnboard();checkTitles();
 setInterval(tickClock,1000);tickClock();
 setInterval(tickCountdown,1000);tickCountdown();
-setTimeout(()=>toast('[STATUS WINDOW ONLINE]','cyan'),400);
+if(state.onboarded)setTimeout(()=>toast('[STATUS WINDOW ONLINE]','cyan'),400);
 if(cloudConfig){setTimeout(()=>cloudPull(),800);}
 </script>
 </body>

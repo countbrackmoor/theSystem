@@ -6,6 +6,47 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 
 ---
 
+## 2026-11-19 — v5.0
+
+### Added
+- **Undo**: clearing a quest, side quest, penalty quest or using an item shows an 8-second UNDO bar that restores the previous state exactly.
+- **Day-end hour** (Settings → PLAYER → DAY ENDS, 00:00–05:00). Activity before that hour counts toward the previous day, and the countdown follows it.
+- **Quest → stat training**: each quest has a stat (STR/AGI/VIT/INT/SEN), editable in the quest editor. Every clear adds a training pip; 5 pips = +1 to that stat (4 for your class stat). Existing quests get a stat guessed from their icon.
+- **Log the actual number**: on a cleared scalable quest, tap the `15 ✎` chip to log what you really did. Entries below the target are refused (undo instead). If you beat the target, the next target jumps to your actual number (still capped at 5× base). History stores `[done, target, actual]`, and the chart now plots what you performed.
+- **HP / MP are real**:
+  - HP: −5 to −25 on a failed day (scaled by how much you missed), +10 on a cleared day, +5 on a rest day. At 0 HP you lose your current level progress and HP resets to 50.
+  - MP: +20 on a cleared day, +10 on a rest day. Using an item costs 20 MP.
+- **Penalty Quest**: failing yesterday no longer debits a stat immediately. Today you get a Penalty Quest: 1.5× the highest-XP scalable quest you missed, or "clear today's Daily Quest in full" if none of the missed quests scale. Clear it and the penalty is voided; ignore it and that quest's stat −1 at rollover. Shields still block it outright. Older gap days (up to 7) are still penalized directly.
+- **12-week heatmap** in PROGRESS: cleared / partial (shaded by fraction) / missed / rest / no-data.
+- **Weekly report**: on the first open of a new week, a WEEKLY REPORT panel covers last week's clear rate, partial days, objectives, stat change, and strongest/weakest quest. The last 12 reports are kept.
+- **Side quests**: optional ONCE or 2–5×/WEEK objectives with XP and training and no penalty. Hitting a weekly quota gives bonus XP. Cleared ONCE quests are pruned at rollover.
+- **Class change at Lv 10**: pick FIGHTER / ASSASSIN / TANK / MAGE / RANGER (STR / AGI / VIT / INT / SEN; your highest stat is highlighted). The class stat gets +10% XP and trains in 4 clears. The choice is permanent.
+- **First-run onboarding**: 3 screens (name → pick quests and day-end hour → rules). Existing saves skip it.
+- **Gauntlet presets** (7 / 30 / 66 days, plus custom). Clearing one grants a guaranteed rare-or-better item.
+- **New titles**: CLASSED, ERRAND RUNNER, PENITENT (hidden). 32 titles in total.
+- **`prefers-reduced-motion`** support: animations and transitions are disabled when the OS asks.
+- **`archive/`**: frozen v1–v4 plus an index page (footer link: archive).
+  - Each archive page loads its exact original `index.html` from GitHub (`raw.githubusercontent.com`), pinned to the full commit SHA, so it can't drift.
+  - Before running, the build is sandboxed: its save key becomes `gorgon.system.archive.vN` and its cloud config key is renamed, which makes sync inert.
+  - Its storage wipe only touches archive keys.
+  - Pinned commits: v1 `7e883b0`, v2 `1e692c0`, v3 `eef4d2c`, v4 `f8a84e6`.
+
+### Changed
+- **Trial → Gauntlet** in all UI and log text (the stored field is still `trial`, so no migration is needed). The TRIAL CONQUEROR title is now GAUNTLET SURVIVOR.
+- **One HTML file for both palettes.** The palette comes from `?theme=` or the saved `gorgon.system.theme`; Settings → switch toggles it in place. `ember.html` is now a redirect to `./?theme=ember`, so old links still work.
+- **Cloud pull merges `history` by date** (keeping the more-complete day) instead of replacing it, so a stale device can't erase days. This is the one edit to the carried-over cloud code.
+- **Danger zone**:
+  - CLEAR SYSTEM STORAGE removes only `gorgon.system*` keys.
+  - The old wipe is relabeled CLEAR ALL GORGON.LIVE STORAGE, because `localStorage` is per-origin and that button also wipes every other gorgon.live tool.
+- Penalties hit the stat of a missed quest when known, rather than a random stat.
+- Storage key `gorgon.system.v4` → `gorgon.system.v5`; `LEGACY_KEYS` gains v4.
+
+### Fixed
+- Re-applying the same stat buff no longer stacks the +3 permanently (the old buff's bonus is removed before the new one applies).
+- Changing the day-end hour later mid-day no longer regenerates (and wipes) today's quests.
+
+---
+
 ## 2026-11-19 — v4.0
 
 ### Added
@@ -65,24 +106,6 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 
 ---
 
-## Undated — between v3.0 and v4.0 (backfilled)
-
-These pushes shipped without changelog entries. Short hashes are listed for reference.
-
-### Added
-- `553e235` — Ambient effects: breathing panel glow, scanline overlay, radial ambient background, title text-shadow breathe.
-- `1e692c0` — Settings → DATA: **CLEAR ALL BROWSER STORAGE** (localStorage, sessionStorage, cookies, then reload).
-
-### Changed
-- `01245b2` — Made the effects more prominent and attempted an iOS Safari fix (z-index layering, `inset` → explicit offsets, `-webkit-` prefixes).
-- `9ff76fe` — Dimmed the scanlines back to `rgba(0,15,35,0.055)`.
-- `1cbda5a` — Adam edited the default quests directly on GitHub (the values restored in v4.0 above).
-
-### Regressed
-- `1e692c0` also reverted `1cbda5a`'s default quests, because it was built from a stale copy. Fixed in v4.0.
-
----
-
 ## 2026-06-26 — v3.0
 
 ### Added
@@ -117,6 +140,24 @@ These pushes shipped without changelog entries. Short hashes are listed for refe
 - Status indicator updates on every state transition: pending fires the moment `saveState()` runs; synced fires on successful PUT response.
 - 401 responses surface as `ERROR · Unauthorized` and a `[CLOUD: BAD TOKEN]` toast on manual operations.
 - Worker source and setup steps live in the `gorgon-api` repo.
+
+---
+
+## 2026-06-25 → 06-26 — between v2.0 and v3.0 (backfilled)
+
+These pushes shipped without changelog entries. Short hashes are listed for reference. (Corrected in v5.0: v4.0 mislabeled this block as falling between v3.0 and v4.0.)
+
+### Added
+- `553e235` — Ambient effects: breathing panel glow, scanline overlay, radial ambient background, title text-shadow breathe.
+- `1e692c0` — Settings → DATA: **CLEAR ALL BROWSER STORAGE** (localStorage, sessionStorage, cookies, then reload).
+
+### Changed
+- `01245b2` — Made the effects more prominent and attempted an iOS Safari fix (z-index layering, `inset` → explicit offsets, `-webkit-` prefixes).
+- `9ff76fe` — Dimmed the scanlines back to `rgba(0,15,35,0.055)`.
+- `1cbda5a` — Adam edited the default quests directly on GitHub (the values restored in v4.0 above).
+
+### Regressed
+- `1e692c0` also reverted `1cbda5a`'s default quests, because it was built from a stale copy. Fixed in v4.0.
 
 ---
 
