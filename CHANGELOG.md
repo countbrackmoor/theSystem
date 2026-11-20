@@ -6,6 +6,18 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 
 ---
 
+## 2026-11-19 — v6.1
+
+### Removed
+- **`archive/`** (index page and the v1–v4 loaders), along with the footer "archive" link. Earlier versions are in the git history: v1 `7e883b0`, v2 `1e692c0`, v3 `eef4d2c`, v4 `f8a84e6`, v5 `f18c475`.
+- The service worker's cache rule for archive builds on `raw.githubusercontent.com`.
+
+### Changed
+- The service worker cache is bumped to `system-v6.1`, so installed copies drop the old cache.
+- The CLEAR SYSTEM STORAGE text no longer mentions archives. The button still removes every `gorgon.system*` key, so any leftover archive saves get cleaned up too.
+
+---
+
 ## 2026-11-19 — v6.0
 
 ### Added

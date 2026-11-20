@@ -545,7 +545,7 @@ if(t!=='ember')t='cyan';document.documentElement.setAttribute('data-theme',t);va
       <h3>DANGER ZONE</h3>
       <button class="btn danger wide" onclick="resetAll()" style="margin-bottom:8px;">RESET ALL PROGRESS</button>
       <button class="btn danger wide" onclick="clearSystemData()" style="margin-bottom:8px;">CLEAR SYSTEM STORAGE</button>
-      <div class="hint" style="margin-bottom:10px;">// removes The System's saves (incl. archives) from this browser, then reloads. cloud config is kept.</div>
+      <div class="hint" style="margin-bottom:10px;">// removes The System's saves from this browser, then reloads. cloud config is kept.</div>
       <button class="btn danger wide" onclick="clearSiteData()">CLEAR ALL GORGON.LIVE STORAGE</button>
       <div class="hint">// wipes localStorage, sessionStorage &amp; cookies for the whole gorgon.live domain — every tool on the site, not just this one</div>
     </div>
@@ -562,7 +562,7 @@ if(t!=='ember')t='cyan';document.documentElement.setAttribute('data-theme',t);va
 
 </div>
 
-<div class="footer-note">// THE SYSTEM v6 — gorgon.live · <a href="archive/">archive</a></div>
+<div class="footer-note">// THE SYSTEM v6 — gorgon.live</div>
 <div id="toast"></div>
 <div class="undo-bar" id="undo-bar"><span id="undo-text">QUEST CLEARED</span><button onclick="undoLast()">UNDO</button></div>
 <div id="onboard" class="hidden"></div>
@@ -1596,7 +1596,7 @@ function importPaste(){const text=document.getElementById('import-text').value;i
 function applyImport(text){try{const parsed=JSON.parse(text);if(typeof parsed!=='object'||!parsed.stats)throw new Error('Invalid');if(!confirm('Replace all current progress with imported data?'))return;state=migrate(parsed);state.importedOnce=true;state.onboarded=true;applySettings();ensureTodayQuest();saveState();populateSettings();render();renderOnboard();toast('[IMPORT COMPLETE]','gold');logLine(`${nowTimeStr()} — Data imported.`);checkTitles();}catch(e){toast('[IMPORT FAILED — INVALID JSON]','danger');console.error(e);}}
 function resetAll(){if(!confirm('Reset ALL progress?'))return;if(!confirm('Are you absolutely sure?'))return;state=migrate({});applySettings();obStep=0;saveState();populateSettings();render();renderOnboard();toast('[SYSTEM RESET]','danger');}
 function clearSystemData(){
-  if(!confirm("Remove all of The System's saved data from this browser (including archives)? Cloud config is kept. The page will reload."))return;
+  if(!confirm("Remove all of The System's saved data from this browser? Cloud config is kept. The page will reload."))return;
   try{Object.keys(localStorage).filter(k=>k.indexOf('gorgon.system')===0).forEach(k=>localStorage.removeItem(k));}catch(e){}
   location.reload();
 }
@@ -1612,7 +1612,7 @@ function triggerPenalty(){applyPenalty(false);}
 function debugDrop(){state.nextDropDate=todayStr();checkItemDrop(todayStr());saveState();render();}
 
 // ── App (install / offline / badge) ──────────────────────────────────
-const APP_VERSION='6.0';
+const APP_VERSION='6.1';
 let deferredInstall=null,swReg=null,swState='—',persisted=null;
 function isStandalone(){return (window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches)||window.navigator.standalone===true;}
 function isIOS(){return /iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);}
