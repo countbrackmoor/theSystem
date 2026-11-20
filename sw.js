@@ -1,9 +1,8 @@
 // THE SYSTEM — service worker (v6)
 // Navigations: network-first (3.5s timeout) so updates land when online; cached shell when offline.
 // Static same-origin files: cache-first. Google Fonts: stale-while-revalidate.
-// Archive builds on raw.githubusercontent.com are pinned to commit SHAs → immutable → cache-first.
 // Everything else (e.g. the gorgon-api cloud sync) is not intercepted.
-const CACHE='system-v6.0';
+const CACHE='system-v6.1';
 // PNG icons are cached on first use (not pre-cached) so a missing file can't block install.
 const SHELL=['./','./manifest.webmanifest','./icons/icon.svg'];
 
@@ -23,7 +22,7 @@ self.addEventListener('fetch',e=>{
   const scope=new URL(self.registration.scope);
 
   if(req.mode==='navigate'&&url.origin===scope.origin&&url.pathname.startsWith(scope.pathname)){
-    // the app root (with or without ?theme=) is one document; archive pages are cached by path
+    // the app root (with or without ?theme=) is one document
     const isRoot=url.pathname===scope.pathname||url.pathname===scope.pathname+'index.html';
     const key=isRoot?scope.pathname:url.pathname;
     e.respondWith((async()=>{
@@ -45,15 +44,6 @@ self.addEventListener('fetch',e=>{
       const hit=await cache.match(req);
       const net=fetch(req).then(res=>{if(res&&(res.ok||res.type==='opaque'))cache.put(req,res.clone());return res;}).catch(()=>hit);
       return hit||net;
-    })());
-    return;
-  }
-
-  if(url.hostname==='raw.githubusercontent.com'&&url.pathname.startsWith('/countbrackmoor/theSystem/')){
-    e.respondWith((async()=>{
-      const cache=await caches.open(CACHE);
-      const hit=await cache.match(req);if(hit)return hit;
-      const res=await fetch(req);if(res&&res.ok)cache.put(req,res.clone());return res;
     })());
     return;
   }
