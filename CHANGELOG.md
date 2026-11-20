@@ -6,6 +6,34 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 
 ---
 
+## 2026-11-19 — v6.0
+
+### Added
+- **Installable app (PWA)**:
+  - `manifest.webmanifest`: standalone display, portrait, `#02060d` theme/background, scope `./`.
+  - iOS meta tags: `apple-mobile-web-app-capable`, black-translucent status bar, home-screen title "SYSTEM".
+- **Offline support** via `sw.js` (cache `system-v6.0`):
+  - The app page is network-first with a 3.5 s timeout, falling back to the cached copy.
+  - Static files are cache-first; Google Fonts are stale-while-revalidate.
+  - Archive builds (pinned commit SHAs, so immutable) are cache-first, which means an archive opened once also works offline.
+  - The gorgon-api cloud requests and every other gorgon.live tool are left alone.
+- **APP panel** (Settings, right after PLAYER):
+  - Shows version, mode (browser tab or home-screen app), offline status and storage persistence.
+  - INSTALL APP button where the browser supports an install prompt; on iPhone, step-by-step Add to Home Screen instructions.
+  - CHECK UPDATE.
+- **Icon badge** (opt-in): the home-screen icon shows the objectives left today (+1 for an open Penalty Quest). It updates whenever the app runs. iOS needs notification permission for this; the panel requests it.
+- **Persistent storage request** (`navigator.storage.persist()`) at boot.
+- **Icons**:
+  - `icons/icon.svg` (favicon and manifest "any").
+  - PNG `apple-touch-icon` (180), 192, 512 and maskable 512 — uploaded separately, because the GitHub connector can only write text files.
+
+### Notes
+- No schema change: `gorgon.system.v5` is unchanged (`settings.badge` defaults to off).
+- On iOS the installed app usually gets its own storage, separate from Safari. Move progress with EXPORT → IMPORT, or with cloud sync.
+- Background reminders (when the app is closed) need Web Push from a server, i.e. a gorgon-api cron. Not built yet.
+
+---
+
 ## 2026-11-19 — v5.0
 
 ### Added

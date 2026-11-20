@@ -5,6 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#02060d">
 <title>THE SYSTEM</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SYSTEM">
 <script>
 (function(){var t='cyan';try{var q=new URLSearchParams(location.search).get('theme');if(q==='cyan'||q==='ember'){localStorage.setItem('gorgon.system.theme',q);t=q;}else{t=localStorage.getItem('gorgon.system.theme')||'cyan';}}catch(e){}
 if(t!=='ember')t='cyan';document.documentElement.setAttribute('data-theme',t);var m=document.querySelector('meta[name=theme-color]');if(m)m.setAttribute('content',t==='ember'?'#0c0704':'#02060d');})();
@@ -334,6 +341,10 @@ if(t!=='ember')t='cyan';document.documentElement.setAttribute('data-theme',t);va
   #onboard .ob-step { font-family: var(--mono); font-size: 10px; letter-spacing: 0.3em; color: var(--ac-dim); }
   #onboard label.ck { display: flex; gap: 10px; align-items: center; padding: 9px 0; border-bottom: 1px dashed rgba(var(--ac-rgb),0.15); font-size: 16px; }
   #onboard input[type=checkbox] { width: 18px; height: 18px; accent-color: var(--ac); }
+  .app-row { display: flex; justify-content: space-between; gap: 10px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em; padding: 6px 0; border-bottom: 1px dashed rgba(var(--ac-rgb),0.12); }
+  .app-row .k { color: var(--ac-dim); } .app-row .v { color: var(--white); text-align: right; }
+  .app-row .v.ok { color: var(--green); } .app-row .v.warn { color: var(--gold); }
+  .steps { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; line-height: 1.9; color: var(--white); margin: 10px 0 4px; padding: 10px 12px; border: 1px dashed rgba(var(--ac-rgb),0.3); }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
     .frame .glow { opacity: 0.3; }
@@ -466,6 +477,11 @@ if(t!=='ember')t='cyan';document.documentElement.setAttribute('data-theme',t);va
   </div>
 
   <div class="panel">
+    <div class="sh"><span class="bang">!</span><span class="sys">[SYSTEM]</span><span class="nm">APP</span><i class="rule"></i><span class="meta" id="app-status-label">BROWSER</span></div>
+    <div id="app-panel"></div>
+  </div>
+
+  <div class="panel">
     <div class="sh"><span class="bang">!</span><span class="sys">[SYSTEM]</span><span class="nm">TITLE ARCHIVE</span><i class="rule"></i><span class="meta" id="settings-titles-count">0/0</span></div>
     <div id="titles-browser"></div>
   </div>
@@ -546,7 +562,7 @@ if(t!=='ember')t='cyan';document.documentElement.setAttribute('data-theme',t);va
 
 </div>
 
-<div class="footer-note">// THE SYSTEM v5 — gorgon.live · <a href="archive/">archive</a></div>
+<div class="footer-note">// THE SYSTEM v6 — gorgon.live · <a href="archive/">archive</a></div>
 <div id="toast"></div>
 <div class="undo-bar" id="undo-bar"><span id="undo-text">QUEST CLEARED</span><button onclick="undoLast()">UNDO</button></div>
 <div id="onboard" class="hidden"></div>
@@ -658,7 +674,7 @@ const TITLES=[
 ];
 const DEFAULT_STATE={version:VERSION,player:{name:'PLAYER',class:'CLASS — UNAWAKENED'},lvl:1,xp:0,points:0,hp:100,mp:100,stats:{STR:10,AGI:10,VIT:10,INT:10,SEN:10},streak:0,streakBest:0,lastQuestDate:null,questsToday:[],questTemplate:DEFAULT_QUESTS.map(q=>({...q,days:q.days.slice()})),log:[],titles:[],equippedTitle:null,questsCleared:0,lastClearedDate:null,penaltyYesterday:false,importedOnce:false,inventory:[],activeBuffs:[],penaltyShields:0,xpBoostNext:false,nextDropDate:null,totalDrops:0,lastModified:null,lastSyncedAt:null,
   history:{},baseline:null,trial:{active:false,length:66,start:null,last:null},trialsPassed:0,trialsRun:0,
-  settings:{dayStartHour:0},train:{STR:0,AGI:0,VIT:0,INT:0,SEN:0},job:null,penaltyQuest:null,penaltiesVoided:0,sideQuests:[],sideCleared:0,reports:[],reportUnseen:false,lastReportWeek:null,onboarded:false};
+  settings:{dayStartHour:0,badge:false},train:{STR:0,AGI:0,VIT:0,INT:0,SEN:0},job:null,penaltyQuest:null,penaltiesVoided:0,sideQuests:[],sideCleared:0,reports:[],reportUnseen:false,lastReportWeek:null,onboarded:false};
 
 // ── Date helpers (local time, shifted by DAY_START) ──────────────────
 function fmtDate(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
@@ -1160,6 +1176,7 @@ function wrapPanels(){
 function render(){
   renderReport();renderStrip();renderStatus();renderQuests();renderSide();renderInventory();renderProgress();renderTitlesPanel();renderLogs();renderArchive();
   if(state.onboarded)document.getElementById('onboard').classList.add('hidden');
+  updateBadge();
 }
 
 function renderReport(){
@@ -1525,7 +1542,7 @@ function populateSettings(){
   const sel=document.getElementById('set-title');sel.innerHTML='<option value="">— NONE —</option>';
   for(const x of state.titles){const t=getTitle(x.id);if(!t)continue;const opt=document.createElement('option');opt.value=t.id;opt.textContent=t.name+' ['+t.tier.toUpperCase()+']';if(state.equippedTitle===t.id)opt.selected=true;sel.appendChild(opt);}
   const cu=document.getElementById('cloud-url'),ct=document.getElementById('cloud-token');if(cu&&ct){cu.value=cloudConfig?cloudConfig.url:'';ct.value=cloudConfig?cloudConfig.token:'';}
-  renderCloudStatus();renderQuestEditor();renderTrialSettings();render();
+  renderCloudStatus();renderQuestEditor();renderTrialSettings();renderAppPanel();render();
 }
 function saveSettings(){
   state.player.name=(document.getElementById('set-name').value.trim()||'PLAYER').toUpperCase();
@@ -1594,8 +1611,73 @@ function triggerLevelUp(){gainXP(xpForNext(state.lvl)-state.xp);saveState();rend
 function triggerPenalty(){applyPenalty(false);}
 function debugDrop(){state.nextDropDate=todayStr();checkItemDrop(todayStr());saveState();render();}
 
+// ── App (install / offline / badge) ──────────────────────────────────
+const APP_VERSION='6.0';
+let deferredInstall=null,swReg=null,swState='—',persisted=null;
+function isStandalone(){return (window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches)||window.navigator.standalone===true;}
+function isIOS(){return /iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);}
+function badgeSupported(){return 'setAppBadge' in navigator;}
+function updateBadge(){
+  if(!state.settings.badge||!badgeSupported())return;
+  const n=state.questsToday.filter(q=>!q.done).length+(state.penaltyQuest&&!state.penaltyQuest.done&&!state.penaltyQuest.auto?1:0);
+  try{(n>0?navigator.setAppBadge(n):navigator.clearAppBadge()).catch(()=>{});}catch(e){}
+}
+function toggleBadge(){
+  if(state.settings.badge){state.settings.badge=false;try{navigator.clearAppBadge&&navigator.clearAppBadge().catch(()=>{});}catch(e){}saveState();renderAppPanel();return;}
+  const enable=()=>{state.settings.badge=true;saveState();updateBadge();renderAppPanel();toast('[ICON BADGE ON]','cyan');};
+  if('Notification' in window&&Notification.permission!=='granted'){
+    Notification.requestPermission().then(p=>{if(p==='granted')enable();else{toast('[PERMISSION DENIED]','danger');renderAppPanel();}}).catch(()=>toast('[PERMISSION UNAVAILABLE]','danger'));
+  }else enable();
+}
+function installApp(){
+  if(!deferredInstall)return;
+  deferredInstall.prompt();
+  deferredInstall.userChoice.finally(()=>{deferredInstall=null;renderAppPanel();});
+}
+function checkForUpdate(){
+  if(!swReg){toast('[OFFLINE MODE NOT ACTIVE]','danger');return;}
+  swReg.update().then(()=>toast('[UPDATE CHECK COMPLETE — REOPEN TO APPLY]','cyan')).catch(()=>toast('[UPDATE CHECK FAILED]','danger'));
+}
+function renderAppPanel(){
+  const el=document.getElementById('app-panel');if(!el)return;
+  const sa=isStandalone();
+  document.getElementById('app-status-label').textContent=sa?'INSTALLED':'BROWSER';
+  const row=(k,v,cls)=>`<div class="app-row"><span class="k">${k}</span><span class="v ${cls||''}">${v}</span></div>`;
+  let h=row('VERSION','v'+APP_VERSION);
+  h+=row('MODE',sa?'HOME-SCREEN APP':'BROWSER TAB',sa?'ok':'warn');
+  h+=row('OFFLINE',swState,swState==='READY'?'ok':'');
+  h+=row('STORAGE',persisted===true?'PERSISTENT':persisted===false?'BEST-EFFORT':'—',persisted?'ok':'');
+  if(badgeSupported())h+=row('ICON BADGE',state.settings.badge?'ON':'OFF',state.settings.badge?'ok':'');
+  if(!sa){
+    if(deferredInstall)h+=`<button class="btn solid wide" style="margin-top:12px;" onclick="installApp()">INSTALL APP</button>`;
+    else if(isIOS())h+=`<div class="steps">INSTALL ON iPHONE<br>1 · open this page in Safari<br>2 · tap Share (square with ↑)<br>3 · Add to Home Screen → Add</div>`;
+    else h+=`<div class="steps">INSTALL<br>use your browser's menu → Install app / Add to Home screen</div>`;
+    h+=`<div class="hint">// on iOS the installed app usually keeps its own save, separate from Safari's. move progress with EXPORT → IMPORT (Settings → DATA) or cloud sync.</div>`;
+  }
+  const btns=[];
+  if(badgeSupported())btns.push(`<button class="btn" onclick="toggleBadge()">${state.settings.badge?'BADGE OFF':'BADGE ON'}</button>`);
+  btns.push(`<button class="btn" onclick="checkForUpdate()">CHECK UPDATE</button>`);
+  h+=`<div class="actions" style="margin-top:12px;${btns.length===1?'grid-template-columns:1fr;':''}">${btns.join('')}</div>`;
+  if(badgeSupported())h+=`<div class="hint">// badge = objectives left today (+1 for an open Penalty Quest). it updates whenever the app runs; iOS needs notification permission for it.</div>`;
+  h+=`<div class="hint">// background reminders need a push server and are not built yet.</div>`;
+  el.innerHTML=h;
+}
+function initApp(){
+  window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstall=e;renderAppPanel();});
+  window.addEventListener('appinstalled',()=>{deferredInstall=null;logLine(`${nowTimeStr()} — App installed.`);saveState();renderAppPanel();});
+  if('serviceWorker' in navigator&&location.protocol==='https:'){
+    swState='STARTING';
+    navigator.serviceWorker.register('sw.js').then(reg=>{
+      swReg=reg;swState='READY';renderAppPanel();
+      reg.addEventListener('updatefound',()=>{const w=reg.installing;if(w&&navigator.serviceWorker.controller)w.addEventListener('statechange',()=>{if(w.state==='activated')toast('[UPDATE INSTALLED — REOPEN TO APPLY]','cyan');});});
+    }).catch(()=>{swState='UNAVAILABLE';renderAppPanel();});
+  }else swState='UNAVAILABLE';
+  if(navigator.storage&&navigator.storage.persist){navigator.storage.persisted().then(p=>p||navigator.storage.persist()).then(p=>{persisted=!!p;renderAppPanel();}).catch(()=>{});}
+}
+
 // ── Boot ─────────────────────────────────────────────────────────────
 wrapPanels();
+initApp();
 document.querySelectorAll('#stat-seg button').forEach(b=>b.addEventListener('click',()=>{statView=b.dataset.v;renderStatus();}));
 document.querySelectorAll('#quest-seg button').forEach(b=>b.addEventListener('click',()=>{questView=b.dataset.v;renderQuests();}));
 if(state.onboarded)ensureTodayQuest();
