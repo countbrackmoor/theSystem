@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>THE SYSTEM — ARCHIVE V2</title>
+</head>
+<body style="background:#02060d;color:#5fd4ff;font-family:monospace;letter-spacing:.15em;padding:40px 20px;">
+<div id="msg">// LOADING ARCHIVE V2…</div>
+<script>
+// Archived build of The System v2, pinned to commit 1e692c06ee3e5e539085b36dc2df3e6f4fe72523 (2026-06-26).
+// The exact file is fetched from GitHub at that commit and sandboxed before it runs:
+//   gorgon.system.vN  -> gorgon.system.archive.vN   (separate save)
+//   gorgon.cloud.config -> gorgon.system.archive.cloud (cloud sync inert)
+//   localStorage.clear() -> clears archive keys only
+var ARCHIVE={v:'v2',sha:'1e692c06ee3e5e539085b36dc2df3e6f4fe72523'};
+function sandbox(h){
+  h=h.replace(/gorgon\.system\.(v\d)/g,'gorgon.system.archive.$1');
+  h=h.split('gorgon.cloud.config').join('gorgon.system.archive.cloud');
+  h=h.split('localStorage.clear();').join("Object.keys(localStorage).filter(k=>k.indexOf('gorgon.system.archive.')===0).forEach(k=>localStorage.removeItem(k));");
+  h=h.split('      <div class="hint">// palette: CYAN · <a href="ember.html">switch to EMBER →</a> (same save data)</div>\n').join('');
+  var banner='<div style="position:relative;z-index:1001;margin:8px 0;padding:8px 10px;border:1px dashed #ffd166;color:#ffd166;font-family:monospace;font-size:11px;letter-spacing:.15em;text-align:center;background:rgba(0,0,0,.6)">// ARCHIVE '+ARCHIVE.v.toUpperCase()+' — sandboxed save, cloud sync off · <a href="../../" style="color:#ffd166">CURRENT VERSION →</a></div>';
+  return h.replace('<body>','<body>\n'+banner);
+}
+fetch('https://raw.githubusercontent.com/countbrackmoor/theSystem/'+ARCHIVE.sha+'/index.html')
+  .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.text();})
+  .then(function(h){document.open();document.write(sandbox(h));document.close();})
+  .catch(function(e){document.getElementById('msg').innerHTML='// ARCHIVE UNAVAILABLE — '+e.message+'<br><br><a style="color:#ffd166" href="https://github.com/countbrackmoor/theSystem/blob/'+ARCHIVE.sha+'/index.html">view source on GitHub</a> · <a style="color:#ffd166" href="../">archive index</a>';});
+</script>
+</body>
+</html>
