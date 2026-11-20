@@ -6,6 +6,7 @@ Part of the [gorgon.live](https://gorgon.live) tool suite.
 
 - **Live:** https://gorgon.live/theSystem/ (cyan) · https://gorgon.live/theSystem/?theme=ember (orange; `ember.html` redirects here)
 - **Archive:** https://gorgon.live/theSystem/archive/ (frozen v1–v4, sandboxed)
+- **Install:** iPhone: Safari → Share → Add to Home Screen. Android/desktop: Settings → APP → INSTALL APP. Works offline after the first load.
 
 ---
 
@@ -52,7 +53,7 @@ You are the Player and the app is the System. It issues Daily Quests, trains you
 
 | Key | Contents |
 |---|---|
-| `gorgon.system.v5` | Full state: `history` (per day: stats plus `[done, target, actual]` for each quest; capped at 400 days), `baseline`, `train`, `job`, `penaltyQuest`, `sideQuests`, `reports`, `trial` (the Gauntlet), `settings.dayStartHour` |
+| `gorgon.system.v5` | Full state (unchanged in v6): `history` (per day: stats plus `[done, target, actual]` for each quest; capped at 400 days), `baseline`, `train`, `job`, `penaltyQuest`, `sideQuests`, `reports`, `trial` (the Gauntlet), `settings.dayStartHour` |
 | `gorgon.system.theme` | `cyan` or `ember` |
 | `gorgon.cloud.config` | `{url, token}` for optional cloud sync |
 | `gorgon.system.archive.*` | Saves used only by the archived builds |
@@ -68,6 +69,9 @@ You are the Player and the app is the System. It issues Daily Quests, trains you
 |---|---|
 | `index.html` | The app (both palettes) |
 | `ember.html` | Redirect to `./?theme=ember` |
+| `manifest.webmanifest` | App manifest (name, icons, standalone display) |
+| `sw.js` | Service worker: offline cache (`system-vX.Y`; bump it on release) |
+| `icons/` | `icon.svg` plus PNG icons (apple-touch 180, 192, 512, maskable 512) |
 | `archive/` | Index page plus v1–v4 loaders. Each fetches its original build from GitHub at a pinned commit and sandboxes the save keys |
 | `CHANGELOG.md` | Dated change log |
 
@@ -88,6 +92,6 @@ Both palettes share danger `#ff4d6d`, magenta `#d885ff` and green `#7fff6a`. Pan
 
 ## Not implemented yet
 
-- Install as a home-screen app, offline support and reminders (planned for v6)
+- Background reminders (needs Web Push via a gorgon-api cron)
 - Skill tree
 - HealthKit / Google Fit integration
